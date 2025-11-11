@@ -10,7 +10,7 @@ export function NavPersonal({
   items,
 }: {
   items: {
-    name: string
+    title: string
     url: string
     icon: any
   }[]
@@ -21,11 +21,11 @@ export function NavPersonal({
       <SidebarGroupLabel>Personal</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
-          <SidebarMenuItem key={item.name}>
+          <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild>
               <Link to={item.url}>
                 <item.icon />
-                <span>{item.name}</span>
+                <span>{item.title}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

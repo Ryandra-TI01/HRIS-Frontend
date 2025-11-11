@@ -14,6 +14,7 @@ import {
 import { NavPersonal } from "@/components/nav-personal"
 import { sidebarMenu } from "@/config/sidebar-menu"
 
+// example user data
 const resUser = {
   "success": true,
   "message": "Login successful",
@@ -24,7 +25,7 @@ const resUser = {
       "id": 1,
       "name": "Admin HR",
       "email": "admin@hris.com",
-      "role": "manager"
+      "role": "admin_hr"
     }
   }
 }

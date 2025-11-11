@@ -60,22 +60,27 @@ export const sidebarMenu = {
   },
   personal: [
     {
-      name: "My Leaves",
+      title: "Dashboard",
+      url: "/personal/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "My Leaves",
       url: "/leave-requests/me",
       icon: Send,
     },
     {
-      name: "My Attendance",
+      title: "My Attendance",
       url: "/attendances/me",
       icon: Calendar,
     },
     {
-      name: "My Salary",
+      title: "My Salary",
       url: "/salary-slips/me",
       icon: CreditCard,
     },
     {
-      name: "My Performance Review",
+      title: "My Performance Review",
       url: "/performance-reviews/me",
       icon: ChartNoAxesColumnIncreasing,
     },

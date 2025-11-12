@@ -9,7 +9,7 @@ export const sidebarMenu = {
         icon: LayoutDashboard,
       },
       {
-        title: "User",
+        title: "Employees",
         url: "/employees",
         icon: Users,
       },

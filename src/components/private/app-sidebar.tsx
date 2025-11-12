@@ -1,7 +1,7 @@
 import * as React from "react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "@/components/private/nav-main"
+import { NavUser } from "@/components/private/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { NavPersonal } from "@/components/nav-personal"
+import { NavPersonal } from "@/components/private/nav-personal"
 import { sidebarMenu } from "@/config/sidebar-menu"
 
 // example user data

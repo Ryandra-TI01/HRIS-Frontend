@@ -3,13 +3,18 @@ import MainLayout from "@/layouts/main-layouts"
 import AdminDashboard from "@/pages/admin/admin-dashboard";
 import { ThemeProvider } from "next-themes"
 import LoginPage from "./features/auth/pages/login-page";
+import EmployeeCreatePage from "@/features/employees/pages/EmployeeCreatePage";
+import EmployeeEditPage from "@/features/employees/pages/EmployeeEditPage";
 
 // @ts-ignore
 import ProtectedRoute from "./routes/ProtectedRoute";
 // @ts-ignore
 import GuestRoute from "./routes/GuestRoute";
 // @ts-ignore
-import PubicLayout from "./layouts/public-layouts";
+import PublicLayout from "./layouts/public-layouts";
+// @ts-ignore
+import EmployeePage from "./features/employees/pages/EmployeePage";
+
 
 export default function App() {
   return (
@@ -17,23 +22,23 @@ export default function App() {
       <BrowserRouter>
         <Routes>
 
-          {/* ROUTE TESTER BEFORE AUTH BACKEND */}
-          <Route element={<PubicLayout />}>
-            <Route path="login" element={<LoginPage />} />
+          {/* AUTH ROUTES */}
+          <Route element={<GuestRoute />}>
+            <Route element={<PublicLayout />}>
+              <Route path="login" element={<LoginPage />} />
+            </Route>
           </Route>
 
           <Route element={<MainLayout />}>
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          </Route>
 
-          {/* AUTH ROUTES */}
-          <Route element={<GuestRoute />}>
-          </Route>
+            {/* AUTHENTICATED */}
+            <Route
+              element={<ProtectedRoute allowedRoles={["admin_hr"]} />}
+            >
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
-          {/* AUTHENTICATED */}
-           <Route
-            element={<ProtectedRoute allowedRoles={["admin_hr", "manager", "employee"]} />}
-          >
+            </Route>
+
           </Route>
 
         </Routes>

@@ -24,8 +24,24 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import { useTheme } from "next-themes"
 import { Link } from "react-router"
+// @ts-ignore
+import { useAuth } from "../../context/AuthContext";
+import { toast } from "sonner"
+import { Spinner } from "../ui/spinner"
 
 export function NavUser({ user }: {
   user: {
@@ -35,6 +51,7 @@ export function NavUser({ user }: {
 }) {
   const { isMobile } = useSidebar()
   const { theme, setTheme } = useTheme();
+  const { logout, authLoading } = useAuth();
 
   // Toggle dark mode
   function toggleTheme() {
@@ -52,9 +69,9 @@ export function NavUser({ user }: {
   }
 
   // Handle logout
-  function handleLogout() {
-    // TODO: implement logout
-    alert("Logout")
+  const handleLogout = async () => {
+    await logout();
+    toast.success("You have been logged out.");
   }
 
   return (
@@ -110,10 +127,32 @@ export function NavUser({ user }: {
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem onSelect={(e)=> e.preventDefault()}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
+
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    You will be logged out from your account. You can login again anytime.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleLogout}>
+                    {authLoading && <Spinner />}
+                    {authLoading ? "Logging out..." : "Log out"}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

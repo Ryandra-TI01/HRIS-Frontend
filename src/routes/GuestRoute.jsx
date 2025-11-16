@@ -2,10 +2,12 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function GuestRoute() {
-  const { token, user } = useAuth();
+  const { token, loading , user} = useAuth();
 
-  // if authenticated → redirect to appropriate dashboard
-  if (token && user) {
+  if (loading) return null; // atau splash
+
+  // Jika user SUDAH login dan dia coba buka /login /register → redirect
+  if (token) {
     return (
       <Navigate
         to={
@@ -19,5 +21,6 @@ export default function GuestRoute() {
       />
     );
   }
+
   return <Outlet />;
 }

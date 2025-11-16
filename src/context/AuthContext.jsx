@@ -1,14 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { loginRequest, logoutRequest } from "../features/auth/api/auth";
-import {jwtDecode} from "jwt-decode";
-import { Outlet } from "react-router";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(false);
 
   // restore data saat refresh
   useEffect(() => {
@@ -27,18 +27,24 @@ export const AuthProvider = ({children}) => {
   }, []);
 
   // login function
-  const login = async (email, password) => {
-    const data = await loginRequest(email, password);
-    const decoded = jwtDecode(data.token);
-
-    setUser(decoded.user || decoded);
-    setToken(data.token);
-
-    localStorage.setItem("token", data.token);
+  const login = async (payload) => {
+    setAuthLoading(true);
+    try {
+      const data = await loginRequest(payload);
+      const decoded = jwtDecode(data.token);
+  
+      setUser(decoded.user || decoded);
+      setToken(data.token);
+  
+      localStorage.setItem("token", data.token);
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   // logout function
   const logout = async () => {
+    setAuthLoading(true);
     try {
       await logoutRequest();
     } catch (e) {
@@ -47,6 +53,7 @@ export const AuthProvider = ({children}) => {
       setUser(null);
       setToken(null);
       localStorage.removeItem("token");
+      setAuthLoading(false);
     }
   };
 
@@ -60,7 +67,8 @@ export const AuthProvider = ({children}) => {
         isAuthenticated,
         login,
         logout,
-        loading,
+        loading, // for initial loading state
+        authLoading, // for login/logout loading state
       }}
     >
       {children}
@@ -69,9 +77,9 @@ export const AuthProvider = ({children}) => {
 };
 
 export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error("useAuth must be used within a AuthProvider");
-    }
-    return context;
-}
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within a AuthProvider");
+  }
+  return context;
+};

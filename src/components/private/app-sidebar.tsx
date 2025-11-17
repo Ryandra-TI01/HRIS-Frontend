@@ -13,26 +13,12 @@ import {
 } from "@/components/ui/sidebar"
 import { NavPersonal } from "@/components/private/nav-personal"
 import { sidebarMenu } from "@/config/sidebar-menu"
-
-// example user data
-const resUser = {
-  "success": true,
-  "message": "Login successful",
-  "data": {
-    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
-    "token_type": "bearer",
-    "user": {
-      "id": 1,
-      "name": "Admin HR",
-      "email": "admin@hris.com",
-      "role": "admin_hr"
-    }
-  }
-}
-
-const dataUser = resUser.data.user
+// @ts-ignore
+import { useAuth } from "../../context/AuthContext"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useAuth();
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -44,7 +30,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <a href="">
                 <span className="text-base font-semibold">
-                  {dataUser.role === "admin_hr" ? "HRIS " : dataUser.role === "manager" ? "Manager Management " : "Employee Management "}
+                  {user?.role === "admin_hr" ? "HRIS " : user?.role === "manager" ? "Manager Management " : "Employee Management "}
                 </span>
               </a>
             </SidebarMenuButton>
@@ -52,11 +38,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={dataUser.role === "admin_hr" ? sidebarMenu.navMain.admin_hr : dataUser.role === "manager" ? sidebarMenu.navMain.manager : []} />
+        <NavMain items={user?.role === "admin_hr" ? sidebarMenu.navMain.admin_hr : user?.role === "manager" ? sidebarMenu.navMain.manager : []} />
         <NavPersonal items={sidebarMenu.personal} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={dataUser} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )

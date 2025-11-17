@@ -10,27 +10,27 @@ export const sidebarMenu = {
       },
       {
         title: "Employees",
-        url: "/employees",
+        url: "/admin/employees",
         icon: Users,
       },
       {
         title: "Team Attadance",
-        url: "/attendances",
+        url: "/admin/attendances",
         icon: Calendar,
       },
       {
         title: "Leaves",
-        url: "/leave-requests",
+        url: "/admin/leave-requests",
         icon: Send,
       },
       {
         title: "Salary Slips",
-        url: "/salary-slips",
+        url: "/admin/salary-slips",
         icon: CreditCard,
       },
       {
         title: "Performance Reviews",
-        url: "/performance-reviews",
+        url: "/admin/performance-reviews",
         icon: ChartNoAxesColumnIncreasing,
       },
 
@@ -43,17 +43,17 @@ export const sidebarMenu = {
       },
       {
         title: "Team Attadance",
-        url: "/attendances",
+        url: "/manager/attendances",
         icon: Calendar,
       },
       {
         title: "Team Leaves",
-        url: "/leave-requests",
+        url: "/manager/leave-requests",
         icon: Send,
       },
       {
         title: "Team Performances",
-        url: "/performance-reviews",
+        url: "/manager/performance-reviews",
         icon: ChartNoAxesColumnIncreasing,
       }
     ]
@@ -61,27 +61,27 @@ export const sidebarMenu = {
   personal: [
     {
       title: "Dashboard",
-      url: "/personal/dashboard",
+      url: "/employee/dashboard",
       icon: LayoutDashboard,
     },
     {
       title: "My Leaves",
-      url: "/leave-requests/me",
+      url: "/employee/leave-requests",
       icon: Send,
     },
     {
       title: "My Attendance",
-      url: "/attendances/me",
+      url: "/employee/attendances",
       icon: Calendar,
     },
     {
       title: "My Salary",
-      url: "/salary-slips/me",
+      url: "/employee/salary-slips",
       icon: CreditCard,
     },
     {
       title: "My Performance Review",
-      url: "/performance-reviews/me",
+      url: "/employee/performance-reviews",
       icon: ChartNoAxesColumnIncreasing,
     },
   ],

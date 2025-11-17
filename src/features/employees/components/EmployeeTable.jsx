@@ -145,7 +145,7 @@ export default function EmployeeTable({
                     <DropdownMenuContent>
                       <DropdownMenuLabel>Action</DropdownMenuLabel>
 
-                      <Link to={`/employees/edit/${emp.id}`}>
+                      <Link to={`/admin/employees/edit/${emp.id}`}>
                         <DropdownMenuItem>
                           <PenLine className="mr-2 h-4 w-4" /> Edit
                         </DropdownMenuItem>

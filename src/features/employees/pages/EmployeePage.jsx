@@ -79,7 +79,7 @@ export default function EmployeePage() {
             setVisibleColumns={setVisibleColumns}
           />
           {/* Button create */}
-          <Link to="/employees/create">
+          <Link to="/admin/employees/create">
             <Button>Create Employee</Button>
           </Link>
         </div>

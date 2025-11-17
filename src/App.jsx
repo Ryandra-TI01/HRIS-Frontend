@@ -3,17 +3,13 @@ import MainLayout from "@/layouts/main-layouts"
 import AdminDashboard from "@/pages/admin/admin-dashboard";
 import { ThemeProvider } from "next-themes"
 import LoginPage from "./features/auth/pages/login-page";
-import EmployeeCreatePage from "@/features/employees/pages/EmployeeCreatePage";
-import EmployeeEditPage from "@/features/employees/pages/EmployeeEditPage";
 
-// @ts-ignore
 import ProtectedRoute from "./routes/ProtectedRoute";
-// @ts-ignore
 import GuestRoute from "./routes/GuestRoute";
-// @ts-ignore
 import PublicLayout from "./layouts/public-layouts";
-// @ts-ignore
 import EmployeePage from "./features/employees/pages/EmployeePage";
+import EmployeeCreatePage from "./features/employees/pages/EmployeeCreatePage";
+import EmployeeEditPage from "./features/employees/pages/EmployeeEditPage";
 
 
 export default function App() {
@@ -36,7 +32,9 @@ export default function App() {
               element={<ProtectedRoute allowedRoles={["admin_hr"]} />}
             >
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
-
+              <Route path="/employees" element={<EmployeePage />} />
+              <Route path="/employees/create" element={<EmployeeCreatePage />} />
+              <Route path="/employees/edit/:id" element={<EmployeeEditPage />} />
             </Route>
 
           </Route>

@@ -7,10 +7,12 @@ export default function MainLayout() {
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <AppSidebar />
-        <main className="flex-1 bg-muted/40 p-6">
+        <div className="flex-1 bg-muted/40 p-6 ">
           <SidebarTrigger className="mb-4" />
-          <Outlet />
-        </main>
+          <main className="mx-auto px-12 pb-12">
+            <Outlet />
+          </main>
+        </div>
       </div>
     </SidebarProvider>
   );

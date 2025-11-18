@@ -41,6 +41,7 @@ import { Link } from "react-router";
 import { useState } from "react";
 import { deleteEmployeeRequest } from "../api/employee";
 import { toast } from "sonner";
+import MainLayoutWrapper from "../../../components/MainLayoutWrapper";
 
 export default function EmployeeTable({
   data,
@@ -81,7 +82,7 @@ export default function EmployeeTable({
   };
 
   return (
-    <div className="border rounded-lg overflow-hidden shadow-sm">
+    <MainLayoutWrapper>
       <Table>
         <TableHeader>
           <TableRow>
@@ -236,6 +237,6 @@ export default function EmployeeTable({
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-    </div>
+    </MainLayoutWrapper>
   );
 }

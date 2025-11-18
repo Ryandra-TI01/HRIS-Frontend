@@ -81,7 +81,7 @@ export default function EmployeeTable({
   };
 
   return (
-    <div className="border rounded-lg overflow-hidden shadow-sm p-4">
+    <div className="border rounded-lg overflow-hidden shadow-sm">
       <Table>
         <TableHeader>
           <TableRow>

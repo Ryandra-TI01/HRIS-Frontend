@@ -9,7 +9,7 @@ import PublicLayout from "./layouts/public-layouts";
 import EmployeePage from "./features/employees/pages/EmployeePage";
 import EmployeeCreatePage from "./features/employees/pages/EmployeeCreatePage";
 import EmployeeEditPage from "./features/employees/pages/EmployeeEditPage";
-import AttadancePage from "./features/attadances/pages/AttadancePage";
+import AttadancePage from "./features/attendances/pages/AttendancePage";
 import AdminDashboard from "./features/dashboards/pages/AdminDashboard";
 import ManagerDashboard from "./features/dashboards/pages/ManagerDashboard";
 import EmployeeDashboard from "./features/dashboards/pages/EmployeeDashboard";
@@ -34,7 +34,7 @@ export default function App() {
               <Route path="/admin/employees" element={<EmployeePage />} />
               <Route path="/admin/employees/create" element={<EmployeeCreatePage />} />
               <Route path="/admin/employees/edit/:id" element={<EmployeeEditPage />} />
-              <Route path="/admin/attadance" element={<AttadancePage />} />
+              <Route path="/admin/attendances" element={<AttadancePage />} />
             </Route>
 
             {/* ROLE MANAGER */}

@@ -9,14 +9,12 @@ import PublicLayout from "./layouts/public-layouts";
 import EmployeePage from "./features/employees/pages/EmployeePage";
 import EmployeeCreatePage from "./features/employees/pages/EmployeeCreatePage";
 import EmployeeEditPage from "./features/employees/pages/EmployeeEditPage";
-<<<<<<< Updated upstream
 import AttadancePage from "./features/attendances/pages/AttendancePage";
-=======
->>>>>>> Stashed changes
 import AdminDashboard from "./features/dashboards/pages/AdminDashboard";
 import ManagerDashboard from "./features/dashboards/pages/ManagerDashboard";
 import EmployeeDashboard from "./features/dashboards/pages/EmployeeDashboard";
 import MyAttendancePage from "./features/my-attendances/pages/MyAttendancePage";
+import LandingPage from "./features/landing/pages/LandingPage";
 
 export default function App() {
   return (
@@ -26,6 +24,7 @@ export default function App() {
           {/* AUTH ROUTES */}
           <Route element={<GuestRoute />}>
             <Route element={<PublicLayout />}>
+              <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
             </Route>
           </Route>

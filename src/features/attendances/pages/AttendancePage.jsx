@@ -15,7 +15,6 @@ import {
 
 import PageHeader from "../../../components/PageHeader";
 import { Spinner } from "../../../components/ui/spinner";
-import NotFoundFilter from "../../../components/NotFoundFilter";
 
 export default function AttadancePage() {
   const [attadances, setAttadances] = useState(null);

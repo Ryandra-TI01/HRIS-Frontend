@@ -15,6 +15,7 @@ import { NavPersonal } from "@/components/private/nav-personal"
 import { sidebarMenu } from "@/config/sidebar-menu"
 // @ts-ignore
 import { useAuth } from "../../context/AuthContext"
+import { Link } from "react-router"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth();
@@ -28,11 +29,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
-              <a href="">
+              <Link to="#">
                 <span className="text-base font-semibold">
                   {user?.role === "admin_hr" ? "HRIS " : user?.role === "manager" ? "Manager Management " : "Employee Management "}
                 </span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

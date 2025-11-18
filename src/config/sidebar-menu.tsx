@@ -71,7 +71,7 @@ export const sidebarMenu = {
     },
     {
       title: "My Attendance",
-      url: "/employee/attendances",
+      url: "/attendances/me",
       icon: Calendar,
     },
     {

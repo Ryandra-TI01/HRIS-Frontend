@@ -17,6 +17,9 @@ import MyAttendancePage from "./features/attendances/pages/MyAttendancePage";
 import LandingPage from "./features/landing/pages/LandingPage";
 import MyLeavesPage from "./features/leave-requests/pages/MyLeavesPage";
 import MyLeaveCreatePage from "./features/leave-requests/pages/MyLeaveCreatePage";
+import PerformanceReviewPage from "./features/performance-reviews/pages/PerformanceReviewPage";
+import PerformanceReviewCreatePage from "./features/performance-reviews/pages/PerformanceReviewCreatePage";
+import PerformanceReviewEditPage from "./features/performance-reviews/pages/PerformanceReviewEditPage";
 
 export default function App() {
   return (
@@ -35,11 +38,22 @@ export default function App() {
           <Route element={<MainLayout />}>
             {/* ROLE ADMIN */}
             <Route element={<ProtectedRoute allowedRoles={["admin_hr"]} />}>
+              
+              {/* ADMIN DASHBOARD */}
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+              {/* EMPLOYEE MANAGEMENT */}
               <Route path="/admin/employees" element={<EmployeePage />} />
               <Route path="/admin/employees/create" element={<EmployeeCreatePage />} />
               <Route path="/admin/employees/edit/:id" element={<EmployeeEditPage />} />
+              
+              {/* ATTENDANCE MANAGEMENT */}
               <Route path="/admin/attendances" element={<AttadancePage />} />
+              
+              {/* PERFORMANCE REVIEW MANAGEMENT */}
+              <Route path="/admin/performance-reviews" element={<PerformanceReviewPage />} />
+              <Route path="/admin/performance-reviews/create" element={<PerformanceReviewCreatePage />} />
+              <Route path="/admin/performance-reviews/edit/:id" element={<PerformanceReviewEditPage />} />
             </Route>
 
             {/* ROLE MANAGER */}

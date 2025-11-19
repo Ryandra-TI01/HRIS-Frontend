@@ -11,3 +11,9 @@ export const createAttendanceRequest = async (attendanceData) => {
   const res = await API.post("/attendances", attendanceData);
   return res.data;
 };
+
+// Get my attendances (employee)
+export const getMyAttendances = async (params = {}) => {
+  const res = await API.get("/attendances/me", { params });
+  return res.data;
+};

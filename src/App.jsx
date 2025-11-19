@@ -13,6 +13,10 @@ import AttadancePage from "./features/attendances/pages/AttendancePage";
 import AdminDashboard from "./features/dashboards/pages/AdminDashboard";
 import ManagerDashboard from "./features/dashboards/pages/ManagerDashboard";
 import EmployeeDashboard from "./features/dashboards/pages/EmployeeDashboard";
+import MyAttendancePage from "./features/attendances/pages/MyAttendancePage";
+import LandingPage from "./features/landing/pages/LandingPage";
+import MyLeavesPage from "./features/leave-requests/pages/MyLeavesPage";
+import MyLeaveCreatePage from "./features/leave-requests/pages/MyLeaveCreatePage";
 import PerformanceReviewPage from "./features/performance-reviews/pages/PerformanceReviewPage";
 import PerformanceReviewCreatePage from "./features/performance-reviews/pages/PerformanceReviewCreatePage";
 import PerformanceReviewEditPage from "./features/performance-reviews/pages/PerformanceReviewEditPage";
@@ -25,6 +29,7 @@ export default function App() {
           {/* AUTH ROUTES */}
           <Route element={<GuestRoute />}>
             <Route element={<PublicLayout />}>
+              <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
             </Route>
           </Route>
@@ -59,6 +64,9 @@ export default function App() {
             {/* ROLE EMPLOYEE, DEFAULT ALL */}
             <Route element={<ProtectedRoute allowedRoles={["employee", "admin_hr", "manager"]} />}>
               <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
+              <Route path="/attendances/me" element={<MyAttendancePage />} />
+              <Route path="/employee/leave-requests" element={<MyLeavesPage />} />
+              <Route path="/employee/leaves/create" element={<MyLeaveCreatePage />} />
             </Route>
 
           </Route>

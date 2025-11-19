@@ -15,6 +15,8 @@ import ManagerDashboard from "./features/dashboards/pages/ManagerDashboard";
 import EmployeeDashboard from "./features/dashboards/pages/EmployeeDashboard";
 import MyAttendancePage from "./features/attendances/pages/MyAttendancePage";
 import LandingPage from "./features/landing/pages/LandingPage";
+import MyLeavesPage from "./features/leave-requests/pages/MyLeavesPage";
+import MyLeaveCreatePage from "./features/leave-requests/pages/MyLeaveCreatePage";
 
 export default function App() {
   return (
@@ -49,6 +51,8 @@ export default function App() {
             <Route element={<ProtectedRoute allowedRoles={["employee", "admin_hr", "manager"]} />}>
               <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
               <Route path="/attendances/me" element={<MyAttendancePage />} />
+              <Route path="/employee/leave-requests" element={<MyLeavesPage />} />
+              <Route path="/employee/leaves/create" element={<MyLeaveCreatePage />} />
             </Route>
 
           </Route>

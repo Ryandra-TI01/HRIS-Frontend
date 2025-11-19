@@ -5,7 +5,7 @@ import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 
-import { getMyAttendances } from "../api/attendance";
+import { getMyAttendances } from "../api/attadance";
 import MyAttendanceFilters from "../components/MyAttendanceFilters";
 import MyColumnVisibilityMenu from "../components/MyColumnVisibilityMenu";
 import MyAttendanceTable from "../components/MyAttendanceTable";

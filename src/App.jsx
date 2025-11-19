@@ -13,7 +13,7 @@ import AttadancePage from "./features/attendances/pages/AttendancePage";
 import AdminDashboard from "./features/dashboards/pages/AdminDashboard";
 import ManagerDashboard from "./features/dashboards/pages/ManagerDashboard";
 import EmployeeDashboard from "./features/dashboards/pages/EmployeeDashboard";
-import MyAttendancePage from "./features/my-attendances/pages/MyAttendancePage";
+import MyAttendancePage from "./features/attendances/pages/MyAttendancePage";
 import LandingPage from "./features/landing/pages/LandingPage";
 
 export default function App() {

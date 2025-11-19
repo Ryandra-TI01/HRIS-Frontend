@@ -41,6 +41,7 @@ import { Link } from "react-router"
 import { useAuth } from "../../context/AuthContext"
 import { toast } from "sonner"
 import { Spinner } from "../ui/spinner"
+import { useEffect, useState } from "react"
 
 export function NavUser({ user }: {
   user: {
@@ -51,6 +52,12 @@ export function NavUser({ user }: {
   const { isMobile } = useSidebar()
   const { theme, setTheme } = useTheme();
   const { logout, authLoading } = useAuth();
+  const [mounted, setMounted] = useState(false);
+
+  // Fix hydration mismatch (penting untuk dark mode next-themes)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Toggle dark mode
   function toggleTheme() {
@@ -72,7 +79,7 @@ export function NavUser({ user }: {
     await logout();
     toast.success("You have been logged out.");
   }
-
+  if (!mounted) return null;
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -128,7 +135,7 @@ export function NavUser({ user }: {
             <DropdownMenuSeparator />
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <DropdownMenuItem onSelect={(e)=> e.preventDefault()}>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>

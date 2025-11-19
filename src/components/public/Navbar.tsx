@@ -8,22 +8,36 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
-  // Toggle dark mode
+  const [mounted, setMounted] = useState(false);
+
+  // Fix hydration mismatch (penting untuk dark mode next-themes)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   function toggleTheme() {
     setTheme(theme === "dark" ? "light" : "dark");
   }
+
+  if (!mounted) return null;
+
   return (
-    <header className="border-b bg-muted/40 sticky top-0 z-50">
+    <header className="sticky top-0 z-50 border-b bg-white/60 dark:bg-neutral-900/60 backdrop-blur-md">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
-        {/* === LEFT: LOGO === */}
-        <Link to="/" className="font-bold text-xl tracking-tight">
+
+        {/* === LOGO === */}
+        <Link
+          to="/"
+          className="font-bold text-xl tracking-tight hover:opacity-80 transition"
+        >
           HRIS
         </Link>
 
-        {/* === CENTER: NAVIGATION MENU === */}
+        {/* === NAVIGATION MENU === */}
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
@@ -36,26 +50,37 @@ export default function Navbar() {
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
+
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
-                <Link
-                  to="/features"
+                <a
+                  href="#features"
                   className="text-sm font-medium transition-colors hover:text-primary"
                 >
                   Features
-                </Link>
+                </a>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
-        {/* === RIGHT: SIGN IN BUTTON === */}
-        <div className="flex items-center gap-4">
-          <Button variant={"ghost"} onClick={toggleTheme}>
-            {theme === "dark" ? <Sun /> : <Moon />}
+        {/* === RIGHT ACTIONS === */}
+        <div className="flex items-center gap-3">
+
+          {/* Theme Toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            aria-label="Toggle Theme"
+            className="rounded-full"
+          >
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
+
+          {/* Sign In */}
           <Link to="/login">
-            <Button variant="default">Sign In</Button>
+            <Button className="px-4">Sign In</Button>
           </Link>
         </div>
       </div>

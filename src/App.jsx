@@ -20,6 +20,7 @@ import MyLeaveCreatePage from "./features/leave-requests/pages/MyLeaveCreatePage
 import PerformanceReviewPage from "./features/performance-reviews/pages/PerformanceReviewPage";
 import PerformanceReviewCreatePage from "./features/performance-reviews/pages/PerformanceReviewCreatePage";
 import PerformanceReviewEditPage from "./features/performance-reviews/pages/PerformanceReviewEditPage";
+import LeavesPage from "./features/leave-requests/pages/LeavesPage";
 
 export default function App() {
   return (
@@ -54,6 +55,9 @@ export default function App() {
               <Route path="/admin/performance-reviews" element={<PerformanceReviewPage />} />
               <Route path="/admin/performance-reviews/create" element={<PerformanceReviewCreatePage />} />
               <Route path="/admin/performance-reviews/edit/:id" element={<PerformanceReviewEditPage />} />
+
+              {/* LEAVE REQUEST MANAGEMENT */}
+              <Route path="/admin/leave-requests" element={<LeavesPage />} />
             </Route>
 
             {/* ROLE MANAGER */}

@@ -16,7 +16,7 @@ export default function MyLeaveFilters({ filters, setFilters }) {
 
       {/* STATUS */}
       <Select
-        value={filters.status || "all"}
+        value={filters.status || null}
         onValueChange={(v) => handleChange("status", v)}
       >
         <SelectTrigger className="w-[180px]">
@@ -24,7 +24,7 @@ export default function MyLeaveFilters({ filters, setFilters }) {
         </SelectTrigger>
 
         <SelectContent>
-          <SelectItem value="all">All Status</SelectItem>
+          <SelectItem value={null}>All Status</SelectItem>
           <SelectItem value="Pending">Pending</SelectItem>
           <SelectItem value="Approved">Approved</SelectItem>
           <SelectItem value="Rejected">Rejected</SelectItem>

@@ -24,7 +24,6 @@ export const deletePerformanceRequest = async (performanceId) => {
   const res = await API.delete(`/performance-reviews/${performanceId}`);
   return res.data;
 }
-<<<<<<< HEAD
 
 
 // Employee API
@@ -32,5 +31,3 @@ export const getMyPerformanceReviews = async (params = {}) => {
   const res = await API.get("/performance-reviews/me", { params });
   return res.data.data || [];
 };
-=======
->>>>>>> cd5d679c01e444dde8b27dbddfddf89ffe57feff

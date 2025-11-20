@@ -17,19 +17,11 @@ import MyAttendancePage from "./features/attendances/pages/MyAttendancePage";
 import LandingPage from "./features/landing/pages/LandingPage";
 import MyLeavesPage from "./features/leave-requests/pages/MyLeavesPage";
 import MyLeaveCreatePage from "./features/leave-requests/pages/MyLeaveCreatePage";
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
+
 import PerformanceReviewPage from "./features/performance-reviews/pages/PerformanceReviewPage";
 import PerformanceReviewCreatePage from "./features/performance-reviews/pages/PerformanceReviewCreatePage";
 import PerformanceReviewEditPage from "./features/performance-reviews/pages/PerformanceReviewEditPage";
 import MyPerformanceReviewPage from "./features/performance-reviews/pages/MyPerformanceReviewPage";
->>>>>>> Stashed changes
-=======
-import PerformanceReviewPage from "./features/performance-reviews/pages/PerformanceReviewPage";
-import PerformanceReviewCreatePage from "./features/performance-reviews/pages/PerformanceReviewCreatePage";
-import PerformanceReviewEditPage from "./features/performance-reviews/pages/PerformanceReviewEditPage";
->>>>>>> cd5d679c01e444dde8b27dbddfddf89ffe57feff
 
 export default function App() {
   return (

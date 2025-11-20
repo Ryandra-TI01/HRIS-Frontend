@@ -128,7 +128,7 @@ export default function EmployeeEditPage() {
     try {
       await updateEmployeeRequest(id, form);
       toast.success("Employee updated successfully!");
-      navigate("/employees");
+      navigate("/admin/employees");
     } catch (err) {
       setErrors(handleApiError(err));
     } finally {

@@ -17,3 +17,14 @@ export const getMyAttendances = async (params = {}) => {
   const res = await API.get("/attendances/me", { params });
   return res.data;
 };
+
+export const checkIn = async () => {
+  const res = await API.post("/attendances/check-in");
+  return res.data;
+};
+
+export const checkOut = async () => {
+  const res = await API.post("/attendances/check-out");
+  return res.data;
+};
+

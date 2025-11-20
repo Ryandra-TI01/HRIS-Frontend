@@ -24,3 +24,10 @@ export const deletePerformanceRequest = async (performanceId) => {
   const res = await API.delete(`/performance-reviews/${performanceId}`);
   return res.data;
 }
+
+
+// Employee API
+export const getMyPerformanceReviews = async (params = {}) => {
+  const res = await API.get("/performance-reviews/me", { params });
+  return res.data.data || [];
+};

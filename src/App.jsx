@@ -17,9 +17,11 @@ import MyAttendancePage from "./features/attendances/pages/MyAttendancePage";
 import LandingPage from "./features/landing/pages/LandingPage";
 import MyLeavesPage from "./features/leave-requests/pages/MyLeavesPage";
 import MyLeaveCreatePage from "./features/leave-requests/pages/MyLeaveCreatePage";
+
 import PerformanceReviewPage from "./features/performance-reviews/pages/PerformanceReviewPage";
 import PerformanceReviewCreatePage from "./features/performance-reviews/pages/PerformanceReviewCreatePage";
 import PerformanceReviewEditPage from "./features/performance-reviews/pages/PerformanceReviewEditPage";
+import MyPerformanceReviewPage from "./features/performance-reviews/pages/MyPerformanceReviewPage";
 import LeavesPage from "./features/leave-requests/pages/LeavesPage";
 
 export default function App() {
@@ -71,6 +73,7 @@ export default function App() {
               <Route path="/attendances/me" element={<MyAttendancePage />} />
               <Route path="/employee/leave-requests" element={<MyLeavesPage />} />
               <Route path="/employee/leaves/create" element={<MyLeaveCreatePage />} />
+              <Route path="/employee/performance-reviews" element={<MyPerformanceReviewPage />} />
             </Route>
 
           </Route>

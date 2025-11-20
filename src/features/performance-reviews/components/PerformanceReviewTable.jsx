@@ -60,12 +60,18 @@ export default function PerformanceReviewTable({
     {
       key: "no",
       label: "No",
-      render: (row, index) => index + 1,
+      render: (row, index) => {
+        const perPage = data?.per_page || 20;
+        const currentPage = data?.current_page || 1;
+
+        return (currentPage - 1) * perPage + index + 1;
+      },
     },
+    ,
     {
       key: "employee_name",
       label: "Employee",
-      render: (row) => row.employee.user.name,
+      render: (row) => row.employee.name,
     },
     {
       key: "reviewer_name",
@@ -120,7 +126,7 @@ export default function PerformanceReviewTable({
                   <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                   <AlertDialogDescription>
                     This action cannot be undone. This will delete "
-                    {row.employee.user.name} Review".
+                    {row.employee.name} Review".
                   </AlertDialogDescription>
                 </AlertDialogHeader>
 

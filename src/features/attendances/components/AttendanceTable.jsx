@@ -52,11 +52,11 @@ export default function AttadanceTable({
         <TableBody>
           {attadances.map((attd) => (
             <TableRow key={attd.id}>
-              {visibleColumns.name && <TableCell>{attd?.employee.user.name}</TableCell>}
-              {visibleColumns.email && <TableCell>{attd?.employee.user.email}</TableCell>}
+              {visibleColumns.name && <TableCell>{attd?.employee.name}</TableCell>}
+              {visibleColumns.email && <TableCell>{attd?.employee.email}</TableCell>}
               {visibleColumns.date && <TableCell>{formatDate(attd.date)}</TableCell>}
-              {visibleColumns.check_in_time && <TableCell>{formatTime(attd.check_in_time)}</TableCell>}
-              {visibleColumns.check_out_time && (<TableCell>{formatTime(attd.check_out_time ?? "-")}</TableCell>)}
+              {visibleColumns.check_in_time && <TableCell>{attd.check_in_time}</TableCell>}
+              {visibleColumns.check_out_time && (<TableCell>{attd.check_out_time ?? "-"}</TableCell>)}
               {visibleColumns.work_hour && (<TableCell>{attd.work_hour ?? "-"}</TableCell>)}
             </TableRow>
           ))}

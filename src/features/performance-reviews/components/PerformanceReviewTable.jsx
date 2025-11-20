@@ -71,7 +71,7 @@ export default function PerformanceReviewTable({
     {
       key: "employee_name",
       label: "Employee",
-      render: (row) => row.employee.user.name,
+      render: (row) => row.employee.name,
     },
     {
       key: "reviewer_name",
@@ -126,7 +126,7 @@ export default function PerformanceReviewTable({
                   <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                   <AlertDialogDescription>
                     This action cannot be undone. This will delete "
-                    {row.employee.user.name} Review".
+                    {row.employee.name} Review".
                   </AlertDialogDescription>
                 </AlertDialogHeader>
 

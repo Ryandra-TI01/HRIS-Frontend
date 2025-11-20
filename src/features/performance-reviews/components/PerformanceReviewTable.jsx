@@ -60,8 +60,14 @@ export default function PerformanceReviewTable({
     {
       key: "no",
       label: "No",
-      render: (row, index) => index + 1,
+      render: (row, index) => {
+        const perPage = data?.per_page || 20;
+        const currentPage = data?.current_page || 1;
+
+        return (currentPage - 1) * perPage + index + 1;
+      },
     },
+    ,
     {
       key: "employee_name",
       label: "Employee",

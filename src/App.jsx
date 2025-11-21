@@ -26,6 +26,8 @@ import LeavesPage from "./features/leave-requests/pages/LeavesPage";
 import SalarySlipsPage from "./features/salary-slips/pages/SalarySlipsPage";
 import SalarySlipCreatePage from "./features/salary-slips/pages/SalarySlipCreatePage";
 import SalarySlipEditPage from "./features/salary-slips/pages/SalarySlipEditPage";
+import MySalaryPage from "./features/salary/pages/MySalaryPage";
+
 
 export default function App() {
   return (
@@ -83,6 +85,8 @@ export default function App() {
               <Route path="/employee/leave-requests" element={<MyLeavesPage />} />
               <Route path="/employee/leaves/create" element={<MyLeaveCreatePage />} />
               <Route path="/employee/performance-reviews" element={<MyPerformanceReviewPage />} />
+              <Route path="/employee/salary-slips" element={<MySalaryPage />} />
+
             </Route>
 
           </Route>

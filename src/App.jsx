@@ -23,6 +23,9 @@ import PerformanceReviewCreatePage from "./features/performance-reviews/pages/Pe
 import PerformanceReviewEditPage from "./features/performance-reviews/pages/PerformanceReviewEditPage";
 import MyPerformanceReviewPage from "./features/performance-reviews/pages/MyPerformanceReviewPage";
 import LeavesPage from "./features/leave-requests/pages/LeavesPage";
+import SalarySlipsPage from "./features/salary-slips/pages/SalarySlipsPage";
+import SalarySlipCreatePage from "./features/salary-slips/pages/SalarySlipCreatePage";
+import SalarySlipEditPage from "./features/salary-slips/pages/SalarySlipEditPage";
 
 export default function App() {
   return (
@@ -60,6 +63,12 @@ export default function App() {
 
               {/* LEAVE REQUEST MANAGEMENT */}
               <Route path="/admin/leave-requests" element={<LeavesPage />} />
+
+              {/* SALARY SLIP MANAGEMENT */}
+              <Route path="/admin/salary-slips" element={<SalarySlipsPage />} />
+              <Route path="/admin/salary-slips/create" element={<SalarySlipCreatePage />} />
+              <Route path="/admin/salary-slips/edit/:id" element={<SalarySlipEditPage />} />
+
             </Route>
 
             {/* ROLE MANAGER */}

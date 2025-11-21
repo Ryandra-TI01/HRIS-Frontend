@@ -42,6 +42,11 @@ export const sidebarMenu = {
         icon: LayoutDashboard,
       },
       {
+        title: "Team Members",
+        url: "/manager/employees",
+        icon: Users,
+      },
+      {
         title: "Team Attadance",
         url: "/manager/attendances",
         icon: Calendar,

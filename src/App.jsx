@@ -76,6 +76,7 @@ export default function App() {
             {/* ROLE MANAGER */}
             <Route element={<ProtectedRoute allowedRoles={["manager"]} />} >
               <Route path="/manager/dashboard" element={<ManagerDashboard />} />
+              <Route path="/manager/attendances" element={<AttadancePage />} />
             </Route>
 
             {/* ROLE EMPLOYEE, DEFAULT ALL */}

@@ -58,7 +58,7 @@ export const sidebarMenu = {
       }
     ]
   },
-  personal: [
+  personalEmployee: [
     {
       title: "Dashboard",
       url: "/employee/dashboard",
@@ -83,6 +83,18 @@ export const sidebarMenu = {
       title: "My Performance Review",
       url: "/employee/performance-reviews",
       icon: ChartNoAxesColumnIncreasing,
+    },
+  ],
+  personalManager: [
+    {
+      title: "Dashboard",
+      url: "/employee/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "My Salary",
+      url: "/employee/salary-slips",
+      icon: CreditCard,
     },
   ],
 }

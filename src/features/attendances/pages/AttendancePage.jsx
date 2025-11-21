@@ -21,6 +21,8 @@ import FilterWrapper from "../../../components/FilterWrapper";
 export default function AttadancePage() {
   const [attadances, setAttadances] = useState(null);
   const [filters, setFilters] = useState({});
+  const debouncedFilters = useDebounce(filters, 600);
+
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
 
@@ -38,7 +40,7 @@ export default function AttadancePage() {
   const fetchAttadances = async () => {
     try {
       setLoading(true);
-      const data = await getAttendancesRequest({ ...filters, page });
+      const data = await getAttendancesRequest({ ...debouncedFilters, page });
       setAttadances(data.data);
     } catch (err) {
       console.error("Failed to fetch attadances:", err);
@@ -50,7 +52,7 @@ export default function AttadancePage() {
   // trigger fetch when filters or page change
   useEffect(() => {
     fetchAttadances();
-  }, [filters, page]);
+  }, [debouncedFilters, page]);
 
   return (
     <>

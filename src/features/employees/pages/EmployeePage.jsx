@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import EmployeeTable from "../components/EmployeeTable";
 import EmployeeFilters from "../components/EmployeeFilters";
-import ColumnVisibilityMenu from "../components/ColumnVisibilityMenu";
+import ColumnVisibilityMenu from "../../../components/ColumnVisibilityMenu";
 import { getEmployeesRequest } from "../api/employee";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
@@ -14,12 +13,20 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import PageHeader from "../../../components/PageHeader";
-import { Spinner } from "../../../components/ui/spinner";
+import { useAuth } from "../../../context/AuthContext";
+import Loading from "../../../components/Loading";
+import CustomTable from "../../../components/CustomTable";
+import { EmployeeColumns } from "../config/EmployeeColumns";
+import FilterWrapper from "../../../components/FilterWrapper";
+import { useDebounce } from "../../../hooks/DebounceSearch";
 export default function EmployeePage() {
+  const { user } = useAuth();
   const [employees, setEmployees] = useState([]);
   const [filters, setFilters] = useState({});
+  const debouncedFilters = useDebounce(filters, 600);
   const [loading, setLoading] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState({
+    no: true,
     name: true,
     email: true,
     position: true,
@@ -29,15 +36,18 @@ export default function EmployeePage() {
     join_date: false,
     contact: false,
     status_active: false,
-    actions: true,
+    ...(user.role === "admin" && { actions: true }),
   });
   const [page, setPage] = useState(1);
-  
+
   // fetch employees with filters and pagination
   const fetchEmployees = async () => {
     try {
       setLoading(true);
-      const data = await getEmployeesRequest({ ...filters, page: page });
+      const data = await getEmployeesRequest({
+        ...debouncedFilters,
+        page: page,
+      });
       setEmployees(data.data);
     } catch (err) {
       console.error("Failed to fetch employees:", err);
@@ -49,7 +59,7 @@ export default function EmployeePage() {
   // trigger fetch when filters or page change
   useEffect(() => {
     fetchEmployees();
-  }, [filters, page]);
+  }, [debouncedFilters, page]);
 
   return (
     <>
@@ -69,7 +79,8 @@ export default function EmployeePage() {
       {/* Page Header */}
       <PageHeader>List of Employees</PageHeader>
 
-      <div className="flex justify-between items-center">
+      {/* Filter Wrapper */}
+      <FilterWrapper>
         {/* Filters */}
         <EmployeeFilters filters={filters} setFilters={setFilters} />
         {/* Button filter */}
@@ -79,24 +90,25 @@ export default function EmployeePage() {
             setVisibleColumns={setVisibleColumns}
           />
           {/* Button create */}
-          <Link to="/admin/employees/create">
-            <Button>Create Employee</Button>
-          </Link>
+          {user.role === "admin" && (
+            <Link to="/admin/employees/create">
+              <Button>Create Employee</Button>
+            </Link>
+          )}
         </div>
-      </div>
+      </FilterWrapper>
 
       {/* Table employees */}
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <Spinner />
-          <span className="ml-2">Loading...</span>
-        </div>
+        <Loading />
       ) : (
-        <EmployeeTable
+        <CustomTable
           data={employees}
           visibleColumns={visibleColumns}
           onPageChange={(newPage) => setPage(newPage)}
           onRefresh={fetchEmployees}
+          columns={EmployeeColumns}
+          userRole={user.role}
         />
       )}
     </>

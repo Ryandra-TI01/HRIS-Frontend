@@ -17,6 +17,7 @@ import CustomTable from "../../../components/CustomTable";
 import { AttendanceColumns } from "../config/AttendanceColumns";
 import Loading from "../../../components/Loading";
 import FilterWrapper from "../../../components/FilterWrapper";
+import { useDebounce } from "../../../hooks/DebounceSearch";
 
 export default function AttadancePage() {
   const [attadances, setAttadances] = useState(null);

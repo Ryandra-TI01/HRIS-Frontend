@@ -26,7 +26,7 @@ import LeavesPage from "./features/leave-requests/pages/LeavesPage";
 import SalarySlipsPage from "./features/salary-slips/pages/SalarySlipsPage";
 import SalarySlipCreatePage from "./features/salary-slips/pages/SalarySlipCreatePage";
 import SalarySlipEditPage from "./features/salary-slips/pages/SalarySlipEditPage";
-import MySalaryPage from "./features/salary/pages/MySalaryPage";
+import MySalaryPage from "./features/salary-slips/pages/MySalaryPage";
 
 
 export default function App() {

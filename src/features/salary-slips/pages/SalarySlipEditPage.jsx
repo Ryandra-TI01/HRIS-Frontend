@@ -45,6 +45,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Check, ChevronsUpDown, AlertCircleIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Loading from "../../../components/Loading";
+import PageHeader from "../../../components/PageHeader";
 
 export default function SalarySlipEditPage() {
   const navigate = useNavigate();
@@ -182,14 +183,15 @@ export default function SalarySlipEditPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+
       {loadingPage ? (
         <Loading />
       ) : (
         <>
           {/* page header */}
-          <h2 className="text-2xl font-semibold mt-6 mb-6">
+          <PageHeader>
             Edit Salary Slip for {form.employee_name}
-          </h2>
+          </PageHeader>
 
           {errors && (
             <Alert variant="destructive" className="mb-4">

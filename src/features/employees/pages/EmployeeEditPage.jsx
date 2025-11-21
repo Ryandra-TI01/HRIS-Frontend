@@ -51,7 +51,7 @@ export default function EmployeeEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState(null);
   const [managers, setManagers] = useState([]);
@@ -79,7 +79,6 @@ export default function EmployeeEditPage() {
     try {
       const res = await getManagersRequest();
       setManagers(res.data);
-      
     } catch (err) {
       console.error("Failed to fetch managers", err);
     }
@@ -89,7 +88,7 @@ export default function EmployeeEditPage() {
   useEffect(() => {
     fetchManagers();
   }, []);
-      console.log(managers);
+  console.log(managers);
   // ===== trigger fetch employee =====
   useEffect(() => {
     const getData = async () => {
@@ -113,7 +112,7 @@ export default function EmployeeEditPage() {
         console.error(err);
         setErrors(handleApiError(err));
       } finally {
-        setLoading(false);
+        setLoadingPage(false);
       }
     };
     getData();
@@ -155,195 +154,203 @@ export default function EmployeeEditPage() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <PageHeader>Edit Employee</PageHeader>
-
-      {/* BE Error */}
-      {errors && (
-        <Alert variant="destructive" className="mb-4">
-          <AlertCircleIcon />
-          <AlertTitle>Please check the form and try again.</AlertTitle>
-          <AlertDescription>
-            <ul className="list-inside list-disc text-sm">
-              {errors.split(", ").map((msg, index) => (
-                <li key={index}>{msg}</li>
-              ))}
-            </ul>
-          </AlertDescription>
-        </Alert>
-      )}
-
       {/* Form */}
-      {loading ? (
+      {loadingPage ? (
         <Loading />
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>User Account</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Field>
-                  <FieldLabel>Full Name</FieldLabel>
-                  <Input
-                    value={form.name}
-                    onChange={(e) => handleChange("name", e.target.value)}
-                  />
-                </Field>
+        <>
+          {/* Page Header */}
+          <PageHeader>Edit Employee for {form.name} </PageHeader>
 
-                <Field>
-                  <FieldLabel>Email</FieldLabel>
-                  <Input
-                    type="email"
-                    value={form.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                  />
-                </Field>
-              </section>
+          {/* BE Error */}
+          {errors && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircleIcon />
+              <AlertTitle>Please check the form and try again.</AlertTitle>
+              <AlertDescription>
+                <ul className="list-inside list-disc text-sm">
+                  {errors.split(", ").map((msg, index) => (
+                    <li key={index}>{msg}</li>
+                  ))}
+                </ul>
+              </AlertDescription>
+            </Alert>
+          )}
 
-              <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Field>
-                  <FieldLabel>Password (optional)</FieldLabel>
-                  <Input
-                    type="password"
-                    placeholder="Leave blank to keep existing password"
-                    value={form.password}
-                    onChange={(e) => handleChange("password", e.target.value)}
-                  />
-                </Field>
-                <div className="grid grid-cols-2 gap-4">
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>User Account</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Field>
-                    <FieldLabel>Role</FieldLabel>
-                    <Select
-                      value={form.role}
-                      onValueChange={(v) => handleChange("role", v)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="employee">Employee</SelectItem>
-                        <SelectItem value="manager">Manager</SelectItem>
-                        <SelectItem value="admin_hr">Admin HR</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-
-                  <Field>
-                    <FieldLabel>Status</FieldLabel>
-                    <Select
-                      value={form.status_active ? "true" : "false"}
-                      onValueChange={(v) =>
-                        handleChange("status_active", v === "true")
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="true">Active</SelectItem>
-                        <SelectItem value="false">Inactive</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                </div>
-              </section>
-            </CardContent>
-          </Card>
-
-          {/* Employee Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Employee Details</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Field>
-                  <FieldLabel>Position</FieldLabel>
-                  <Input
-                    value={form.position}
-                    onChange={(e) => handleChange("position", e.target.value)}
-                  />
-                </Field>
-
-                <Field>
-                  <FieldLabel>Department</FieldLabel>
-                  <Input
-                    value={form.department}
-                    onChange={(e) => handleChange("department", e.target.value)}
-                  />
-                </Field>
-              </section>
-              <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <Field>
-                    <FieldLabel>Join Date</FieldLabel>
+                    <FieldLabel>Full Name</FieldLabel>
                     <Input
-                      type="date"
-                      value={form.join_date}
+                      value={form.name}
+                      onChange={(e) => handleChange("name", e.target.value)}
+                    />
+                  </Field>
+
+                  <Field>
+                    <FieldLabel>Email</FieldLabel>
+                    <Input
+                      type="email"
+                      value={form.email}
+                      onChange={(e) => handleChange("email", e.target.value)}
+                    />
+                  </Field>
+                </section>
+
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Field>
+                    <FieldLabel>Password (optional)</FieldLabel>
+                    <Input
+                      type="password"
+                      placeholder="Leave blank to keep existing password"
+                      value={form.password}
+                      onChange={(e) => handleChange("password", e.target.value)}
+                    />
+                  </Field>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Field>
+                      <FieldLabel>Role</FieldLabel>
+                      <Select
+                        value={form.role}
+                        onValueChange={(v) => handleChange("role", v)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="employee">Employee</SelectItem>
+                          <SelectItem value="manager">Manager</SelectItem>
+                          <SelectItem value="admin_hr">Admin HR</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </Field>
+
+                    <Field>
+                      <FieldLabel>Status</FieldLabel>
+                      <Select
+                        value={form.status_active ? "true" : "false"}
+                        onValueChange={(v) =>
+                          handleChange("status_active", v === "true")
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="true">Active</SelectItem>
+                          <SelectItem value="false">Inactive</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                  </div>
+                </section>
+              </CardContent>
+            </Card>
+
+            {/* Employee Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Employee Details</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Field>
+                    <FieldLabel>Position</FieldLabel>
+                    <Input
+                      value={form.position}
+                      onChange={(e) => handleChange("position", e.target.value)}
+                    />
+                  </Field>
+
+                  <Field>
+                    <FieldLabel>Department</FieldLabel>
+                    <Input
+                      value={form.department}
                       onChange={(e) =>
-                        handleChange("join_date", e.target.value)
+                        handleChange("department", e.target.value)
                       }
                     />
                   </Field>
+                </section>
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <Field>
+                      <FieldLabel>Join Date</FieldLabel>
+                      <Input
+                        type="date"
+                        value={form.join_date}
+                        onChange={(e) =>
+                          handleChange("join_date", e.target.value)
+                        }
+                      />
+                    </Field>
 
-                  <Field>
-                    <FieldLabel>Employment Status</FieldLabel>
-                    <Select
-                      value={form.employment_status}
-                      onValueChange={(v) =>
-                        handleChange("employment_status", v)
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select employment" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="permanent">Permanent</SelectItem>
-                        <SelectItem value="contract">Contract</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <Field>
-                    <FieldLabel>Contact</FieldLabel>
-                    <Input
-                      value={form.contact}
-                      onChange={(e) => handleChange("contact", e.target.value)}
-                    />
-                  </Field>
+                    <Field>
+                      <FieldLabel>Employment Status</FieldLabel>
+                      <Select
+                        value={form.employment_status}
+                        onValueChange={(v) =>
+                          handleChange("employment_status", v)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select employment" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="permanent">Permanent</SelectItem>
+                          <SelectItem value="contract">Contract</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Field>
+                      <FieldLabel>Contact</FieldLabel>
+                      <Input
+                        value={form.contact}
+                        onChange={(e) =>
+                          handleChange("contact", e.target.value)
+                        }
+                      />
+                    </Field>
 
-                  {/* Manager */}
-                  <Field>
-                    <FieldLabel>Manager</FieldLabel>
-                    <Select
-                      value={String(form.manager_id)}
-                      onValueChange={(v) => handleChange("manager_id", v)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select manager" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {managers.map((m) => (
-                          <SelectItem key={m.id} value={String(m.id)}>
-                            {m.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                </div>
-              </section>
-            </CardContent>
-          </Card>
+                    {/* Manager */}
+                    <Field>
+                      <FieldLabel>Manager</FieldLabel>
+                      <Select
+                        value={String(form.manager_id)}
+                        onValueChange={(v) => handleChange("manager_id", v)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select manager" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {managers.map((m) => (
+                            <SelectItem key={m.id} value={String(m.id)}>
+                              {m.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                  </div>
+                </section>
+              </CardContent>
+            </Card>
 
-          <div className="flex justify-end">
-            <Button type="submit" className="w-40" disabled={saving}>
-              {saving ? "Saving..." : "Save Changes"}
-            </Button>
-          </div>
-        </form>
+            <div className="flex justify-end">
+              <Button type="submit" className="w-40" disabled={saving}>
+                {saving ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+          </form>
+        </>
       )}
     </>
   );

@@ -54,11 +54,12 @@ import {
   getPerformanceByIdRequest,
   updatePerformanceRequest,
 } from "../api/performance-reviews";
+import Loading from "../../../components/Loading";
 
 export default function PerformanceReviewEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const [loadingPage, setLoadingPage] = useState(true);
   const [open, setOpen] = useState(false);
 
   // SEARCH
@@ -106,6 +107,8 @@ export default function PerformanceReviewEditPage() {
         });
       } catch (err) {
         setErrors(handleApiError(err));
+      } finally {
+        setLoadingPage(false);
       }
     };
 
@@ -191,142 +194,152 @@ export default function PerformanceReviewEditPage() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <PageHeader>Edit Performance Review</PageHeader>
+      {loadingPage ? (
+        <Loading />
+      ) : (
+        <>
+          <PageHeader>
+            Edit Performance Review for {form.employee_name}{" "}
+          </PageHeader>
+          {errors && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircleIcon />
+              <AlertTitle>Please check the form.</AlertTitle>
+              <AlertDescription>
+                <ul className="list-disc list-inside text-sm">
+                  {errors.split(", ").map((msg, i) => (
+                    <li key={i}>{msg}</li>
+                  ))}
+                </ul>
+              </AlertDescription>
+            </Alert>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>Performance Review Details</CardTitle>
+              </CardHeader>
 
-      {errors && (
-        <Alert variant="destructive" className="mb-4">
-          <AlertCircleIcon />
-          <AlertTitle>Please check the form.</AlertTitle>
-          <AlertDescription>
-            <ul className="list-disc list-inside text-sm">
-              {errors.split(", ").map((msg, i) => (
-                <li key={i}>{msg}</li>
-              ))}
-            </ul>
-          </AlertDescription>
-        </Alert>
-      )}
+              <CardContent className="grid gap-6">
+                {/* EMPLOYEE SELECT */}
+                <FieldLabel>Employee</FieldLabel>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Performance Review Details</CardTitle>
-          </CardHeader>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="w-full justify-between"
+                    >
+                      {form.employee_name || "Select employee"}
+                      <ChevronsUpDown className="opacity-50 h-4 w-4" />
+                    </Button>
+                  </PopoverTrigger>
 
-          <CardContent className="grid gap-6">
-            {/* EMPLOYEE SELECT */}
-            <FieldLabel>Employee</FieldLabel>
+                  <PopoverContent className="w-[300px] p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder="Search employee..."
+                        value={search}
+                        onValueChange={setSearch}
+                        className="h-9"
+                      />
 
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <Button variant="outline" role="combobox" className="w-full justify-between">
-                  {form.employee_name || "Select employee"}
-                  <ChevronsUpDown className="opacity-50 h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
+                      <CommandList
+                        className="max-h-60"
+                        onScroll={(e) => {
+                          const bottom =
+                            e.target.scrollTop + e.target.clientHeight >=
+                            e.target.scrollHeight - 5;
 
-              <PopoverContent className="w-[300px] p-0">
-                <Command>
-                  <CommandInput
-                    placeholder="Search employee..."
-                    value={search}
-                    onValueChange={setSearch}
-                    className="h-9"
+                          if (bottom && page < lastPage) {
+                            setPage((prev) => prev + 1);
+                          }
+                        }}
+                      >
+                        <CommandEmpty>No results found.</CommandEmpty>
+
+                        <CommandGroup>
+                          {employees.map((emp) => (
+                            <CommandItem
+                              key={emp.id}
+                              onSelect={() => {
+                                handleChange("employee_id", emp.id);
+                                handleChange("employee_name", emp.user.name);
+                                setOpen(false);
+                              }}
+                            >
+                              {emp.user.name}
+                              <Check
+                                className={cn(
+                                  "ml-auto h-4 w-4",
+                                  form.employee_id === emp.id
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Period */}
+                  <Field>
+                    <FieldLabel>Period (YYYY-MM)</FieldLabel>
+                    <Input
+                      type="month"
+                      value={form.period}
+                      onChange={(e) => handleChange("period", e.target.value)}
+                    />
+                  </Field>
+
+                  {/* Stars */}
+                  <Field>
+                    <FieldLabel>Total Star</FieldLabel>
+                    <Select
+                      value={String(form.total_star)}
+                      onValueChange={(v) => handleChange("total_star", v)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select score" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {[...Array(10)].map((_, i) => (
+                          <SelectItem key={i} value={String(i + 1)}>
+                            {i + 1}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </Field>
+                </section>
+
+                {/* Review Description */}
+                <Field>
+                  <FieldLabel>Review Description</FieldLabel>
+                  <Textarea
+                    rows={10}
+                    value={form.review_description}
+                    onChange={(e) =>
+                      handleChange("review_description", e.target.value)
+                    }
                   />
+                </Field>
+              </CardContent>
+            </Card>
 
-                  <CommandList
-                    className="max-h-60"
-                    onScroll={(e) => {
-                      const bottom =
-                        e.target.scrollTop + e.target.clientHeight >=
-                        e.target.scrollHeight - 5;
-
-                      if (bottom && page < lastPage) {
-                        setPage((prev) => prev + 1);
-                      }
-                    }}
-                  >
-                    <CommandEmpty>No results found.</CommandEmpty>
-
-                    <CommandGroup>
-                      {employees.map((emp) => (
-                        <CommandItem
-                          key={emp.id}
-                          onSelect={() => {
-                            handleChange("employee_id", emp.id);
-                            handleChange("employee_name", emp.user.name);
-                            setOpen(false);
-                          }}
-                        >
-                          {emp.user.name}
-                          <Check
-                            className={cn(
-                              "ml-auto h-4 w-4",
-                              form.employee_id === emp.id
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
-
-            <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Period */}
-              <Field>
-                <FieldLabel>Period (YYYY-MM)</FieldLabel>
-                <Input
-                  type="month"
-                  value={form.period}
-                  onChange={(e) => handleChange("period", e.target.value)}
-                />
-              </Field>
-
-              {/* Stars */}
-              <Field>
-                <FieldLabel>Total Star</FieldLabel>
-                <Select
-                  value={String(form.total_star)}
-                  onValueChange={(v) => handleChange("total_star", v)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select score" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[...Array(10)].map((_, i) => (
-                      <SelectItem key={i} value={String(i + 1)}>
-                        {i + 1}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </Field>
-            </section>
-
-            {/* Review Description */}
-            <Field>
-              <FieldLabel>Review Description</FieldLabel>
-              <Textarea
-                rows={10}
-                value={form.review_description}
-                onChange={(e) =>
-                  handleChange("review_description", e.target.value)
-                }
-              />
-            </Field>
-          </CardContent>
-        </Card>
-
-        <div className="flex justify-end">
-          <Button type="submit" className="w-48" disabled={loading}>
-            {loading ? "Updating..." : "Update Review"}
-          </Button>
-        </div>
-      </form>
+            <div className="flex justify-end">
+              <Button type="submit" className="w-48" disabled={loading}>
+                {loading ? "Updating..." : "Update Review"}
+              </Button>
+            </div>
+          </form>
+        </>
+      )}
     </>
   );
 }

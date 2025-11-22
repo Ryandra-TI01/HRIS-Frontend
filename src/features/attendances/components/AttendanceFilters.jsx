@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import SearchInput from "../../../components/filters/SearchInput";
 import MonthSelect from "../../../components/filters/MonthSelect";
+import SearchInput from "../../../components/filters/SearchInput";
 
 export default function AttendanceFilters({ filters, setFilters }) {
   return (

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import SearchInput from "../../../components/filters/SearchInput";
 import DepartmentSelect from "../../../components/filters/DepartmentSelect";
+import SearchInput from "../../../components/filters/SearchInput";
 
 export default function EmployeeFilters({ filters, setFilters }) {
   return (

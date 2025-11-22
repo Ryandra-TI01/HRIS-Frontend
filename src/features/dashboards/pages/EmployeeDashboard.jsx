@@ -1,9 +1,12 @@
 // src/features/dashboard/pages/DashboardPage.jsx
 import React, { useEffect, useState } from "react";
 import PageHeader from "@/components/PageHeader";
+import Loading from "@/components/Loading";
+
 import SummaryCards from "../components/SummaryCard";
 import WorkHoursChart from "../components/WorkHoursChart";
 import LeavesChart from "../components/LeavesChart";
+
 import {
   getMyAttendances,
   getMyLeaveRequests,
@@ -11,8 +14,18 @@ import {
   getEmployees,
 } from "../api/dashboard";
 
+// shadcn/ui components
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+
 export default function EmployeeDashboard() {
   const [loading, setLoading] = useState(false);
+
   const [attendances, setAttendances] = useState([]);
   const [leaves, setLeaves] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -25,6 +38,7 @@ export default function EmployeeDashboard() {
   const loadAll = async () => {
     try {
       setLoading(true);
+
       const [aRes, lRes, rRes, eRes] = await Promise.allSettled([
         getMyAttendances(),
         getMyLeaveRequests(),
@@ -33,89 +47,161 @@ export default function EmployeeDashboard() {
       ]);
 
       if (aRes.status === "fulfilled") {
-        // normalize response: backend shapes vary
         const payload = aRes.value?.data ?? aRes.value ?? [];
-        const arr = Array.isArray(payload) ? payload : payload.data ?? payload;
-        setAttendances(arr);
+        setAttendances(
+          Array.isArray(payload) ? payload : payload.data ?? []
+        );
       }
 
       if (lRes.status === "fulfilled") {
         const payload = lRes.value?.data ?? lRes.value ?? [];
-        const arr = Array.isArray(payload) ? payload : payload.data ?? payload;
-        setLeaves(arr);
+        setLeaves(Array.isArray(payload) ? payload : payload.data ?? []);
       }
 
       if (rRes.status === "fulfilled") {
         const payload = rRes.value?.data ?? rRes.value ?? [];
-        const arr = Array.isArray(payload) ? payload : payload.data ?? payload;
-        setReviews(arr);
+        setReviews(Array.isArray(payload) ? payload : payload.data ?? []);
       }
 
       if (eRes.status === "fulfilled") {
         const payload = eRes.value?.data ?? eRes.value ?? {};
-        const arr = Array.isArray(payload) ? payload : payload.data ?? payload.data ?? [];
-        setEmployees(arr);
+        setEmployees(
+          Array.isArray(payload) ? payload : payload.data ?? []
+        );
       }
     } catch (err) {
-      console.error("Failed loading dashboard", err);
+      console.error("Failed loading dashboard:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  // compute simple stats
+  // ===== STATS COMPUTATION =====
   const totalHoursMonth = attendances.reduce((sum, item) => {
-    // item.work_hour might be "07:22" or numeric; try numeric parse
-    const w = typeof item.work_hour === "number" ? item.work_hour : parseFloat(String(item.work_hour).replace(",", "."));
-    return sum + (isNaN(w) ? 0 : w);
+    const numericHour =
+      typeof item.work_hour === "number"
+        ? item.work_hour
+        : parseFloat(String(item.work_hour).replace(":", "."));
+    return sum + (isNaN(numericHour) ? 0 : numericHour);
   }, 0);
 
-  const avgHours = attendances.length ? (totalHoursMonth / attendances.length).toFixed(2) : null;
+  const avgHours =
+    attendances.length > 0
+      ? (totalHoursMonth / attendances.length).toFixed(2)
+      : null;
 
-  const leavesTaken = leaves.filter(l => l.status === "Approved" || l.status === "accepted" || l.status === "approved").length;
-  const leavesPending = leaves.filter(l => l.status === "Pending" || l.status === "pending").length;
+  const leavesTaken = leaves.filter(
+    (l) =>
+      l.status === "Approved" ||
+      l.status === "accepted" ||
+      l.status === "approved"
+  ).length;
 
-  // prepare chart data
-  const workChartData = (attendances || []).map(a => ({
-    date: (a.date || "").slice(0,10),
-    hours: Number(Number(typeof a.work_hour === "string" ? a.work_hour.replace(":", ".") : a.work_hour) || 0)
-  })).slice(-20); // last 20
+  const leavesPending = leaves.filter(
+    (l) => l.status === "Pending" || l.status === "pending"
+  ).length;
 
-  // leaves by month
+  // Work chart
+  const workChartData = attendances.map((a) => ({
+    date: (a.date || "").slice(0, 10),
+    hours: Number(
+      Number(
+        typeof a.work_hour === "string"
+          ? a.work_hour.replace(":", ".")
+          : a.work_hour
+      ) || 0
+    ),
+  })).slice(-20);
+
+  // Leaves chart
   const leavesByMonth = {};
-  (leaves || []).forEach(l => {
-    const d = new Date(l.start_date || l.created_at || l.start || null);
-    if (isNaN(d)) return;
-    const m = d.toLocaleString("en-US", { month: "short" });
-    leavesByMonth[m] = (leavesByMonth[m] || 0) + 1;
+  leaves.forEach((l) => {
+    const d = new Date(l.start_date || l.created_at || null);
+    if (!isNaN(d)) {
+      const m = d.toLocaleString("en-US", { month: "short" });
+      leavesByMonth[m] = (leavesByMonth[m] || 0) + 1;
+    }
   });
-  const leavesChartData = Object.keys(leavesByMonth).map(k => ({ month: k, leaves: leavesByMonth[k] }));
+
+  const leavesChartData = Object.keys(leavesByMonth).map((month) => ({
+    month,
+    leaves: leavesByMonth[month],
+  }));
 
   const stats = {
     totalHoursMonth: totalHoursMonth.toFixed(2),
     avgHours,
     leavesTaken,
     leavesPending,
-    lastUpdated: attendances.length ? (attendances[0].updated_at || attendances[0].created_at || "") : "",
+    lastUpdated:
+      attendances.length > 0
+        ? attendances[0].updated_at ||
+          attendances[0].created_at ||
+          ""
+        : "",
   };
 
   return (
     <div>
       <PageHeader>Employee Dashboard</PageHeader>
+      {loading && <Loading />}
 
-      <div className="mt-4">
-        <SummaryCards stats={stats} />
+      {/* SUMMARY CARDS */}
+      <div className="mt-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Your Monthly Summary</CardTitle>
+            <CardDescription>
+              Ringkasan performa dan kehadiran bulan ini
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            <SummaryCards stats={stats} />
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
-        <WorkHoursChart data={workChartData} />
-        <LeavesChart data={leavesChartData} />
+      {/* CHARTS */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Work Hours (Last 20 days)</CardTitle>
+            <CardDescription>Hours logged each day</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <WorkHoursChart data={workChartData} />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Leaves (Monthly)</CardTitle>
+            <CardDescription>
+              Distribution of leave requests by month
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LeavesChart data={leavesChartData} />
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="mt-6 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
-        <h3 className="font-semibold mb-2">Quick stats</h3>
-        <div>Performance reviews (mine): {reviews?.length ?? 0}</div>
-      </div>
+      {/* PERFORMANCE STATS */}
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle>Quick Stats</CardTitle>
+          <CardDescription>Your performance record summary</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="text-sm">
+            Performance reviews (mine):{" "}
+            <span className="font-semibold">
+              {reviews?.length ?? 0}
+            </span>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

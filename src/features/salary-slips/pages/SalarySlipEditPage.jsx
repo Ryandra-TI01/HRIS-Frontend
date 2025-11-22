@@ -1,31 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { toast } from "sonner";
 
+import { getEmployeesRequest } from "../../employees/api/employee";
 import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandGroup,
-} from "@/components/ui/command";
+  getSalarySlipRequest,
+  updateSalarySlipRequest,
+} from "../api/salary-slips";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
+import { useDebounce } from "../../../hooks/DebounceSearch";
+import handleApiError from "../../../utils/handleApiError";
 
 import {
   Breadcrumb,
@@ -36,89 +20,96 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-
-import PageHeader from "../../../components/PageHeader";
-import handleApiError from "../../../utils/handleApiError";
-
-import { AlertCircleIcon, Check, ChevronsUpDown } from "lucide-react";
-import { toast } from "sonner";
-
-import { Field, FieldLabel } from "../../../components/ui/field";
-import { cn } from "@/lib/utils";
-import { useDebounce } from "../../../hooks/DebounceSearch";
-import { getEmployeesRequest } from "../../employees/api/employee";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 
 import {
-  getPerformanceByIdRequest,
-  updatePerformanceRequest,
-} from "../api/performance-reviews";
-import Loading from "../../../components/Loading";
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandItem,
+  CommandGroup,
+} from "@/components/ui/command";
 
-export default function PerformanceReviewEditPage() {
-  const { id } = useParams();
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+
+import { Check, ChevronsUpDown, AlertCircleIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import Loading from "../../../components/Loading";
+import PageHeader from "../../../components/PageHeader";
+
+export default function SalarySlipEditPage() {
   const navigate = useNavigate();
-  const [loadingPage, setLoadingPage] = useState(true);
+  const { id } = useParams();
+
   const [open, setOpen] = useState(false);
 
-  // SEARCH
+  // Search employee
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 400);
 
-  // DATA
   const [employees, setEmployees] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
+
   const isFetchingRef = useRef(false);
 
   const [loading, setLoading] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(true);
   const [errors, setErrors] = useState(null);
 
-  // FORM
   const [form, setForm] = useState({
     employee_id: "",
     employee_name: "",
-    reviewer_id: "",
-    period: "",
-    total_star: "",
-    review_description: "",
+    period_month: "",
+    basic_salary: "",
+    allowance: "",
+    deduction: "",
+    remarks: "",
   });
 
-  const handleChange = (key, value) =>
+  const handleChange = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+  };
 
-  // ------------------------------------------------------------
-  // FETCH DETAIL DATA
-  // ------------------------------------------------------------
+  // ------------------- FETCH SALARY SLIP -------------------
+  const fetchSalarySlip = async () => {
+    try {
+      const res = await getSalarySlipRequest(id);
+      const data = res.data;
+
+      setForm({
+        employee_id: data.employee.id,
+        employee_name: data.employee.name,
+        period_month: data.period_month,
+        basic_salary: data.basic_salary,
+        allowance: data.allowance,
+        deduction: data.deduction,
+        remarks: data.remarks,
+      });
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to load salary slip data");
+    } finally {
+      setLoadingPage(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchDetail = async () => {
-      try {
-        const res = await getPerformanceByIdRequest(id);
-        const data = res.data;
-
-        setForm({
-          employee_id: data.employee_id,
-          employee_name: data.employee.user.name,
-          reviewer_id: data.reviewer_id,
-          period: data.period,
-          total_star: String(data.total_star),
-          review_description: data.review_description || "",
-        });
-      } catch (err) {
-        setErrors(handleApiError(err));
-      } finally {
-        setLoadingPage(false);
-      }
-    };
-
-    fetchDetail();
+    fetchSalarySlip();
   }, [id]);
 
-  // ------------------------------------------------------------
-  // FETCH EMPLOYEES
-  // ------------------------------------------------------------
-  const fetchData = async (reset = false) => {
+  // ------------------- FETCH EMPLOYEES -------------------
+  const fetchEmployees = async (reset = false) => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
 
@@ -128,42 +119,42 @@ export default function PerformanceReviewEditPage() {
         page,
       });
 
-      const newData = res.data?.data || [];
-      setLastPage(res.data?.last_page || 1);
+      const data = res.data.data || [];
+      setLastPage(res.data.last_page || 1);
 
-      if (reset) setEmployees(newData);
-      else setEmployees((prev) => [...prev, ...newData]);
+      if (reset) {
+        setEmployees(data);
+      } else {
+        setEmployees((prev) => [...prev, ...data]);
+      }
     } catch (e) {
-      console.error("Failed fetch employees", e);
+      console.error("Employee fetch failed", e);
     } finally {
       isFetchingRef.current = false;
     }
   };
 
-  // SEARCH CHANGED
+  // when search changes
   useEffect(() => {
     setPage(1);
-    fetchData(true);
+    fetchEmployees(true);
   }, [debouncedSearch]);
 
-  // PAGE CHANGED
+  // when page increases
   useEffect(() => {
-    if (page === 1) return;
-    fetchData(false);
+    if (page !== 1) fetchEmployees(false);
   }, [page]);
 
-  // ------------------------------------------------------------
-  // UPDATE SUBMIT
-  // ------------------------------------------------------------
+  // ------------------- UPDATE FORM -------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrors(null);
 
     try {
-      await updatePerformanceRequest(id, form);
-      toast.success("Performance review updated successfully!");
-      navigate("/admin/performance-reviews");
+      await updateSalarySlipRequest(id, form);
+      toast.success("Salary slip updated successfully!");
+      navigate("/admin/salary-slips");
     } catch (err) {
       setErrors(handleApiError(err));
     } finally {
@@ -171,6 +162,7 @@ export default function PerformanceReviewEditPage() {
     }
   };
 
+  // ------------------- UI -------------------
   return (
     <>
       {/* Breadcrumb */}
@@ -180,16 +172,14 @@ export default function PerformanceReviewEditPage() {
             <BreadcrumbLink to="/admin/dashboard">Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
-
           <BreadcrumbItem>
-            <BreadcrumbLink to="/admin/performance-reviews">
-              Performance Reviews
+            <BreadcrumbLink to="/admin/salary-slips">
+              Salary Slips
             </BreadcrumbLink>
           </BreadcrumbItem>
-
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Edit Review</BreadcrumbPage>
+            <BreadcrumbPage>Edit Salary Slip</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -198,13 +188,15 @@ export default function PerformanceReviewEditPage() {
         <Loading />
       ) : (
         <>
+          {/* page header */}
           <PageHeader>
-            Edit Performance Review for {form.employee_name}{" "}
+            Edit Salary Slip for {form.employee_name}
           </PageHeader>
+
           {errors && (
             <Alert variant="destructive" className="mb-4">
               <AlertCircleIcon />
-              <AlertTitle>Please check the form.</AlertTitle>
+              <AlertTitle>Please fix the errors</AlertTitle>
               <AlertDescription>
                 <ul className="list-disc list-inside text-sm">
                   {errors.split(", ").map((msg, i) => (
@@ -214,21 +206,20 @@ export default function PerformanceReviewEditPage() {
               </AlertDescription>
             </Alert>
           )}
+
           <form onSubmit={handleSubmit} className="space-y-8">
             <Card>
               <CardHeader>
-                <CardTitle>Performance Review Details</CardTitle>
+                <CardTitle>Salary Slip Details</CardTitle>
               </CardHeader>
 
               <CardContent className="grid gap-6">
                 {/* EMPLOYEE SELECT */}
                 <FieldLabel>Employee</FieldLabel>
-
                 <Popover open={open} onOpenChange={setOpen}>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      role="combobox"
                       className="w-full justify-between"
                     >
                       {form.employee_name || "Select employee"}
@@ -251,13 +242,12 @@ export default function PerformanceReviewEditPage() {
                           const bottom =
                             e.target.scrollTop + e.target.clientHeight >=
                             e.target.scrollHeight - 5;
-
                           if (bottom && page < lastPage) {
                             setPage((prev) => prev + 1);
                           }
                         }}
                       >
-                        <CommandEmpty>No results found.</CommandEmpty>
+                        <CommandEmpty>No employees found.</CommandEmpty>
 
                         <CommandGroup>
                           {employees.map((emp) => (
@@ -286,47 +276,61 @@ export default function PerformanceReviewEditPage() {
                   </PopoverContent>
                 </Popover>
 
-                <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Period */}
+                {/* PERIOD */}
+                <Field>
+                  <FieldLabel>Period (YYYY-MM)</FieldLabel>
+                  <Input
+                    type="month"
+                    value={form.period_month}
+                    onChange={(e) =>
+                      handleChange("period_month", e.target.value)
+                    }
+                  />
+                </Field>
+
+                {/* SALARY NUMBERS */}
+                <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Field>
-                    <FieldLabel>Period (YYYY-MM)</FieldLabel>
+                    <FieldLabel>Basic Salary</FieldLabel>
                     <Input
-                      type="month"
-                      value={form.period}
-                      onChange={(e) => handleChange("period", e.target.value)}
+                      type="number"
+                      value={form.basic_salary}
+                      onChange={(e) =>
+                        handleChange("basic_salary", Number(e.target.value))
+                      }
                     />
                   </Field>
 
-                  {/* Stars */}
                   <Field>
-                    <FieldLabel>Total Star</FieldLabel>
-                    <Select
-                      value={String(form.total_star)}
-                      onValueChange={(v) => handleChange("total_star", v)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select score" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {[...Array(10)].map((_, i) => (
-                          <SelectItem key={i} value={String(i + 1)}>
-                            {i + 1}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FieldLabel>Allowance</FieldLabel>
+                    <Input
+                      type="number"
+                      value={form.allowance}
+                      onChange={(e) =>
+                        handleChange("allowance", Number(e.target.value))
+                      }
+                    />
+                  </Field>
+
+                  <Field>
+                    <FieldLabel>Deduction</FieldLabel>
+                    <Input
+                      type="number"
+                      value={form.deduction}
+                      onChange={(e) =>
+                        handleChange("deduction", Number(e.target.value))
+                      }
+                    />
                   </Field>
                 </section>
 
-                {/* Review Description */}
+                {/* REMARKS */}
                 <Field>
-                  <FieldLabel>Review Description</FieldLabel>
+                  <FieldLabel>Remarks</FieldLabel>
                   <Textarea
-                    rows={10}
-                    value={form.review_description}
-                    onChange={(e) =>
-                      handleChange("review_description", e.target.value)
-                    }
+                    rows={5}
+                    value={form.remarks || ""}
+                    onChange={(e) => handleChange("remarks", e.target.value)}
                   />
                 </Field>
               </CardContent>
@@ -334,7 +338,7 @@ export default function PerformanceReviewEditPage() {
 
             <div className="flex justify-end">
               <Button type="submit" className="w-48" disabled={loading}>
-                {loading ? "Updating..." : "Update Review"}
+                {loading ? "Saving..." : "Update Salary Slip"}
               </Button>
             </div>
           </form>

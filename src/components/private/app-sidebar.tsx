@@ -40,7 +40,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={user?.role === "admin_hr" ? sidebarMenu.navMain.admin_hr : user?.role === "manager" ? sidebarMenu.navMain.manager : []} />
-        <NavPersonal items={sidebarMenu.personal} />
+        <NavPersonal items={user?.role !== "manager" ? sidebarMenu.personalEmployee : sidebarMenu.personalManager} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

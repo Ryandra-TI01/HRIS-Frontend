@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import AttadanceTable from "../components/AttendanceTable";
 import AttadanceFilters from "../components/AttendanceFilters";
-import ColumnVisibilityMenu from "../components/ColumnVisibilityMenu";
+import ColumnVisibilityMenu from "../../../components/ColumnVisibilityMenu";
 import { getAttendancesRequest } from "../api/attadance";
 
 import {
@@ -14,15 +13,22 @@ import {
 } from "../../../components/ui/breadcrumb";
 
 import PageHeader from "../../../components/PageHeader";
-import { Spinner } from "../../../components/ui/spinner";
+import CustomTable from "../../../components/CustomTable";
+import { AttendanceColumns } from "../config/AttendanceColumns";
+import Loading from "../../../components/Loading";
+import FilterWrapper from "../../../components/FilterWrapper";
+import { useDebounce } from "../../../hooks/DebounceSearch";
 
 export default function AttadancePage() {
   const [attadances, setAttadances] = useState(null);
   const [filters, setFilters] = useState({});
+  const debouncedFilters = useDebounce(filters, 600);
+
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
 
   const [visibleColumns, setVisibleColumns] = useState({
+    no: true,
     name: true,
     email: false,
     date: true,
@@ -35,7 +41,7 @@ export default function AttadancePage() {
   const fetchAttadances = async () => {
     try {
       setLoading(true);
-      const data = await getAttendancesRequest({ ...filters, page });
+      const data = await getAttendancesRequest({ ...debouncedFilters, page });
       setAttadances(data.data);
     } catch (err) {
       console.error("Failed to fetch attadances:", err);
@@ -43,10 +49,11 @@ export default function AttadancePage() {
       setLoading(false);
     }
   };
-  // trgger fetch when filters or page change
+
+  // trigger fetch when filters or page change
   useEffect(() => {
     fetchAttadances();
-  }, [filters, page]);
+  }, [debouncedFilters, page]);
 
   return (
     <>
@@ -66,27 +73,26 @@ export default function AttadancePage() {
       {/* Page Header */}
       <PageHeader>List of Attadances</PageHeader>
 
-      <div className="flex justify-between items-center">
+      <FilterWrapper>
+        {/* Filters */}
         <AttadanceFilters filters={filters} setFilters={setFilters} />
-
+        {/* Button filter */}
         <ColumnVisibilityMenu
           visibleColumns={visibleColumns}
           setVisibleColumns={setVisibleColumns}
         />
-      </div>
+      </FilterWrapper>
 
       {/* Table */}
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <Spinner />
-          <span className="ml-2">Loading...</span>
-        </div>
+        <Loading />
       ) : (
-        <AttadanceTable
+        <CustomTable
           data={attadances}
           visibleColumns={visibleColumns}
           onPageChange={setPage}
           onRefresh={fetchAttadances}
+          columns={AttendanceColumns}
         />
       )}
     </>

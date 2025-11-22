@@ -42,6 +42,11 @@ export const sidebarMenu = {
         icon: LayoutDashboard,
       },
       {
+        title: "Team Members",
+        url: "/manager/employees",
+        icon: Users,
+      },
+      {
         title: "Team Attadance",
         url: "/manager/attendances",
         icon: Calendar,
@@ -58,7 +63,7 @@ export const sidebarMenu = {
       }
     ]
   },
-  personal: [
+  personalEmployee: [
     {
       title: "Dashboard",
       url: "/employee/dashboard",
@@ -83,6 +88,18 @@ export const sidebarMenu = {
       title: "My Performance Review",
       url: "/employee/performance-reviews",
       icon: ChartNoAxesColumnIncreasing,
+    },
+  ],
+  personalManager: [
+    {
+      title: "Dashboard",
+      url: "/employee/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "My Salary",
+      url: "/employee/salary-slips",
+      icon: CreditCard,
     },
   ],
 }

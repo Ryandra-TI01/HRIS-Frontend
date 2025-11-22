@@ -79,6 +79,10 @@ export default function App() {
               <Route path="/manager/attendances" element={<AttadancePage />} />
               <Route path="/manager/employees" element={<EmployeePage />} />
               <Route path="/manager/leave-requests" element={<LeavesPage />} />
+              <Route path="/manager/performance-reviews" element={<PerformanceReviewPage />} />
+              <Route path="/manager/performance-reviews/create" element={<PerformanceReviewCreatePage />} />
+              <Route path="/manager/performance-reviews/edit/:id" element={<PerformanceReviewEditPage />} />
+
             </Route>
 
             {/* ROLE EMPLOYEE, DEFAULT ALL */}

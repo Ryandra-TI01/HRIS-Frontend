@@ -78,6 +78,7 @@ export default function App() {
               <Route path="/manager/dashboard" element={<ManagerDashboard />} />
               <Route path="/manager/attendances" element={<AttadancePage />} />
               <Route path="/manager/employees" element={<EmployeePage />} />
+              <Route path="/manager/leave-requests" element={<LeavesPage />} />
             </Route>
 
             {/* ROLE EMPLOYEE, DEFAULT ALL */}

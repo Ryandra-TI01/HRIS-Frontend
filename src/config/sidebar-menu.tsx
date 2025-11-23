@@ -92,11 +92,6 @@ export const sidebarMenu = {
   ],
   personalManager: [
     {
-      title: "Dashboard",
-      url: "/employee/dashboard",
-      icon: LayoutDashboard,
-    },
-    {
       title: "My Salary",
       url: "/employee/salary-slips",
       icon: CreditCard,

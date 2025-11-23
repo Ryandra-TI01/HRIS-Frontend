@@ -123,7 +123,7 @@ export function NavUser({ user }: {
                 {theme === "dark" ? "Light" : "Dark"} Mode
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <Link to="/profile">
                 <DropdownMenuItem>
@@ -131,7 +131,7 @@ export function NavUser({ user }: {
                   Account
                 </DropdownMenuItem>
               </Link>
-            </DropdownMenuGroup>
+            </DropdownMenuGroup> */}
             <DropdownMenuSeparator />
             <AlertDialog>
               <AlertDialogTrigger asChild>

@@ -1,231 +1,127 @@
-// REFACTORED — AdminDashboard.jsx
-import React, { useEffect, useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import Loading from "@/components/Loading";
-
-// API
 import {
-  getEmployees,
-  getAllAttendances,
-  getAllLeaveRequests,
-} from "../api/dashboard";
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList
+} from "@/components/ui/breadcrumb";
 
-// shadcn/ui
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { getAdminDashboard } from "../api/dashboard";
 
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-} from "@/components/ui/table";
+import { DashboardStatCard } from "../components/DashboardStatCard";
+import { DashboardBarChart } from "../components/DashboardBarChart";
+import { DashboardAreaChart } from "../components/DashboardAreaChart";
 
-// Charts
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from "recharts";
+import Loading from "../../../components/Loading";
+import PageHeader from "../../../components/PageHeader";
+
+import { Users, UserCheck, Clock, CalendarDays } from "lucide-react";
 
 export default function AdminDashboard() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [employeeOverview, setEmployeeOverview] = useState(null);
+  const [attendanceOverview, setAttendanceOverview] = useState(null);
 
-  const [totalEmployees, setTotalEmployees] = useState(0);
-  const [leaveChartData, setLeaveChartData] = useState([]);
-  const [attendanceChartData, setAttendanceChartData] = useState([]);
-
-  const [leaveRequestsToday, setLeaveRequestsToday] = useState([]);
-  const [absentEmployees, setAbsentEmployees] = useState([]);
-
-  const normalize = (res) => {
-    if (!res) return [];
-    return Array.isArray(res?.data?.data)
-      ? res.data.data
-      : Array.isArray(res?.data)
-      ? res.data
-      : [];
-  };
-
-  useEffect(() => {
-    loadDashboard();
-  }, []);
-
-  const loadDashboard = async () => {
+  const fetchData = async () => {
     try {
-      setLoading(true);
+      const res = await getAdminDashboard();
+      const data = res.data;
 
-      const today = new Date();
-      const todayStr = today.toISOString().slice(0, 10);
-
-      // ===== EMPLOYEES =====
-      const empRes = await getEmployees({ per_page: 200 });
-      const employees = normalize(empRes);
-      setTotalEmployees(employees.length);
-
-      // ===== LEAVES =====
-      const leaveRes = await getAllLeaveRequests();
-      const allLeaves = normalize(leaveRes);
-
-      const todayLeaves = allLeaves.filter(
-        (l) => l.start_date?.slice(0, 10) === todayStr
-      );
-
-      setLeaveRequestsToday(todayLeaves);
-
-      // MONTHLY CHART
-      const monthMap = {};
-      allLeaves.forEach((l) => {
-        const d = new Date(l.start_date);
-        if (isNaN(d)) return;
-        const m = d.toLocaleString("en-US", { month: "short" });
-        monthMap[m] = (monthMap[m] || 0) + 1;
-      });
-
-      setLeaveChartData(
-        Object.entries(monthMap).map(([month, leaves]) => ({
-          month,
-          leaves,
-        }))
-      );
-
-      // ===== ATTENDANCE LAST 7 DAYS =====
-      const att7 = normalize(await getAllAttendances({ last_days: 7 }));
-
-      const grouped = {};
-      att7.forEach((a) => {
-        const date = a.date?.slice(0, 10);
-        if (!date) return;
-        grouped[date] = grouped[date] || 0;
-        if (a.check_in_time) grouped[date]++;
-      });
-
-      setAttendanceChartData(
-        Object.entries(grouped).map(([date, checkedIn]) => ({
-          date,
-          checkedIn,
-        }))
-      );
+      setEmployeeOverview(data.employee_overview);
+      setAttendanceOverview(data.attendance_overview);
     } catch (error) {
-      console.error("Error loading dashboard:", error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (loading) return <Loading />;
+
   return (
-    <div>
-      <PageHeader>Admin Dashboard</PageHeader>
+    <>
+      {/* Breadcrumb */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink to="/admin/dashboard">
+              Dashboard
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-      {loading && <Loading />}
+      <section className="space-y-12">
 
-      {/* ===== TOP CARDS ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">Total Employees</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold">{totalEmployees}</div>
-            <p className="text-xs text-muted-foreground mt-2">
-              All active employees
-            </p>
-            <span className="inline-block px-3 py-1 mt-3 text-xs rounded-full bg-emerald-100 text-emerald-700">
-              Active
-            </span>
-          </CardContent>
-        </Card>
+        {/* SECTION 1 — EMPLOYEE OVERVIEW */}
+        <section>
+          <PageHeader>Employee Overview</PageHeader>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">Leave Requests Today</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold">
-              {leaveRequestsToday.length}
-            </div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Requests submitted today
-            </p>
-            <span className="inline-block px-3 py-1 mt-3 text-xs rounded-full bg-blue-100 text-blue-700">
-              Requests
-            </span>
-          </CardContent>
-        </Card>
+          <div className="grid grid-cols-2 gap-4">
+            <DashboardStatCard
+              title="Total Employees"
+              value={employeeOverview.cards.total_employees}
+              icon={Users}
+              accent="text-indigo-500"
+            />
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">Pending Requests</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold">
-              {leaveRequestsToday.filter((l) => l.status === "Pending").length}
-            </div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Waiting for approval
-            </p>
-            <span className="inline-block px-3 py-1 mt-3 text-xs rounded-full bg-yellow-100 text-yellow-700">
-              Pending
-            </span>
-          </CardContent>
-        </Card>
-      </div>
+            <DashboardStatCard
+              title="Active Users"
+              value={employeeOverview.cards.active_users}
+              icon={UserCheck}
+              accent="text-emerald-500"
+            />
+          </div>
 
-      {/* ===== CHARTS ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
-        {/* LEAVE REQUESTS CHART */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">Leave Requests (Monthly)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={leaveChartData}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="leaves"
-                  stroke="#10b981"
-                  strokeWidth={2}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+          <div className="mt-6">
+            <DashboardBarChart
+              title="Employee Growth"
+              description="Total employees per month"
+              data={employeeOverview.chart_employees_per_month}
+              xKey="month"
+              dataKey="count"
+              color="#4F46E5"
+            />
+          </div>
+        </section>
 
-        {/* ATTENDANCE (7 DAYS) */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">
-              Daily Attendance (Last 7 Days)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={attendanceChartData}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="checkedIn"
-                  stroke="#6366f1"
-                  strokeWidth={2}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+        {/* SECTION 2 — ATTENDANCE OVERVIEW */}
+        <section>
+          <PageHeader>Attendance Overview</PageHeader>
+
+          <div className="grid grid-cols-2 gap-4">
+            <DashboardStatCard
+              title="Attendance Records Today"
+              value={attendanceOverview.cards.attendance_records_today}
+              icon={CalendarDays}
+              accent="text-blue-500"
+            />
+
+            <DashboardStatCard
+              title="Average Work Hours (This Month)"
+              value={attendanceOverview.cards.average_work_hours_this_month}
+              icon={Clock}
+              accent="text-purple-500"
+            />
+          </div>
+
+          <div className="mt-6">
+            <DashboardAreaChart
+              title="Attendance Trend"
+              description="Daily attendance count trend"
+              data={attendanceOverview.chart_attendance_per_day}
+              xKey="date"
+              dataKey="attendance_count"
+              color="#10B981"
+            />
+          </div>
+        </section>
+
+      </section>
+    </>
   );
 }

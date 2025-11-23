@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import MyLeaveFilters from "../components/MyLeaveFilters";
+import LeaveFilters from "../components/LeaveFilters.jsx";
 import ColumnVisibilityMenu from "../../../components/ColumnVisibilityMenu";
 import { leaveColumns } from "../config/leaveColumns.jsx";
 import {
@@ -14,9 +14,12 @@ import PageHeader from "../../../components/PageHeader";
 import Loading from "../../../components/Loading";
 import { getLeaveRequests } from "../api/leaveRequests";
 import CustomTable from "../../../components/CustomTable.jsx";
+import { useDebounce } from "../../../hooks/DebounceSearch.js";
+import FilterWrapper from "../../../components/FilterWrapper.jsx";
 export default function LeavesPage() {
   const [leaves, setLeaves] = useState([]);
   const [filters, setFilters] = useState({});
+  const debouncedFilters = useDebounce(filters, 600);
   const [loading, setLoading] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState({
     no: true,
@@ -35,7 +38,7 @@ export default function LeavesPage() {
   const fetchLeaveRequest = async () => {
     try {
       setLoading(true);
-      const data = await getLeaveRequests({ ...filters, page: page });
+      const data = await getLeaveRequests({ ...debouncedFilters, page: page });
       setLeaves(data.data);
       console.log(leaves);
     } catch (err) {
@@ -48,7 +51,7 @@ export default function LeavesPage() {
   // trigger fetch when filters or page change
   useEffect(() => {
     fetchLeaveRequest();
-  }, [filters, page]);
+  }, [debouncedFilters, page]);
 
   return (
     <>
@@ -68,9 +71,9 @@ export default function LeavesPage() {
       {/* Page Header */}
       <PageHeader>List of Leaves</PageHeader>
 
-      <div className="flex justify-between items-center">
+      <FilterWrapper>
         {/* Filters */}
-        <MyLeaveFilters filters={filters} setFilters={setFilters} />
+        <LeaveFilters filters={filters} setFilters={setFilters} />
         {/* Button filter */}
         <div className="flex gap-2">
           <ColumnVisibilityMenu
@@ -78,7 +81,7 @@ export default function LeavesPage() {
             setVisibleColumns={setVisibleColumns}
           />
         </div>
-      </div>
+      </FilterWrapper>
 
       {/* Table Leaves */}
       {loading ? (

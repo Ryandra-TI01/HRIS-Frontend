@@ -90,7 +90,7 @@ export default function EmployeePage() {
             setVisibleColumns={setVisibleColumns}
           />
           {/* Button create */}
-          {user.role === "admin" && (
+          {user.role === "admin_hr" && (
             <Link to="/admin/employees/create">
               <Button>Create Employee</Button>
             </Link>

@@ -17,6 +17,7 @@ export default function CustomTable ({
   onRefresh,
   onDelete,
   columns,
+  userRole,
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -43,7 +44,7 @@ export default function CustomTable ({
               {columns
                 .filter((c) => visibleColumns[c.key])
                 .map((c) => (
-                  <TableCell key={c.key}>{c.render(row, index, data, { loading, setLoading, onDelete, onRefresh })}</TableCell>
+                  <TableCell key={c.key}>{c.render(row, index, data, { loading, setLoading, onDelete, onRefresh, userRole })}</TableCell>
                 ))}
             </TableRow>
           ))}

@@ -49,8 +49,10 @@ import { getEmployeesRequest } from "../../employees/api/employee";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "../../../hooks/DebounceSearch";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function PerformanceReviewCreatePage() {
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
 
   // SEARCH state
@@ -64,7 +66,7 @@ export default function PerformanceReviewCreatePage() {
 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
 
   const isFetchingRef = useRef(false); // mencegah double fetch
 
@@ -137,7 +139,9 @@ export default function PerformanceReviewCreatePage() {
 
     try {
       await createPerformanceRequest(form);
-      navigate("/admin/performance-reviews");
+      navigate(
+        `/${user.role === "admin_hr" ? "admin" : "manager"}/performance-reviews`
+      );
       toast.success("Performance Review created successfully!");
 
       setForm({

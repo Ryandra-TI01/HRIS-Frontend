@@ -55,8 +55,10 @@ import {
   updatePerformanceRequest,
 } from "../api/performance-reviews";
 import Loading from "../../../components/Loading";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function PerformanceReviewEditPage() {
+    const { user } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const [loadingPage, setLoadingPage] = useState(true);
@@ -163,7 +165,7 @@ export default function PerformanceReviewEditPage() {
     try {
       await updatePerformanceRequest(id, form);
       toast.success("Performance review updated successfully!");
-      navigate("/admin/performance-reviews");
+      navigate(`/${user.role === "admin_hr" ? "admin" : "manager"}/performance-reviews`);
     } catch (err) {
       setErrors(handleApiError(err));
     } finally {

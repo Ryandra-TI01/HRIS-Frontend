@@ -3,7 +3,7 @@ import { Spinner } from "@/components/ui/spinner";
 import PageHeader from "@/components/PageHeader";
 import { getMyLeaveRequests } from "../api/leaveRequests";
 
-import MyLeaveFilters from "../components/MyLeaveFilters";
+import MyLeaveFilters from "../components/LeaveFilters";
 import MyLeaveColumnMenu from "../components/MyLeaveColumnMenu";
 import MyLeaveTable from "../components/MyLeaveTable";
 import { Button } from "@/components/ui/button";

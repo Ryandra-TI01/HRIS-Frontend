@@ -43,7 +43,7 @@ export default function ManagerDashboard() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink to="/admin/dashboard">Dashboard </BreadcrumbLink>
+            <BreadcrumbLink to="/admin/dashboard">Manager Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

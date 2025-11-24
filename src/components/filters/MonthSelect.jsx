@@ -1,6 +1,7 @@
 import {
   Select,
   SelectTrigger,
+  SelectValue,
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
@@ -19,9 +20,12 @@ export default function MonthSelect({ value, onChange }) {
   }));
 
   return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-40">Month</SelectTrigger>
+    <Select value={value || null} onValueChange={onChange}>
+      <SelectTrigger className="w-40">
+        <SelectValue placeholder="Select Month" />
+      </SelectTrigger>
       <SelectContent>
+        <SelectItem value={null}>All Month</SelectItem>
         {months.map((m) => (
           <SelectItem key={m.value} value={m.value}>
             {m.label}

@@ -40,8 +40,9 @@ export default function EmployeeDashboard() {
   }, []);
   const convertTimeToDecimal = (timeStr) => {
     const [h, m] = timeStr.split(":").map(Number);
-    return h + m / 60;
+    return Number((h + m / 60).toFixed(2));
   };
+
   const chartData = attendanceSummary?.chart_work_hours_daily.map((item) => ({
     ...item,
     hours: convertTimeToDecimal(item.work_hours_formatted),
@@ -53,7 +54,9 @@ export default function EmployeeDashboard() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink to="/employee/dashboard">Employee Dashboard </BreadcrumbLink>
+            <BreadcrumbLink to="/employee/dashboard">
+              Employee Dashboard
+            </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

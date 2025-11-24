@@ -40,6 +40,11 @@ export const leaveColumns = [
     render: (row) => formatDate(row.end_date),
   },
   {
+    key: "reason",
+    label: "Reason",
+    render: (row) => row.reason || "-",
+  },
+  {
     key: "reviewer_name",
     label: "Reviewer",
     render: (row) => row.reviewer?.name || "-",

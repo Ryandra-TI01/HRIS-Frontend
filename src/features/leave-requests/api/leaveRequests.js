@@ -3,7 +3,7 @@ import API from "@/lib/https";
 // get my leave requests
 export const getMyLeaveRequests = async (params = {}) => {
   const res = await API.get("/leave-requests/me", { params });
-  return res.data.data;
+  return res.data;
 };
 export const getLeaveRequests = async (params = {}) => {
   const res = await API.get("/leave-requests", { params });

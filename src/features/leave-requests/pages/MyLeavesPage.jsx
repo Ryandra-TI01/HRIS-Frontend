@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import { getMyLeaveRequests } from "../api/leaveRequests";
 
-import LeaveFilters from "../components/LeaveFilters";
+import MyLeaveFilters from "../components/MyLeaveFilters";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useDebounce } from "../../../hooks/DebounceSearch";
@@ -23,7 +23,7 @@ export default function MyLeavesPage() {
   const [leaves, setLeaves] = useState([]);
   const [filters, setFilters] = useState({});
   const debouncedFilters = useDebounce(filters, 600);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState({
     no: true,
     start_date: true,
@@ -36,12 +36,13 @@ export default function MyLeavesPage() {
   const [page, setPage] = useState(1);
 
   const fetchLeaveRequest = async () => {
+    setLoading(true);
     try {
       const data = await getMyLeaveRequests({
         ...debouncedFilters,
         page: page,
       });
-      setLeaves(data);
+      setLeaves(data.data);
       console.log(leaves);
       
     } catch (err) {
@@ -75,7 +76,7 @@ export default function MyLeavesPage() {
       {/* TOP ACTION BAR */}
       <FilterWrapper>
         {/* Left — Filters */}
-        <LeaveFilters filters={filters} setFilters={setFilters} />
+        <MyLeaveFilters filters={filters} setFilters={setFilters} />
 
         {/* Right — Columns + Create Button */}
         <div className="flex items-center gap-2">

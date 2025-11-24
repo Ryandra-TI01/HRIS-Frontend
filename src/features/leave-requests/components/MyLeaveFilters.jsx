@@ -12,14 +12,6 @@ export default function LeaveFilters({ filters, setFilters }) {
 
   return (
     <div className="flex gap-3">
-      {/* Search */}
-      {(user.role === "manager" || user.role === "admin_hr") && (
-        <SearchInput
-          value={filters.search || ""}
-          onChange={(val) => setFilters((f) => ({ ...f, search: val }))}
-        />
-      )}
-
       {/* STATUS */}
       <StatusSelect
         value={filters.status || null}

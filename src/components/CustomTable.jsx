@@ -10,7 +10,7 @@ import { useState } from "react";
 import MainLayoutWrapper from "./MainLayoutWrapper";
 import Pagination from "./PaginationCustom";
 
-export default function CustomTable ({
+export default function CustomTable({
   data,
   visibleColumns,
   onPageChange,
@@ -39,25 +39,38 @@ export default function CustomTable ({
         </TableHeader>
 
         <TableBody>
-          {records.map((row, index) => (
-            <TableRow key={row.id}>
-              {columns
-                .filter((c) => visibleColumns[c.key])
-                .map((c) => (
-                  <TableCell key={c.key}>{c.render(row, index, data, { loading, setLoading, onDelete, onRefresh, userRole })}</TableCell>
-                ))}
+          {records && records.length > 0 ? (
+            records.map((row, index) => (
+              <TableRow key={row.id}>
+                {columns
+                  .filter((c) => visibleColumns[c.key])
+                  .map((c) => (
+                    <TableCell key={c.key}>
+                      {c.render(row, index, data, {
+                        loading,
+                        setLoading,
+                        onDelete,
+                        onRefresh,
+                        userRole,
+                      })}
+                    </TableCell>
+                  ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className={"text-center p-8"}>No records found</TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
 
       {/* PAGINATION */}
-        <Pagination
-          currentPage={currentPage}
-          lastPage={lastPage}
-          onPageChange={onPageChange}
-        />
-      
+      <Pagination
+        currentPage={currentPage}
+        lastPage={lastPage}
+        onPageChange={onPageChange}
+      />
     </MainLayoutWrapper>
   );
 }

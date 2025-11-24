@@ -51,7 +51,7 @@ export default function EmployeeEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState(null);
   const [managers, setManagers] = useState([]);
@@ -88,33 +88,35 @@ export default function EmployeeEditPage() {
   useEffect(() => {
     fetchManagers();
   }, []);
-  console.log(managers);
+
   // ===== trigger fetch employee =====
+  const getData = async () => {
+    setLoadingPage(true)
+    try {
+      const data = await getEmployeeByIdRequest(id);
+      setForm({
+        name: data.data.user.name || "",
+        email: data.data.user.email || "",
+        password: "",
+        role: data.data.user.role || "employee",
+        status_active: data.data.user.status_active,
+        employee_code: data.data.employee_code || "",
+        position: data.data.position || "",
+        department: data.data.department || "",
+        join_date: data.data.join_date?.split("T")[0] || "",
+        employment_status: data.data.employment_status || "permanent",
+        contact: data.data.contact || "",
+        manager_id: data.data.manager.id || "",
+      });
+    } catch (err) {
+      console.error(err);
+      setErrors(handleApiError(err));
+    } finally {
+      setLoadingPage(false);
+    }
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const data = await getEmployeeByIdRequest(id);
-        setForm({
-          name: data.data.user.name || "",
-          email: data.data.user.email || "",
-          password: "",
-          role: data.data.user.role || "employee",
-          status_active: data.data.user.status_active,
-          employee_code: data.data.employee_code || "",
-          position: data.data.position || "",
-          department: data.data.department || "",
-          join_date: data.data.join_date?.split("T")[0] || "",
-          employment_status: data.data.employment_status || "permanent",
-          contact: data.data.contact || "",
-          manager_id: data.data.manager.id || "",
-        });
-      } catch (err) {
-        console.error(err);
-        setErrors(handleApiError(err));
-      } finally {
-        setLoadingPage(false);
-      }
-    };
     getData();
   }, [id]);
 
@@ -127,7 +129,7 @@ export default function EmployeeEditPage() {
     try {
       await updateEmployeeRequest(id, form);
       toast.success("Employee updated successfully!");
-      navigate("/admin/employees");
+      getData();
     } catch (err) {
       setErrors(handleApiError(err));
     } finally {

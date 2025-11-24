@@ -36,7 +36,7 @@ export default function EmployeePage() {
     join_date: false,
     contact: false,
     status_active: false,
-    ...(user.role === "admin" && { actions: true }),
+    ...(user.role === "admin_hr" && { actions: true }),
   });
   const [page, setPage] = useState(1);
 

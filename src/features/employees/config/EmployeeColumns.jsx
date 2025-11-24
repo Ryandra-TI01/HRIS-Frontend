@@ -62,7 +62,7 @@ export const EmployeeColumns = [
   {
     key: "manager",
     label: "Manager",
-    render: (row) => row.manager?.name || "—",
+    render: (row) => row.manager?.name || "-",
   },
   {
     key: "join_date",
@@ -106,7 +106,7 @@ export const EmployeeColumns = [
           </Link>
 
           {/* Delete */}
-          <AlertDialog>
+          {/* <AlertDialog>
             <AlertDialogTrigger asChild>
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                 <Trash className="mr-2 h-4 w-4" /> Delete
@@ -135,7 +135,7 @@ export const EmployeeColumns = [
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
-          </AlertDialog>
+          </AlertDialog> */}
         </DropdownMenuContent>
       </DropdownMenu>
     ),

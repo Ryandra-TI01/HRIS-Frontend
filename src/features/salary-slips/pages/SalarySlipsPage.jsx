@@ -20,10 +20,14 @@ import {
 import { Link } from "react-router";
 import { Button } from "../../../components/ui/button.js";
 import { toast } from "sonner";
+import FilterWrapper from "../../../components/FilterWrapper";
+import { useDebounce } from "../../../hooks/DebounceSearch.js";
+
 export default function SalarySlipsPage() {
   const [error, setError] = useState(null);
   const [salary, setSalary] = useState([]);
   const [filters, setFilters] = useState({});
+  const debouncedFilters = useDebounce(filters, 600);
   const [loading, setLoading] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState({
     no: true,
@@ -43,7 +47,7 @@ export default function SalarySlipsPage() {
   const fetchSalaryRequest = async () => {
     try {
       setLoading(true);
-      const data = await getSalarySlipsRequest({ ...filters, page: page });
+      const data = await getSalarySlipsRequest({ ...debouncedFilters, page: page });
       setSalary(data.data);
       console.log(salary);
     } catch (err) {
@@ -56,7 +60,7 @@ export default function SalarySlipsPage() {
   // trigger fetch when filters or page change
   useEffect(() => {
     fetchSalaryRequest();
-  }, [filters, page]);
+  }, [debouncedFilters, page]);
 
   // handle delete salary slip
   const handleDelete = async (id) => {
@@ -90,7 +94,7 @@ export default function SalarySlipsPage() {
       {/* Page Header */}
       <PageHeader>List of Salary Slips</PageHeader>
 
-      <div className="flex justify-between items-center">
+      <FilterWrapper>
         {/* Filters */}
         <SalarySlipFilters filters={filters} setFilters={setFilters} />
         {/* Button filter */}
@@ -104,7 +108,7 @@ export default function SalarySlipsPage() {
             <Button>Create Salary Slip</Button>
           </Link>
         </div>
-      </div>
+      </FilterWrapper>
 
       {/* Table Leaves */}
       {loading ? (

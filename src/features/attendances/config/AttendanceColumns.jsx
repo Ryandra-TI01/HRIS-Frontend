@@ -29,12 +29,12 @@ export const AttendanceColumns = [
   {
     key: "check_in_time",
     label: "Check In",
-    render: (row) => formatTime(row.check_in_time) || "-",
+    render: (row) => row.check_in_time || "-",
   },
   {
     key: "check_out_time",
     label: "Check Out",
-    render: (row) => formatTime(row.check_out_time) || "-",
+    render: (row) => row.check_out_time || "-",
   },
   {
     key: "work_hour",

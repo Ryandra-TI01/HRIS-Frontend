@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { checkIn, checkOut } from "../api/attadance";
 import { toast } from "sonner";
+import { LucideCheckCheck } from "lucide-react";
 
 export default function MyAttendanceModal({ open, setOpen, todayRecord, reload }) {
   const [time, setTime] = useState(new Date());
@@ -127,7 +128,7 @@ export default function MyAttendanceModal({ open, setOpen, todayRecord, reload }
             disabled
             className="w-full py-5 text-md font-medium rounded-xl bg-gray-500/40 text-white/80"
           >
-            You are done for today ✔
+            You are done for today <LucideCheckCheck/>
           </Button>
         )}
       </DialogContent>

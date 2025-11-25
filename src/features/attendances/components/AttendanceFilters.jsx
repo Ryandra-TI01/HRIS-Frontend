@@ -13,8 +13,8 @@ export default function AttendanceFilters({ filters, setFilters }) {
 
       {/* Month Filter */}
       <MonthSelect
-        value={filters.month || ""}
-        onChange={(val) => setFilters((f) => ({ ...f, month: val }))}
+        value={filters.date || ""}
+        onChange={(val) => setFilters((f) => ({ ...f, date: val }))}
       />
 
       <Button variant="outline" onClick={() => setFilters({})}>

@@ -1,33 +1,18 @@
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+import MonthSelect from "../../../components/filters/MonthSelect";
+import { Button } from "@/components/ui/button";
 
 export default function MyAttendanceFilters({ filters, setFilters }) {
-  const update = (key, val) => setFilters((prev) => ({ ...prev, [key]: val }));
-
   return (
     <div className="flex gap-3">
-
-      {/* Month */}
-      <Select onValueChange={(v) => update("month", v)}>
-        <SelectTrigger className="w-[130px]">
-          <SelectValue placeholder="Month" />
-        </SelectTrigger>
-        <SelectContent>
-          {Array.from({ length: 12 }, (_, i) => {
-            const m = String(i + 1).padStart(2, "0");
-            return <SelectItem key={m} value={m}>{m}</SelectItem>;
-          })}
-        </SelectContent>
-      </Select>
-
-      {/* Exact Date */}
-      <Input
-        type="date"
-        className="w-[150px]"
+      {/* Month Filter */}
+      <MonthSelect
         value={filters.date || ""}
-        onChange={(e) => update("date", e.target.value)}
+        onChange={(val) => setFilters((f) => ({ ...f, date: val }))}
       />
 
+      <Button variant="outline" onClick={() => setFilters({})}>
+        Reset
+      </Button>
     </div>
   );
 }

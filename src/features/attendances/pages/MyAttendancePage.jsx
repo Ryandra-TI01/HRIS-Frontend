@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
 import PageHeader from "@/components/PageHeader";
-import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -13,65 +12,60 @@ import {
 } from "@/components/ui/breadcrumb";
 
 import { getMyAttendances } from "../api/attadance";
-import MyAttendanceFilters from "../components/MyAttendanceFilters";
-import MyColumnVisibilityMenu from "../components/MyColumnVisibilityMenu";
-import MyAttendanceTable from "../components/MyAttendanceTable";
 import MyAttendanceModal from "../components/MyAttendanceModal";
-import { toast } from "sonner";
+import { useDebounce } from "../../../hooks/DebounceSearch";
+import FilterWrapper from "../../../components/FilterWrapper";
+import MyAttendanceFilters from "../components/MyAttendanceFilters";
+import ColumnVisibilityMenu from "../../../components/ColumnVisibilityMenu";
+import Loading from "../../../components/Loading";
+import CustomTable from "../../../components/CustomTable";
+import { AttendanceColumns } from "../config/AttendanceColumns";
 
 export default function MyAttendancePage() {
-  const [records, setRecords] = useState([]);
+  const [attadances, setAttadances] = useState([]);
+  const [filters, setFilters] = useState({});
+  const debouncedFilters = useDebounce(filters, 600);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const [filters, setFilters] = useState({
-    month: null,
-    date: null,
-  });
-
   const [visibleColumns, setVisibleColumns] = useState({
+    no: true,
     date: true,
     check_in_time: true,
     check_out_time: true,
     work_hour: true,
   });
 
-  const loadData = async () => {
+  const fetchMyAttadances = async () => {
     setLoading(true);
     try {
-      const params = {};
-
-      if (filters.month) {
-        const year = new Date().getFullYear();
-        params.month = `${year}-${filters.month}`;
-      }
-
-      if (filters.date) {
-        params.date = filters.date;
-      }
-
-      const res = await getMyAttendances(params);
-      const arr = res?.data || res;
-      setRecords(Array.isArray(arr) ? arr : arr?.data || []);
-    } catch (e) {
-      console.error(e);
-      toast.error("Gagal memuat attendance");
+      const data = await getMyAttendances({ ...debouncedFilters, page: page });
+      setAttadances(data?.data || []);
+    } catch (error) {
+      console.error("Failed to fetch attadances:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  // trigger fetch when filters or page change
   useEffect(() => {
-    loadData();
-  }, [filters]);
+    fetchMyAttadances();
+  }, [debouncedFilters, page]);
 
   const todayRecord = useMemo(() => {
+    if (!Array.isArray(attadances.data)) return null;
+
     const today = new Date().toISOString().slice(0, 10);
-    return records.find((i) => (i.date ?? "").slice(0, 10) === today) || null;
-  }, [records]);
+    return (
+      attadances.data.find((i) => (i.date ?? "").slice(0, 10) === today) || null
+    );
+  }, [attadances]);
 
   return (
     <>
+      {/* Breadcrumb */}
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -82,27 +76,32 @@ export default function MyAttendancePage() {
         </BreadcrumbList>
       </Breadcrumb>
 
+      {/* Page Header */}
       <PageHeader>My Attendance</PageHeader>
 
-      <div className="flex justify-between items-center mt-2">
+      <FilterWrapper>
         <MyAttendanceFilters filters={filters} setFilters={setFilters} />
 
         <div className="flex gap-3">
           <Button onClick={() => setModalOpen(true)}>Attendance</Button>
 
-          <MyColumnVisibilityMenu
+          <ColumnVisibilityMenu
             visibleColumns={visibleColumns}
             setVisibleColumns={setVisibleColumns}
           />
         </div>
-      </div>
+      </FilterWrapper>
 
       {loading ? (
-        <div className="flex justify-center items-center h-40">
-          <Spinner />
-        </div>
+        <Loading />
       ) : (
-        <MyAttendanceTable data={records} visibleColumns={visibleColumns} />
+        <CustomTable
+          data={attadances}
+          visibleColumns={visibleColumns}
+          onPageChange={setPage}
+          onRefresh={fetchMyAttadances}
+          columns={AttendanceColumns}
+        />
       )}
 
       {/* MODAL */}
@@ -110,7 +109,7 @@ export default function MyAttendancePage() {
         open={modalOpen}
         setOpen={setModalOpen}
         todayRecord={todayRecord}
-        reload={loadData}
+        reload={fetchMyAttadances}
       />
     </>
   );

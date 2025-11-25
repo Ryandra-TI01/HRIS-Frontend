@@ -1,43 +1,17 @@
-import { 
-  Select, 
-  SelectTrigger, 
-  SelectValue, 
-  SelectContent, 
-  SelectItem 
-} from "@/components/ui/select";
+import MonthSelect from "../../../components/filters/MonthSelect";
+import { Button } from "../../../components/ui/button";
 
-export default function MyPerformanceFilters({ filters, setFilters, allRecords }) {
-
-  // Ambil semua period unik
-  const periods = [...new Set(allRecords.map((r) => r.period))];
-
-  const handlePeriodChange = (value) => {
-    setFilters({
-      ...filters,
-      period: value === "all" ? undefined : value,
-    });
-  };
-
+export default function MyPerformanceFilters({ filters, setFilters }) {
   return (
     <div className="flex gap-3">
-      <Select
-        value={filters.period ?? "all"}
-        onValueChange={handlePeriodChange}
-      >
-        <SelectTrigger className="w-[150px]">
-          <SelectValue placeholder="Period" />
-        </SelectTrigger>
-
-        <SelectContent>
-          <SelectItem value="all">All Periods</SelectItem>
-
-          {periods.map((p) => (
-            <SelectItem key={p} value={p}>
-              {p}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      {/* Month Filter */}
+      <MonthSelect
+        value={filters.period || ""}
+        onChange={(val) => setFilters((f) => ({ ...f, period: val }))}
+      />
+      <Button variant="outline" onClick={() => setFilters({})}>
+        Reset
+      </Button>
     </div>
   );
 }

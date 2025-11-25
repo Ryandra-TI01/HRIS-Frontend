@@ -1,65 +1,92 @@
 import { useEffect, useState } from "react";
-import { Spinner } from "@/components/ui/spinner";
 import PageHeader from "@/components/PageHeader";
 import { getMyPerformanceReviews } from "../api/performance-reviews";
 
 import MyPerformanceFilters from "../components/MyPerformanceFilters";
-import MyPerformanceColumnMenu from "../components/MyPerformanceColumnMenu";
-import MyPerformanceTable from "../components/MyPerformanceTable";
-
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import FilterWrapper from "../../../components/FilterWrapper";
+import ColumnVisibilityMenu from "../../../components/ColumnVisibilityMenu";
+import Loading from "../../../components/Loading";
+import CustomTable from "../../../components/CustomTable";
+import { PerformanceReviewColumns } from "../config/PerformanceReviewColumns";
+import { useDebounce } from "../../../hooks/DebounceSearch";
 export default function MyPerformanceReviewPage() {
+  const [performanceReview, setPerformanceReview] = useState([]);
   const [filters, setFilters] = useState({ period: undefined });
-
-  const [columns, setColumns] = useState({
+  const debouncedFilters = useDebounce(filters, 600);
+  const [loading, setLoading] = useState(false);
+  const [visibleColumns, setVisibleColumns] = useState({
+    no: true,
+    reviewer_name: true,
     period: true,
     total_star: true,
+    created_at: false,
     review_description: true,
-    reviewer: true,
   });
+  const [page, setPage] = useState(1);
 
-  const [records, setRecords] = useState([]);
-  const [allRecords, setAllRecords] = useState([]); // 🔥 semua data tanpa filter
-  const [loading, setLoading] = useState(false);
-
-  const loadAll = async () => {
-    const res = await getMyPerformanceReviews({});
-    setAllRecords(res);
-  };
-
-  const loadFiltered = async () => {
+  const fetchPerformanceReview = async () => {
     setLoading(true);
-    const res = await getMyPerformanceReviews(filters);
-    setRecords(res);
-    setLoading(false);
+    try {
+      const data = await getMyPerformanceReviews({
+        ...debouncedFilters,
+        page: page,
+      });
+      setPerformanceReview(data.data);
+    } catch (error) {
+      console.error("Failed to fetch performance reviews:", err);
+    } finally {
+      setLoading(false);
+    }
   };
+  console.log(performanceReview);
 
   useEffect(() => {
-    loadAll();
-  }, []);
-
-  useEffect(() => {
-    loadFiltered();
-  }, [filters]);
+    fetchPerformanceReview();
+  }, [debouncedFilters, page]);
 
   return (
     <>
+      {/* Breadcrumb */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink to="/employee/dashboard">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Performance Review</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <PageHeader>My Performance Review</PageHeader>
 
-      <div className="flex justify-between mb-4">
-        <MyPerformanceFilters 
-          filters={filters} 
-          setFilters={setFilters}
-          allRecords={allRecords} // 🔥 kirim semua record
+      <FilterWrapper>
+        <MyPerformanceFilters filters={filters} setFilters={setFilters} />
+        <ColumnVisibilityMenu
+          visibleColumns={visibleColumns}
+          setVisibleColumns={setVisibleColumns}
         />
-        <MyPerformanceColumnMenu visible={columns} setVisible={setColumns} />
-      </div>
+      </FilterWrapper>
 
       {loading ? (
-        <div className="flex items-center justify-center h-40">
-          <Spinner />
-        </div>
+        <Loading />
       ) : (
-        <MyPerformanceTable data={records} visible={columns} />
+        <CustomTable
+          data={performanceReview}
+          visibleColumns={visibleColumns}
+          onPageChange={(newPage) => setPage(newPage)}
+          onRefresh={fetchPerformanceReview}
+          columns={PerformanceReviewColumns}
+        />
       )}
     </>
   );

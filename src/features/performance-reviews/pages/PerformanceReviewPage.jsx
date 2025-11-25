@@ -37,6 +37,7 @@ export default function PerformanceReviewPage() {
     period: true,
     total_star: true,
     created_at: false,
+    review_description: false,
     actions: true,
   });
 

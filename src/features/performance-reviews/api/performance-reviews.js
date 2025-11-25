@@ -29,5 +29,5 @@ export const deletePerformanceRequest = async (performanceId) => {
 // Employee API
 export const getMyPerformanceReviews = async (params = {}) => {
   const res = await API.get("/performance-reviews/me", { params });
-  return res.data.data || [];
+  return res.data;
 };

@@ -60,6 +60,11 @@ export const PerformanceReviewColumns = [
     render: (row) => formatDateTime(row.created_at),
   },
   {
+    key: "review_description",
+    label: "Description",
+    render: (row) => row.review_description || "-",
+  },
+  {
     key: "actions",
     label: "Action",
     render: (
@@ -78,7 +83,11 @@ export const PerformanceReviewColumns = [
         <DropdownMenuContent>
           <DropdownMenuLabel>Action</DropdownMenuLabel>
 
-          <Link to={`/${ userRole === "admin_hr" ? "admin" : "manager"}/performance-reviews/edit/${row.id}`}>
+          <Link
+            to={`/${
+              userRole === "admin_hr" ? "admin" : "manager"
+            }/performance-reviews/edit/${row.id}`}
+          >
             <DropdownMenuItem>
               <PenLine className="mr-2 h-4 w-4" /> Edit
             </DropdownMenuItem>

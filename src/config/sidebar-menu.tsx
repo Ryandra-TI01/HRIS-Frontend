@@ -1,4 +1,4 @@
-import { Calendar, ChartNoAxesColumnIncreasing, CreditCard, LayoutDashboard, Send, Users } from "lucide-react"
+import { Calendar, ChartNoAxesColumnIncreasing, CreditCard, LayoutDashboard, Send, UserCircle, Users } from "lucide-react"
 
 export const sidebarMenu = {
   navMain: {
@@ -89,6 +89,11 @@ export const sidebarMenu = {
       url: "/employee/performance-reviews",
       icon: ChartNoAxesColumnIncreasing,
     },
+    {
+      title: "My Profile",
+      url: "/employee/profile",
+      icon: UserCircle,
+    }
   ],
   personalManager: [
     {
@@ -96,5 +101,10 @@ export const sidebarMenu = {
       url: "/employee/salary-slips",
       icon: CreditCard,
     },
+    {
+      title: "My Profile",
+      url: "/employee/profile",
+      icon: UserCircle,
+    }
   ],
 }

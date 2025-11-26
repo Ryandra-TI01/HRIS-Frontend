@@ -123,15 +123,15 @@ export function NavUser({ user }: {
                 {theme === "dark" ? "Light" : "Dark"} Mode
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            {/* <DropdownMenuSeparator />
+            <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link to="/profile">
+              <Link to="/employee/profile">
                 <DropdownMenuItem>
                   <UserCircle />
                   Account
                 </DropdownMenuItem>
               </Link>
-            </DropdownMenuGroup> */}
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <AlertDialog>
               <AlertDialogTrigger asChild>

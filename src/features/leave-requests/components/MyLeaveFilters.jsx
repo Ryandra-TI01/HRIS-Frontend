@@ -1,5 +1,4 @@
 import StatusSelect from "../../../components/filters/StatusSelect";
-import SearchInput from "../../../components/filters/SearchInput";
 import { Button } from "../../../components/ui/button";
 import { useAuth } from "../../../context/AuthContext";
 import MonthSelect from "../../../components/filters/MonthSelect";
@@ -12,7 +11,7 @@ export default function LeaveFilters({ filters, setFilters }) {
 
   return (
     <div className="flex gap-3">
-      {/* STATUS */}
+      {/* Status */}
       <StatusSelect
         value={filters.status || null}
         onChange={(v) => handleChange("status", v)}

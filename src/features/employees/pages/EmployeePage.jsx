@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import EmployeeFilters from "../components/EmployeeFilters";
 import ColumnVisibilityMenu from "../../../components/ColumnVisibilityMenu";
 import { getEmployeesRequest } from "../api/employee";
 import { Button } from "@/components/ui/button";
@@ -19,16 +18,20 @@ import CustomTable from "../../../components/CustomTable";
 import { EmployeeColumns } from "../config/EmployeeColumns";
 import FilterWrapper from "../../../components/FilterWrapper";
 import { useDebounce } from "../../../hooks/DebounceSearch";
+import EmployeeFiltersModal from "../components/EmployeeFiltersModal";
+import EmployeeFilterBar from "../components/EmployeeFilterBar";
 export default function EmployeePage() {
   const { user } = useAuth();
   const [employees, setEmployees] = useState([]);
   const [filters, setFilters] = useState({});
   const debouncedFilters = useDebounce(filters, 600);
   const [loading, setLoading] = useState(false);
+  const [openFilters, setOpenFilters] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState({
     no: true,
+    employee_code: true,
     name: true,
-    email: true,
+    email: false,
     position: true,
     department: true,
     employment_status: true,
@@ -82,8 +85,20 @@ export default function EmployeePage() {
       {/* Filter Wrapper */}
       <FilterWrapper>
         {/* Filters */}
-        <EmployeeFilters filters={filters} setFilters={setFilters} />
-        {/* Button filter */}
+        <EmployeeFilterBar
+          filters={filters}
+          setFilters={setFilters}
+          openFilters={() => setOpenFilters(true)}
+        />
+
+        {/* modal */}
+        <EmployeeFiltersModal
+          open={openFilters}
+          onClose={() => setOpenFilters(false)}
+          filters={filters}
+          setFilters={setFilters}
+        />
+
         <div className="flex gap-2">
           <ColumnVisibilityMenu
             visibleColumns={visibleColumns}

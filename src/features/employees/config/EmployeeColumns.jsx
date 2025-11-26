@@ -6,23 +6,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { EllipsisVertical, PenLine, Trash } from "lucide-react";
+import { EllipsisVertical, PenLine } from "lucide-react";
 import { Link } from "react-router";
 import { formatDate } from "@/components/FormatDateTime";
-import { Spinner } from "@/components/ui/spinner";
 
 export const EmployeeColumns = [
   {
@@ -33,6 +21,11 @@ export const EmployeeColumns = [
       const currentPage = data?.current_page || 1;
       return (currentPage - 1) * perPage + index + 1;
     },
+  },
+  {
+    key: "employee_code",
+    label: "Employee Code",
+    render: (row) => row.employee_code
   },
   {
     key: "name",

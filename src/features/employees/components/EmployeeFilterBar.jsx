@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import SearchInput from "@/components/filters/SearchInput";
 import { Filter } from "lucide-react";
+import ActiveFilterCount from "../../../components/filters/ActiveFilterCount";
 
 export default function EmployeeFilterBar({
   filters,
@@ -17,13 +18,12 @@ export default function EmployeeFilterBar({
       />
 
       <Button variant="outline" onClick={openFilters}>
+        {/* filter icon */}
         <Filter />
+
         {/* Badge */}
-        {activeFilterCount > 0 && (
-          <span className="rounded-full bg-white text-black text-xs px-2 py-0.5">
-            {activeFilterCount}
-          </span>
-        )}
+        <ActiveFilterCount activeFilterCount={activeFilterCount} />
+
       </Button>
       {activeFilterCount > 0 && (
         <Button variant="outline" onClick={() => setFilters({})}>

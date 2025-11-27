@@ -10,13 +10,23 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Field, FieldLabel } from "@/components/ui/field";
+
 import PageHeader from "../../../components/PageHeader";
 import Loading from "../../../components/Loading";
 import { getLeaveRequests } from "../api/leaveRequests";
 import CustomTable from "../../../components/CustomTable.jsx";
 import { useDebounce } from "../../../hooks/DebounceSearch.js";
 import FilterWrapper from "../../../components/FilterWrapper.jsx";
+import FilterBar from "../../../components/filters/FilterBar.jsx";
+import FilterModal from "../../../components/filters/FilterModal.jsx";
+import StatusSelect from "../../../components/filters/StatusSelect.jsx";
+import MonthSelect from "../../../components/filters/MonthSelect.jsx";
+import { useAuth } from "../../../context/AuthContext.jsx";
+import DepartmentSelect from "../../../components/filters/DepartmentSelect.jsx";
+import DateRangeFilter from "../../../components/filters/DateRangeFilter.jsx";
 export default function LeavesPage() {
+  const { user } = useAuth();
   const [leaves, setLeaves] = useState([]);
   const [filters, setFilters] = useState({});
   const debouncedFilters = useDebounce(filters, 600);
@@ -31,7 +41,7 @@ export default function LeavesPage() {
     reviewer_note: false,
     actions: true,
   });
-
+  const [openFilters, setOpenFilters] = useState(false);
   const [page, setPage] = useState(1);
 
   // fetch performance reviews with filters and pagination
@@ -73,7 +83,70 @@ export default function LeavesPage() {
 
       <FilterWrapper>
         {/* Filters */}
-        <LeaveFilters filters={filters} setFilters={setFilters} />
+        <FilterBar
+          filters={filters}
+          setFilters={setFilters}
+          openFilters={() => setOpenFilters(true)}
+        />
+
+        <FilterModal
+          open={openFilters}
+          onOpenChange={setOpenFilters}
+          filters={filters}
+          setFilters={setFilters}
+        >
+          {/* render-prop function: receives localFilters, setLocalFilters */}
+          {(localFilters, setLocalFilters) => (
+            <>
+              {/* STATUS */}
+              <Field>
+                <FieldLabel>Leave Status</FieldLabel>
+                <StatusSelect
+                  value={localFilters.status || null}
+                  onChange={(val) =>
+                    setLocalFilters((prev) => ({ ...prev, status: val }))
+                  }
+                />
+              </Field>
+              {/* Month Filter */}
+              <Field>
+                <FieldLabel>Month</FieldLabel>
+                <MonthSelect
+                  value={localFilters.period || ""}
+                  onChange={(val) =>
+                    setLocalFilters((prev) => ({ ...prev, period: val }))
+                  }
+                />
+              </Field>
+              {/* Date Range Filter */}
+              <DateRangeFilter
+                value={{
+                  date_from: localFilters.date_from,
+                  date_to: localFilters.date_to,
+                }}
+                onChange={(updated) =>
+                  setLocalFilters((prev) => ({ ...prev, ...updated }))
+                }
+              />
+              {/* Department */}
+              {user.role === "admin_hr" && (
+                <Field>
+                  <FieldLabel className="block text-sm font-medium mb-2">
+                    Department
+                  </FieldLabel>
+                  {/* Month Filter */}
+                  <DepartmentSelect
+                    value={localFilters.department || ""}
+                    onChange={(val) =>
+                      setLocalFilters((f) => ({ ...f, department: val }))
+                    }
+                  />
+                </Field>
+              )}
+            </>
+          )}
+        </FilterModal>
+
         {/* Button filter */}
         <div className="flex gap-2">
           <ColumnVisibilityMenu

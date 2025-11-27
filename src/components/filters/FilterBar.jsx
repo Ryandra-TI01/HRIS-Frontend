@@ -40,7 +40,7 @@ export default function FilterBar({
   const activeFilterCount = Object.values(filters).filter(Boolean).length;
 
   return (
-    <div className="flex flex-wrap gap-3 mb-4 items-center">
+    <div className="flex flex-wrap gap-3 items-center">
       <SearchInput
         value={filters.search || ""}
         onChange={(val) => setFilters((prev) => ({ ...prev, search: val }))}

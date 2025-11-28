@@ -2,42 +2,51 @@
 
 Aplikasi web modern untuk manajemen Sumber Daya Manusia (SDM) yang dibangun menggunakan **React**, **Vite**, dan **Tailwind CSS**. Sistem ini dirancang untuk memfasilitasi pengelolaan karyawan, absensi, pengajuan cuti, penggajian, dan penilaian kinerja dengan antarmuka yang responsif dan mudah digunakan.
 
+## 🚀 Live Demo & Repositori
+
+| Tautan | URL |
+| :--- | :--- |
+| **🌐 Production / Live Demo** | **[https://kelompokfwd7-sibm3.karyakreasi.id/employee/dashboard](https://kelompokfwd7-sibm3.karyakreasi.id/employee/dashboard)** |
+| **⚙️ Backend Repository** | **[https://github.com/ekomh170/hris-backend-laravel-sib](https://github.com/ekomh170/hris-backend-laravel-sib)** |
+
+---
+
 ## 🌟 Fitur Utama
 
 Aplikasi ini menggunakan sistem *Role-Based Access Control* (RBAC) yang membagi akses menjadi **Admin HR**, **Manager**, dan **Employee**.
 
-### 1. Dashboard Interaktif
+### 1. 📊 Dashboard Interaktif
 - **Admin:** Ringkasan total karyawan, pertumbuhan karyawan, dan tren kehadiran.
 - **Manager:** Tinjauan kinerja tim, absensi tim, dan total jam kerja.
 - **Employee:** Statistik pribadi, sisa cuti, dan ringkasan kehadiran bulanan.
 - Visualisasi data menggunakan grafik (Area Chart & Bar Chart).
 
-### 2. Manajemen Karyawan (Admin & Manager)
+### 2. 👥 Manajemen Karyawan (Admin & Manager)
 - CRUD (Create, Read, Update, Delete) data karyawan.
 - Pencarian dan filter berdasarkan departemen, status, atau manajer.
 - Profil detail karyawan termasuk informasi kontrak dan kontak.
 
-### 3. Sistem Absensi (Attendance)
+### 3. ⏰ Sistem Absensi (Attendance)
 - **Check-In / Check-Out** harian dengan pencatatan waktu *real-time*.
 - Riwayat kehadiran dengan filter bulan dan tanggal.
 - Kalkulasi jam kerja otomatis.
 
-### 4. Manajemen Cuti (Leave Requests)
+### 4. 📅 Manajemen Cuti (Leave Requests)
 - Pengajuan cuti oleh karyawan dengan rentang tanggal dan alasan.
 - Persetujuan atau penolakan cuti oleh Manajer/Admin.
 - Status cuti (Pending, Approved, Rejected).
 
-### 5. Penggajian (Salary Slips)
+### 5. 💸 Penggajian (Salary Slips)
 - Pembuatan slip gaji digital oleh Admin.
 - Karyawan dapat melihat dan memfilter riwayat slip gaji berdasarkan bulan/tahun.
 - Rincian gaji pokok, tunjangan, potongan, dan gaji bersih.
 
-### 6. Penilaian Kinerja (Performance Reviews)
+### 6. ⭐ Penilaian Kinerja (Performance Reviews)
 - Pemberian rating (bintang) dan ulasan kinerja berkala.
 - Manajemen ulasan oleh Admin/Manager.
 - Karyawan dapat melihat riwayat penilaian kinerja mereka.
 
-### 7. Fitur Lainnya
+### 7. 🔐 Fitur Lainnya
 - **Autentikasi Aman:** Login menggunakan JWT.
 - **Mode Gelap/Terang:** Dukungan tema sistem atau manual.
 - **Desain Responsif:** Tampilan optimal di desktop dan perangkat seluler (sidebar responsif).
@@ -80,7 +89,10 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di komputer lokal Anda:
     ```
 
 3.  **Konfigurasi Environment**
-    Pastikan backend API sudah berjalan. Secara default, aplikasi ini mengarah ke `http://127.0.0.1:8000/api`. Jika URL backend Anda berbeda, sesuaikan file `src/lib/https.js` atau buat file `.env` (jika sudah dikonfigurasi untuk membacanya).
+    Pastikan backend API sudah berjalan. Anda dapat mengunduh dan menjalankan backend dari repositori berikut:
+    👉 **[HRIS Backend (Laravel)](https://github.com/ekomh170/hris-backend-laravel-sib)**
+
+    Secara default, aplikasi ini mengarah ke `http://127.0.0.1:8000/api`. Jika URL backend Anda berbeda, sesuaikan file `src/lib/https.js` atau buat file `.env` (jika sudah dikonfigurasi untuk membacanya).
 
 4.  **Jalankan Aplikasi (Mode Development)**
     ```bash
@@ -93,22 +105,6 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di komputer lokal Anda:
     npm run build
     ```
 
-## ww Susunan Project
+## 📂 Susunan Project
 
 Proyek ini menggunakan struktur *Feature-based* untuk memudahkan skalabilitas:
-
-### Terima kasih telah menggunakan HRIS Frontend kami! 🙏
-
-Proyek ini dikembangkan dengan sepenuh hati oleh tim kami untuk membantu  
-mempermudah pengelolaan SDM di perusahaan Anda.
-
-**Tim Pengembang:**  
-| 👤 Nama | 💼 Role |
-|---------|---------|
-| **Eko Muchamad Haryono** | Lead Backend Developer |
-| **Raka Muhammad Rabbani** | Backend Developer |
-| **Ryandra Athaya Saleh** | Lead Frontend Developer |
-| **Octaviani Nursalsabila** | UI/UX Developer |
-| **Yossy Indra Kusuma** | Frontend Developer |
-
-**FWD Batch 3 - Kelompok HRIS** 🚀

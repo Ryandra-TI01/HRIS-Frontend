@@ -20,6 +20,7 @@ import ColumnVisibilityMenu from "../../../components/ColumnVisibilityMenu";
 import Loading from "../../../components/Loading";
 import CustomTable from "../../../components/CustomTable";
 import { AttendanceColumns } from "../config/AttendanceColumns";
+import { CalendarCheck } from "lucide-react";
 
 export default function MyAttendancePage() {
   const [attadances, setAttadances] = useState([]);
@@ -83,7 +84,7 @@ export default function MyAttendancePage() {
         <MyAttendanceFilters filters={filters} setFilters={setFilters} />
 
         <div className="flex gap-3">
-          <Button onClick={() => setModalOpen(true)}>Attendance</Button>
+          <Button onClick={() => setModalOpen(true)}><CalendarCheck /> Attendance</Button>
 
           <ColumnVisibilityMenu
             visibleColumns={visibleColumns}

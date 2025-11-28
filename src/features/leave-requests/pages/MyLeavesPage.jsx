@@ -19,6 +19,7 @@ import Loading from "../../../components/Loading";
 import { leaveColumns } from "../config/leaveColumns";
 import CustomTable from "../../../components/CustomTable";
 import ColumnVisibilityMenu from "../../../components/ColumnVisibilityMenu";
+import { Plus } from "lucide-react";
 export default function MyLeavesPage() {
   const [leaves, setLeaves] = useState([]);
   const [filters, setFilters] = useState({});
@@ -86,7 +87,7 @@ export default function MyLeavesPage() {
           />
 
           <Link to="/employee/leaves/create">
-            <Button>Create Leave Request</Button>
+            <Button><Plus />Create Leave Request</Button>
           </Link>
         </div>
       </FilterWrapper>

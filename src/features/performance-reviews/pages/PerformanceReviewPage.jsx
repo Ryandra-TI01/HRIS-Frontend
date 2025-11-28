@@ -23,6 +23,7 @@ import CustomTable from "../../../components/CustomTable";
 import { PerformanceReviewColumns } from "../config/PerformanceReviewColumns";
 import { toast } from "sonner";
 import { useAuth } from "../../../context/AuthContext";
+import { Plus } from "lucide-react";
 export default function PerformanceReviewPage() {
   const { user } = useAuth();
   const [performanceReview, setPerformanceReview] = useState([]);
@@ -113,7 +114,7 @@ export default function PerformanceReviewPage() {
               user.role === "admin_hr" ? "admin" : "manager"
             }/performance-reviews/create`}
           >
-            <Button>Create Review</Button>
+            <Button><Plus />Create Review</Button>
           </Link>
         </div>
       </FilterWrapper>

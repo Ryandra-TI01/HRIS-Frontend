@@ -22,6 +22,7 @@ import { Button } from "../../../components/ui/button.js";
 import { toast } from "sonner";
 import FilterWrapper from "../../../components/FilterWrapper";
 import { useDebounce } from "../../../hooks/DebounceSearch.js";
+import { Plus } from "lucide-react";
 
 export default function SalarySlipsPage() {
   const [error, setError] = useState(null);
@@ -105,7 +106,7 @@ export default function SalarySlipsPage() {
           />
           {/* Button Create */}
           <Link to="/admin/salary-slips/create">
-            <Button>Create Salary Slip</Button>
+            <Button><Plus />Create Salary Slip</Button>
           </Link>
         </div>
       </FilterWrapper>

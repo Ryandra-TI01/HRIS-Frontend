@@ -20,6 +20,7 @@ import FilterWrapper from "../../../components/FilterWrapper";
 import { useDebounce } from "../../../hooks/DebounceSearch";
 import EmployeeFiltersModal from "../components/EmployeeFiltersModal";
 import EmployeeFilterBar from "../components/EmployeeFilterBar";
+import { Plus } from "lucide-react";
 export default function EmployeePage() {
   const { user } = useAuth();
   const [employees, setEmployees] = useState([]);
@@ -107,7 +108,10 @@ export default function EmployeePage() {
           {/* Button create */}
           {user.role === "admin_hr" && (
             <Link to="/admin/employees/create">
-              <Button>Create Employee</Button>
+              <Button>
+                {" "}
+                <Plus /> Create Employee
+              </Button>
             </Link>
           )}
         </div>

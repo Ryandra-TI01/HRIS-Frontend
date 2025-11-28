@@ -105,6 +105,18 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di komputer lokal Anda:
     npm run build
     ```
 
-## 📂 Susunan Project
+---
 
-Proyek ini menggunakan struktur *Feature-based* untuk memudahkan skalabilitas:
+## 👨‍💻 Tim Pengembang
+
+Terima kasih telah menggunakan HRIS Frontend kami! Proyek ini dikembangkan dengan sepenuh hati oleh tim kami untuk membantu mempermudah pengelolaan SDM di perusahaan Anda.
+
+**FWD Batch 3 - Kelompok HRIS** 🚀
+
+| 👤 Nama | 💼 Role |
+| :--- | :--- |
+| **Eko Muchamad Haryono** | Lead Backend Developer |
+| **Raka Muhammad Rabbani** | Backend Developer |
+| **Ryandra Athaya Saleh** | Lead Frontend Developer |
+| **Octaviani Nursalsabila** | UI/UX Developer |
+| **Yossy Indra Kusuma** | Frontend Developer |

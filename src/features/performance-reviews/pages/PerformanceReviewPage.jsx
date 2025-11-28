@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import PerformanceReviewFilters from "../components/PerformanceReviewFilters";
 import ColumnVisibilityMenu from "../../../components/ColumnVisibilityMenu";
 import {
   deletePerformanceRequest,
@@ -24,6 +23,13 @@ import { PerformanceReviewColumns } from "../config/PerformanceReviewColumns";
 import { toast } from "sonner";
 import { useAuth } from "../../../context/AuthContext";
 import { Plus } from "lucide-react";
+import { Field, FieldLabel } from "@/components/ui/field";
+import FilterBar from "../../../components/filters/FilterBar";
+import FilterModal from "../../../components/filters/FilterModal";
+import MonthSelect from "../../../components/filters/MonthSelect";
+import DepartmentSelect from "../../../components/filters/DepartmentSelect";
+import DateRangeFilter from "../../../components/filters/DateRangeFilter";
+import RatingRangeFilter from "../../../components/filters/RatingRangeFilter";
 export default function PerformanceReviewPage() {
   const { user } = useAuth();
   const [performanceReview, setPerformanceReview] = useState([]);
@@ -41,7 +47,7 @@ export default function PerformanceReviewPage() {
     review_description: false,
     actions: true,
   });
-
+  const [openFilters, setOpenFilters] = useState(false);
   const [page, setPage] = useState(1);
 
   // fetch performance reviews with filters and pagination
@@ -101,7 +107,72 @@ export default function PerformanceReviewPage() {
 
       <FilterWrapper>
         {/* Filters */}
-        <PerformanceReviewFilters filters={filters} setFilters={setFilters} />
+        <FilterBar
+          filters={filters}
+          setFilters={setFilters}
+          openFilters={() => setOpenFilters(true)}
+        />
+
+        <FilterModal
+          open={openFilters}
+          onOpenChange={setOpenFilters}
+          filters={filters}
+          setFilters={setFilters}
+        >
+          {/* render-prop function: receives localFilters, setLocalFilters */}
+          {(localFilters, setLocalFilters) => (
+            <>
+              {/* Month Filter */}
+              <Field>
+                <FieldLabel>Month</FieldLabel>
+                <MonthSelect
+                  value={localFilters.period || ""}
+                  onChange={(val) =>
+                    setLocalFilters((prev) => ({ ...prev, period: val }))
+                  }
+                />
+              </Field>
+              {/* Date Range Filter */}
+              <Field>
+                <DateRangeFilter
+                  title="Date Range by Created At"
+                  value={{
+                    date_from: localFilters.date_from,
+                    date_to: localFilters.date_to,
+                  }}
+                  onChange={(updated) =>
+                    setLocalFilters((prev) => ({ ...prev, ...updated }))
+                  }
+                />
+              </Field>
+              {/* Rate Range Filter */}
+              <Field>
+                <RatingRangeFilter
+                  title="Rating Range"
+                  value={{
+                    min_rating: localFilters.min_rating,
+                    max_rating: localFilters.max_rating,
+                  }}
+                  onChange={(updated) =>
+                    setLocalFilters((prev) => ({ ...prev, ...updated }))
+                  }
+                />
+              </Field>
+
+              {/* Department Filter */}
+              <Field>
+                <FieldLabel>Department</FieldLabel>
+                <DepartmentSelect
+                  value={localFilters.department || ""}
+                  onChange={(val) =>
+                    setLocalFilters((prev) => ({ ...prev, department: val }))
+                  }
+                />
+              </Field>
+            </>
+          )}
+        </FilterModal>
+
         {/* Button filter */}
         <div className="flex gap-2">
           <ColumnVisibilityMenu
@@ -114,7 +185,10 @@ export default function PerformanceReviewPage() {
               user.role === "admin_hr" ? "admin" : "manager"
             }/performance-reviews/create`}
           >
-            <Button><Plus />Create Review</Button>
+            <Button>
+              <Plus />
+              Create Review
+            </Button>
           </Link>
         </div>
       </FilterWrapper>

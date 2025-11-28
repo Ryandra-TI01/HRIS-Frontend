@@ -10,82 +10,68 @@ import {
 import { Card } from "@/components/ui/card";
 
 export function DashboardAreaChart({
-  title = "Area Chart",
-  description = "Showing total visitors for the last 3 months",
+  title,
+  description,
   data,
   dataKey = "value",
   xKey = "label",
-  color = "#3B82F6", // tailwind blue-500
+  color = "#A3A3A3",
 }) {
   return (
-    <Card className="
-      p-6 rounded-2xl
-     
-      shadow-sm dark:shadow-lg
-    ">
-      {/* HEADER */}
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-          {title}
-        </h2>
-        {description && (
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            {description}
-          </p>
-        )}
-      </div>
+    <Card className="rounded-xl border border-white/10 bg-white/5 dark:bg-neutral-900/30 p-6 shadow">
+      {title && (
+        <div className="mb-4">
+          <h3 className="text-sm font-medium text-slate-300">{title}</h3>
+          {description && (
+            <p className="text-xs text-slate-400 mt-1">{description}</p>
+          )}
+        </div>
+      )}
 
-      {/* CHART */}
-      <div className="w-full h-[350px]">
+      <div className="w-full h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 10, right: 20 }}>
             <defs>
-              <linearGradient id="areaColor" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={color} stopOpacity={0.35} />
-                <stop offset="95%" stopColor={color} stopOpacity={0} />
+              <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={color} stopOpacity={0.4} />
+                <stop offset="80%" stopColor={color} stopOpacity={0.05} />
+                <stop offset="100%" stopColor={color} stopOpacity={0} />
               </linearGradient>
             </defs>
 
-            {/* grid */}
-            <CartesianGrid 
-              strokeDasharray="3 3" 
-              stroke="#9CA3AF22"
-            />
+            <CartesianGrid strokeOpacity={0.08} vertical={false} />
 
-            {/* x axis */}
             <XAxis
               dataKey={xKey}
-              tick={{ fill: "#9CA3AF" }}
+              stroke="#A3A3A3"
+              fontSize={11}
               tickLine={false}
               axisLine={false}
-              fontSize={12}
             />
 
-            {/* y axis */}
             <YAxis
-              tick={{ fill: "#9CA3AF" }}
+              stroke="#A3A3A3"
+              fontSize={11}
               tickLine={false}
               axisLine={false}
-              fontSize={12}
             />
 
-            {/* tooltip */}
             <Tooltip
               contentStyle={{
-                backgroundColor: "#1E1E1E",
-                border: "1px solid #333",
+                backgroundColor: "rgba(15,15,15,0.9)",
+                border: "1px solid rgba(255,255,255,0.1)",
                 borderRadius: "8px",
-                color: "white",
               }}
+              labelStyle={{ color: "#fff" }}
+              itemStyle={{ color: "#fff" }}
             />
 
-            {/* area */}
             <Area
               type="monotone"
               dataKey={dataKey}
               stroke={color}
               strokeWidth={2}
-              fill="url(#areaColor)"
+              fill="url(#chartGradient)"
             />
           </AreaChart>
         </ResponsiveContainer>

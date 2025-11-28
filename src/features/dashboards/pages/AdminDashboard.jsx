@@ -83,7 +83,7 @@ export default function AdminDashboard() {
                 data={employeeOverview.chart_employees_per_month}
                 xKey="month"
                 dataKey="count"
-                color="#4F46E5"
+                color="#6366F1"
               />
             </div>
           </section>
@@ -115,7 +115,7 @@ export default function AdminDashboard() {
                 data={attendanceOverview.chart_attendance_per_day}
                 xKey="date"
                 dataKey="attendance_count"
-                color="#10B981"
+                color="#6366F1"
               />
             </div>
           </section>

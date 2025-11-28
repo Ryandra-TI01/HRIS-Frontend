@@ -80,7 +80,7 @@ export default function ManagerDashboard() {
                 data={attendanceData.chart_work_hours_per_employee}
                 dataKey="total_hours"
                 xKey="employee_name"
-                color="#3B82F6"
+                color="#6366F1"
               />
             </div>
           </section>
@@ -112,7 +112,7 @@ export default function ManagerDashboard() {
                 data={performanceData.chart_rating_trend_over_periods}
                 dataKey="avg_rating"
                 xKey="period"
-                color="#2563EB"
+                color="#6366F1"
               />
             </div>
           </section>

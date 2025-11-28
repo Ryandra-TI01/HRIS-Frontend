@@ -15,12 +15,11 @@ export function DashboardBarChart({
   data,
   dataKey = "value",
   xKey = "label",
-  color = "#3B82F6",
+  color = "#A3A3A3",
 }) {
   return (
-    <Card
-      className="p-4  dark:shadow-lg rounded-2xl"
-    >
+    <Card className="rounded-xl border border-white/10 bg-white/5 dark:bg-neutral-900/30 p-6 shadow">
+
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-semibold text-neutral-800 dark:text-neutral-200">
           {title}

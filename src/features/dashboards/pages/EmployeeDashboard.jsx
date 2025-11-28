@@ -114,7 +114,7 @@ export default function EmployeeDashboard() {
                 data={chartData}
                 xKey="date"
                 dataKey="hours"
-                color="#3B82F6"
+                color="#6366F1"
               />
             </div>
           </section>

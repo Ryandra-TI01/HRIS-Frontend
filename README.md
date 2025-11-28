@@ -1,73 +1,122 @@
-# React + TypeScript + Vite
+# HRIS Frontend (Human Resource Information System)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplikasi web modern untuk manajemen Sumber Daya Manusia (SDM) yang dibangun menggunakan **React**, **Vite**, dan **Tailwind CSS**. Sistem ini dirancang untuk memfasilitasi pengelolaan karyawan, absensi, pengajuan cuti, penggajian, dan penilaian kinerja dengan antarmuka yang responsif dan mudah digunakan.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo & Repositori
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| Tautan | URL |
+| :--- | :--- |
+| **🌐 Production / Live Demo** | **[https://kelompokfwd7-sibm3.karyakreasi.id/employee/dashboard](https://kelompokfwd7-sibm3.karyakreasi.id/employee/dashboard)** |
+| **⚙️ Backend Repository** | **[https://github.com/ekomh170/hris-backend-laravel-sib](https://github.com/ekomh170/hris-backend-laravel-sib)** |
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🌟 Fitur Utama
 
-## Expanding the ESLint configuration
+Aplikasi ini menggunakan sistem *Role-Based Access Control* (RBAC) yang membagi akses menjadi **Admin HR**, **Manager**, dan **Employee**.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 1. Dashboard Interaktif
+- **Admin:** Ringkasan total karyawan, pertumbuhan karyawan, dan tren kehadiran.
+- **Manager:** Tinjauan kinerja tim, absensi tim, dan total jam kerja.
+- **Employee:** Statistik pribadi, sisa cuti, dan ringkasan kehadiran bulanan.
+- Visualisasi data menggunakan grafik (Area Chart & Bar Chart).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 2. Manajemen Karyawan (Admin & Manager)
+- CRUD (Create, Read, Update, Delete) data karyawan.
+- Pencarian dan filter berdasarkan departemen, status, atau manajer.
+- Profil detail karyawan termasuk informasi kontrak dan kontak.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 3. Sistem Absensi (Attendance)
+- **Check-In / Check-Out** harian dengan pencatatan waktu *real-time*.
+- Riwayat kehadiran dengan filter bulan dan tanggal.
+- Kalkulasi jam kerja otomatis.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 4. Manajemen Cuti (Leave Requests)
+- Pengajuan cuti oleh karyawan dengan rentang tanggal dan alasan.
+- Persetujuan atau penolakan cuti oleh Manajer/Admin.
+- Status cuti (Pending, Approved, Rejected).
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 5. Penggajian (Salary Slips)
+- Pembuatan slip gaji digital oleh Admin.
+- Karyawan dapat melihat dan memfilter riwayat slip gaji berdasarkan bulan/tahun.
+- Rincian gaji pokok, tunjangan, potongan, dan gaji bersih.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 6. Penilaian Kinerja (Performance Reviews)
+- Pemberian rating (bintang) dan ulasan kinerja berkala.
+- Manajemen ulasan oleh Admin/Manager.
+- Karyawan dapat melihat riwayat penilaian kinerja mereka.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 7. Fitur Lainnya
+- **Autentikasi Aman:** Login menggunakan JWT.
+- **Mode Gelap/Terang:** Dukungan tema sistem atau manual.
+- **Desain Responsif:** Tampilan optimal di desktop dan perangkat seluler (sidebar responsif).
+
+## 🛠️ Teknologi yang Digunakan
+
+Project ini dibangun menggunakan *stack* teknologi modern:
+
+- **Core:** [React 19](https://react.dev/), [Vite](https://vitejs.dev/)
+- **Bahasa:** JavaScript / TypeScript
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **UI Components:** [Shadcn UI](https://ui.shadcn.com/) (berbasis Radix UI)
+- **State Management & Data Fetching:** React Context API, [Axios](https://axios-http.com/)
+- **Routing:** [React Router v7](https://reactrouter.com/)
+- **Charts:** [Recharts](https://recharts.org/)
+- **Date Handling:** [Date-fns](https://date-fns.org/)
+- **Form Handling:** React Hook Form
+- **Icons:** [Lucide React](https://lucide.dev/)
+
+## 📋 Prasyarat Instalasi
+
+Sebelum memulai, pastikan Anda telah menginstal:
+
+- [Node.js](https://nodejs.org/) (Versi 18 atau lebih baru direkomendasikan)
+- [npm](https://www.npmjs.com/) atau yarn/pnpm
+
+## 🚀 Instalasi dan Penggunaan
+
+Ikuti langkah-langkah berikut untuk menjalankan proyek di komputer lokal Anda:
+
+1.  **Clone Repository**
+    ```bash
+    git clone [https://github.com/username/hris-frontend.git](https://github.com/username/hris-frontend.git)
+    cd hris-frontend
+    ```
+
+2.  **Instal Dependensi**
+    ```bash
+    npm install
+    ```
+
+3.  **Konfigurasi Environment**
+    Pastikan backend API sudah berjalan. Anda dapat mengunduh dan menjalankan backend dari repositori berikut:
+    👉 **[HRIS Backend (Laravel)](https://github.com/ekomh170/hris-backend-laravel-sib)**
+
+    Secara default, aplikasi ini mengarah ke `http://127.0.0.1:8000/api`. Jika URL backend Anda berbeda, sesuaikan file `src/lib/https.js` atau buat file `.env` (jika sudah dikonfigurasi untuk membacanya).
+
+4.  **Jalankan Aplikasi (Mode Development)**
+    ```bash
+    npm run dev
+    ```
+    Aplikasi biasanya akan berjalan di `http://localhost:5173`.
+
+5.  **Build untuk Produksi**
+    ```bash
+    npm run build
+    ```
+
+---
+
+## 👨‍💻 Tim Pengembang
+
+Terima kasih telah menggunakan HRIS Frontend kami! Proyek ini dikembangkan dengan sepenuh hati oleh tim kami untuk membantu mempermudah pengelolaan SDM di perusahaan Anda.
+
+**FWD Batch 3 - Kelompok HRIS** 🚀
+
+| 👤 Nama | 💼 Role |
+| :--- | :--- |
+| **Eko Muchamad Haryono** | Lead Backend Developer |
+| **Raka Muhammad Rabbani** | Backend Developer |
+| **Ryandra Athaya Saleh** | Lead Frontend Developer |
+| **Octaviani Nursalsabila** | UI/UX Developer |
+| **Yossy Indra Kusuma** | Frontend Developer |

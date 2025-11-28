@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import SalarySlipFilters from "../components/SalarySlipFilters.jsx";
 import ColumnVisibilityMenu from "../../../components/ColumnVisibilityMenu.jsx";
 import { SalaryColumns } from "../config/SalaryColumns.jsx";
 import {
@@ -23,6 +22,10 @@ import { toast } from "sonner";
 import FilterWrapper from "../../../components/FilterWrapper";
 import { useDebounce } from "../../../hooks/DebounceSearch.js";
 import { Plus } from "lucide-react";
+import FilterBar from "../../../components/filters/FilterBar.jsx";
+import FilterModal from "../../../components/filters/FilterModal.jsx";
+import { Field, FieldLabel } from "@/components/ui/field";
+import MonthSelect from "../../../components/filters/MonthSelect.jsx";
 
 export default function SalarySlipsPage() {
   const [error, setError] = useState(null);
@@ -41,14 +44,17 @@ export default function SalarySlipsPage() {
     created_by: false,
     actions: true,
   });
-
+  const [openFilters, setOpenFilters] = useState(false);
   const [page, setPage] = useState(1);
 
   // fetch performance reviews with filters and pagination
   const fetchSalaryRequest = async () => {
     try {
       setLoading(true);
-      const data = await getSalarySlipsRequest({ ...debouncedFilters, page: page });
+      const data = await getSalarySlipsRequest({
+        ...debouncedFilters,
+        page: page,
+      });
       setSalary(data.data);
       console.log(salary);
     } catch (err) {
@@ -97,7 +103,36 @@ export default function SalarySlipsPage() {
 
       <FilterWrapper>
         {/* Filters */}
-        <SalarySlipFilters filters={filters} setFilters={setFilters} />
+        {/* <SalarySlipFilters filters={filters} setFilters={setFilters} /> */}
+        <FilterBar
+          filters={filters}
+          setFilters={setFilters}
+          openFilters={() => setOpenFilters(true)}
+        />
+
+        <FilterModal
+          open={openFilters}
+          onOpenChange={setOpenFilters}
+          filters={filters}
+          setFilters={setFilters}
+        >
+          {/* render-prop function: receives localFilters, setLocalFilters */}
+          {(localFilters, setLocalFilters) => (
+            <>
+              {/* Month Filter */}
+              <Field>
+                <FieldLabel>Month</FieldLabel>
+                <MonthSelect
+                  value={localFilters.period || ""}
+                  onChange={(val) =>
+                    setLocalFilters((prev) => ({ ...prev, period: val }))
+                  }
+                />
+              </Field>
+            </>
+          )}
+        </FilterModal>
+
         {/* Button filter */}
         <div className="flex gap-2">
           <ColumnVisibilityMenu
@@ -106,7 +141,10 @@ export default function SalarySlipsPage() {
           />
           {/* Button Create */}
           <Link to="/admin/salary-slips/create">
-            <Button><Plus />Create Salary Slip</Button>
+            <Button>
+              <Plus />
+              Create Salary Slip
+            </Button>
           </Link>
         </div>
       </FilterWrapper>

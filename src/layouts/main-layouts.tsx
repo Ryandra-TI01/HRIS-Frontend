@@ -7,7 +7,7 @@ export default function MainLayout() {
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <AppSidebar />
-        <div className="flex-1 bg-muted/40 p-6 ">
+        <div className="flex-1 g-white/5 dark:bg-neutral-900/30 p-6 ">
           <SidebarTrigger className="mb-4" />
           <main className="mx-auto px-12 pb-12">
             <Outlet />

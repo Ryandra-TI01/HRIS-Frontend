@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import MainLayoutWrapper from "./MainLayoutWrapper";
 import Pagination from "./PaginationCustom";
+import TableSummary from "./filters/TableSummary";
 
 export default function CustomTable({
   data,
@@ -26,51 +27,59 @@ export default function CustomTable({
   const lastPage = data?.last_page || 1;
 
   return (
-    <MainLayoutWrapper>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {columns
-              .filter((c) => visibleColumns[c.key])
-              .map((c) => (
-                <TableHead key={c.key}>{c.label}</TableHead>
-              ))}
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {records && records.length > 0 ? (
-            records.map((row, index) => (
-              <TableRow key={row.id}>
-                {columns
-                  .filter((c) => visibleColumns[c.key])
-                  .map((c) => (
-                    <TableCell key={c.key}>
-                      {c.render(row, index, data, {
-                        loading,
-                        setLoading,
-                        onDelete,
-                        onRefresh,
-                        userRole,
-                      })}
-                    </TableCell>
-                  ))}
-              </TableRow>
-            ))
-          ) : (
+    <>
+      <TableSummary from={data?.from} to={data?.to} total={data?.total} />
+      <MainLayoutWrapper>
+        <Table>
+          <TableHeader>
             <TableRow>
-              <TableCell colSpan={columns.length} className={"text-center p-8"}>No records found</TableCell>
+              {columns
+                .filter((c) => visibleColumns[c.key])
+                .map((c) => (
+                  <TableHead key={c.key}>{c.label}</TableHead>
+                ))}
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          </TableHeader>
 
-      {/* PAGINATION */}
-      <Pagination
-        currentPage={currentPage}
-        lastPage={lastPage}
-        onPageChange={onPageChange}
-      />
-    </MainLayoutWrapper>
+          <TableBody>
+            {records && records.length > 0 ? (
+              records.map((row, index) => (
+                <TableRow key={row.id}>
+                  {columns
+                    .filter((c) => visibleColumns[c.key])
+                    .map((c) => (
+                      <TableCell key={c.key}>
+                        {c.render(row, index, data, {
+                          loading,
+                          setLoading,
+                          onDelete,
+                          onRefresh,
+                          userRole,
+                        })}
+                      </TableCell>
+                    ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className={"text-center p-8"}
+                >
+                  No records found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+
+        {/* PAGINATION */}
+        <Pagination
+          currentPage={currentPage}
+          lastPage={lastPage}
+          onPageChange={onPageChange}
+        />
+      </MainLayoutWrapper>
+    </>
   );
 }

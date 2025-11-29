@@ -6,7 +6,7 @@ Aplikasi web modern untuk manajemen Sumber Daya Manusia (SDM) yang dibangun meng
 
 | Tautan | URL |
 | :--- | :--- |
-| **🌐 Production / Live Demo** | **[https://kelompokfwd7-sibm3.karyakreasi.id/employee/dashboard](https://kelompokfwd7-sibm3.karyakreasi.id)** |
+| **🌐 Production / Live Demo** | **[https://kelompokfwd7-sibm3.karyakreasi.id/](https://kelompokfwd7-sibm3.karyakreasi.id)** |
 | **⚙️ Backend Repository** | **[https://github.com/ekomh170/hris-backend-laravel-sib](https://github.com/ekomh170/hris-backend-laravel-sib)** |
 
 ---

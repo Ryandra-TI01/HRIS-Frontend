@@ -26,6 +26,7 @@ import FilterBar from "../../../components/filters/FilterBar.jsx";
 import FilterModal from "../../../components/filters/FilterModal.jsx";
 import { Field, FieldLabel } from "@/components/ui/field";
 import MonthSelect from "../../../components/filters/MonthSelect.jsx";
+import SalaryRangeFilter from "../../../components/filters/SalaryRangeFilter.jsx";
 
 export default function SalarySlipsPage() {
   const [error, setError] = useState(null);
@@ -126,6 +127,19 @@ export default function SalarySlipsPage() {
                   value={localFilters.period || ""}
                   onChange={(val) =>
                     setLocalFilters((prev) => ({ ...prev, period: val }))
+                  }
+                />
+              </Field>
+              <Field>
+                <SalaryRangeFilter
+                  value={{
+                    salary_from: localFilters.salary_from,
+                    salary_to: localFilters.salary_to,
+                    total_from: localFilters.total_from,
+                    total_to: localFilters.total_to
+                  }}
+                  onChange={(updated) =>
+                    setLocalFilters((prev) => ({ ...prev, ...updated }))
                   }
                 />
               </Field>

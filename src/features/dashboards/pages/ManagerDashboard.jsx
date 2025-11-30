@@ -60,14 +60,14 @@ export default function ManagerDashboard() {
             <div className="grid grid-cols-2 gap-4">
               <DashboardStatCard
                 title="Total Attendance Records"
-                value={attendanceData.cards.total_attendance_records_team}
+                value={attendanceData?.cards?.total_attendance_records_team}
                 icon={Users}
                 accent="text-emerald-500"
               />
 
               <DashboardStatCard
                 title="Average Work Hours"
-                value={attendanceData.cards.average_work_hours_team}
+                value={attendanceData?.cards?.average_work_hours_team}
                 icon={Clock}
                 accent="text-blue-500"
               />
@@ -77,7 +77,7 @@ export default function ManagerDashboard() {
               <DashboardBarChart
                 title="Work Hours Overview"
                 description="Total hours worked by each employee"
-                data={attendanceData.chart_work_hours_per_employee}
+                data={attendanceData?.chart_work_hours_per_employee}
                 dataKey="total_hours"
                 xKey="employee_name"
                 color="#6366F1"
@@ -92,14 +92,14 @@ export default function ManagerDashboard() {
             <div className="grid grid-cols-2 gap-4">
               <DashboardStatCard
                 title="Average Team Rating"
-                value={performanceData.cards.average_team_rating}
+                value={performanceData?.cards?.average_team_rating}
                 icon={Star}
                 accent="text-purple-500"
               />
 
               <DashboardStatCard
                 title="Total Reviews This Period"
-                value={performanceData.cards.total_reviews_current_period}
+                value={performanceData?.cards?.total_reviews_current_period}
                 icon={FileText}
                 accent="text-orange-500"
               />
@@ -109,7 +109,7 @@ export default function ManagerDashboard() {
               <DashboardAreaChart
                 title="Performance Trend"
                 description="Average rating trend over last quarters"
-                data={performanceData.chart_rating_trend_over_periods}
+                data={performanceData?.chart_rating_trend_over_periods}
                 dataKey="avg_rating"
                 xKey="period"
                 color="#6366F1"

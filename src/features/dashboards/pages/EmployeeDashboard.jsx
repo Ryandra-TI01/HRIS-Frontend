@@ -73,14 +73,14 @@ export default function EmployeeDashboard() {
             <div className="grid grid-cols-2 gap-4">
               <DashboardStatCard
                 title="My Department"
-                value={personalInfo.my_department}
+                value={personalInfo?.my_department}
                 icon={Building2}
                 accent="text-blue-500"
               />
 
               <DashboardStatCard
                 title="My Manager"
-                value={personalInfo.my_manager}
+                value={personalInfo?.my_manager}
                 icon={User}
                 accent="text-emerald-500"
               />
@@ -94,14 +94,14 @@ export default function EmployeeDashboard() {
             <div className="grid grid-cols-2 gap-4">
               <DashboardStatCard
                 title="Total Work Hours (This Month)"
-                value={attendanceSummary.cards.total_work_hours_this_month}
+                value={attendanceSummary?.cards?.total_work_hours_this_month}
                 icon={Clock}
                 accent="text-indigo-500"
               />
 
               <DashboardStatCard
                 title="Days Present (This Month)"
-                value={attendanceSummary.cards.days_present_this_month}
+                value={attendanceSummary?.cards?.days_present_this_month}
                 icon={Calendar}
                 accent="text-orange-500"
               />

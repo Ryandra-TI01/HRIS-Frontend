@@ -11,6 +11,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Field, FieldLabel } from "@/components/ui/field";
 import PageHeader from "../../../components/PageHeader";
 import { useAuth } from "../../../context/AuthContext";
 import Loading from "../../../components/Loading";
@@ -18,9 +19,12 @@ import CustomTable from "../../../components/CustomTable";
 import { EmployeeColumns } from "../config/EmployeeColumns";
 import FilterWrapper from "../../../components/FilterWrapper";
 import { useDebounce } from "../../../hooks/DebounceSearch";
-import EmployeeFiltersModal from "../components/EmployeeFiltersModal";
-import EmployeeFilterBar from "../components/EmployeeFilterBar";
 import { Plus } from "lucide-react";
+import FilterBar from "../../../components/filters/FilterBar";
+import FilterModal from "../../../components/filters/FilterModal";
+import DepartmentSelect from "../../../components/filters/DepartmentSelect";
+import EmployementStatusSelect from "../../../components/filters/EmployementStatusSelect";
+import ManagerSelect from "../../../components/filters/ManagerSelect";
 export default function EmployeePage() {
   const { user } = useAuth();
   const [employees, setEmployees] = useState([]);
@@ -86,19 +90,56 @@ export default function EmployeePage() {
       {/* Filter Wrapper */}
       <FilterWrapper>
         {/* Filters */}
-        <EmployeeFilterBar
+        <FilterBar
           filters={filters}
           setFilters={setFilters}
           openFilters={() => setOpenFilters(true)}
         />
 
-        {/* modal */}
-        <EmployeeFiltersModal
+        <FilterModal
           open={openFilters}
-          onClose={() => setOpenFilters(false)}
+          onOpenChange={setOpenFilters}
           filters={filters}
           setFilters={setFilters}
-        />
+        >
+          {/* render-prop function: receives localFilters, setLocalFilters */}
+          {(localFilters, setLocalFilters) => (
+            <>
+              {user.role === "admin_hr" && (
+                <Field>
+                  <FieldLabel>Department</FieldLabel>
+                  <DepartmentSelect
+                    value={localFilters.department || ""}
+                    onChange={(val) =>
+                      setLocalFilters((f) => ({ ...f, department: val }))
+                    }
+                  />
+                </Field>
+              )}
+
+              <Field>
+                <FieldLabel>Employment Status</FieldLabel>
+                <EmployementStatusSelect
+                  value={localFilters.employment_status || ""}
+                  onChange={(val) =>
+                    setLocalFilters((f) => ({ ...f, employment_status: val }))
+                  }
+                />
+              </Field>
+              {user.role === "admin_hr" && (
+                <Field>
+                  <FieldLabel>Manager</FieldLabel>
+                  <ManagerSelect
+                    value={localFilters.manager_id || ""}
+                    onChange={(val) =>
+                      setLocalFilters((f) => ({ ...f, manager_id: val }))
+                    }
+                  />
+                </Field>
+              )}
+            </>
+          )}
+        </FilterModal>
 
         <div className="flex gap-2">
           <ColumnVisibilityMenu

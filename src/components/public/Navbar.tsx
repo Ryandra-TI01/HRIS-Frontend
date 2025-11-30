@@ -11,6 +11,7 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
+//@ts-ignore
 import Logo from "@/components/Logo";
 
 export default function Navbar() {

@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
 
-export default function Logo({ size = 200 }) {
+export default function Logo({ size = 300 }) {
   const { theme } = useTheme();
 
   const logoSrc =

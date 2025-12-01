@@ -28,6 +28,8 @@ export default function MyAttendancePage() {
   const debouncedFilters = useDebounce(filters, 600);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const [visibleColumns, setVisibleColumns] = useState({
@@ -41,7 +43,11 @@ export default function MyAttendancePage() {
   const fetchMyAttadances = async () => {
     setLoading(true);
     try {
-      const data = await getMyAttendances({ ...debouncedFilters, page: page });
+      const data = await getMyAttendances({
+        ...debouncedFilters,
+        page: page,
+        per_page: perPage,
+      });
       setAttadances(data?.data || []);
     } catch (error) {
       console.error("Failed to fetch attadances:", error);
@@ -53,8 +59,12 @@ export default function MyAttendancePage() {
   // trigger fetch when filters or page change
   useEffect(() => {
     fetchMyAttadances();
-  }, [debouncedFilters, page]);
+  }, [debouncedFilters, page, perPage]);
 
+  const handlePerPageChange = (value) => {
+    setPerPage(value);
+    setPage(1); // reset page ke 1 untuk UX yang benar
+  };
   const todayRecord = useMemo(() => {
     if (!Array.isArray(attadances.data)) return null;
 
@@ -84,7 +94,9 @@ export default function MyAttendancePage() {
         <MyAttendanceFilters filters={filters} setFilters={setFilters} />
 
         <div className="flex gap-3">
-          <Button onClick={() => setModalOpen(true)}><CalendarCheck /> Attendance</Button>
+          <Button onClick={() => setModalOpen(true)}>
+            <CalendarCheck /> Attendance
+          </Button>
 
           <ColumnVisibilityMenu
             visibleColumns={visibleColumns}
@@ -102,6 +114,8 @@ export default function MyAttendancePage() {
           onPageChange={setPage}
           onRefresh={fetchMyAttadances}
           columns={AttendanceColumns}
+          onPerPageChange={handlePerPageChange}
+          perPage={perPage}
         />
       )}
 

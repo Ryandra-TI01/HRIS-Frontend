@@ -42,12 +42,17 @@ export default function LeavesPage() {
   });
   const [openFilters, setOpenFilters] = useState(false);
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   // fetch performance reviews with filters and pagination
   const fetchLeaveRequest = async () => {
     try {
       setLoading(true);
-      const data = await getLeaveRequests({ ...debouncedFilters, page: page });
+      const data = await getLeaveRequests({
+        ...debouncedFilters,
+        page: page,
+        per_page: perPage,
+      });
       setLeaves(data.data);
       console.log(leaves);
     } catch (err) {
@@ -60,8 +65,13 @@ export default function LeavesPage() {
   // trigger fetch when filters or page change
   useEffect(() => {
     fetchLeaveRequest();
-  }, [debouncedFilters, page]);
+  }, [debouncedFilters, page, perPage]);
 
+  // trigger fetch when filters or page change
+  const handlePerPageChange = (value) => {
+    setPerPage(value);
+    setPage(1); // reset page ke 1 untuk UX yang benar
+  };
   return (
     <>
       {/* Breadcrumb */}
@@ -165,6 +175,8 @@ export default function LeavesPage() {
           onPageChange={(newPage) => setPage(newPage)}
           onRefresh={fetchLeaveRequest}
           columns={leaveColumns}
+          onPerPageChange={handlePerPageChange}
+          perPage={perPage}
         />
       )}
     </>

@@ -35,6 +35,7 @@ export default function MyLeavesPage() {
   });
 
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   const fetchLeaveRequest = async () => {
     setLoading(true);
@@ -42,10 +43,10 @@ export default function MyLeavesPage() {
       const data = await getMyLeaveRequests({
         ...debouncedFilters,
         page: page,
+        per_page: perPage,
       });
       setLeaves(data.data);
       console.log(leaves);
-      
     } catch (err) {
       console.error(err);
     } finally {
@@ -55,8 +56,13 @@ export default function MyLeavesPage() {
 
   useEffect(() => {
     fetchLeaveRequest();
-  }, [debouncedFilters, page]);
+  }, [debouncedFilters, page, perPage]);
 
+  // trigger fetch when filters or page change
+  const handlePerPageChange = (value) => {
+    setPerPage(value);
+    setPage(1); // reset page ke 1 untuk UX yang benar
+  };
   return (
     <>
       {/* Breadcrumb */}
@@ -87,7 +93,10 @@ export default function MyLeavesPage() {
           />
 
           <Link to="/employee/leaves/create">
-            <Button><Plus />Create Leave Request</Button>
+            <Button>
+              <Plus />
+              Create Leave Request
+            </Button>
           </Link>
         </div>
       </FilterWrapper>
@@ -99,9 +108,11 @@ export default function MyLeavesPage() {
         <CustomTable
           data={leaves}
           visibleColumns={visibleColumns}
-          onPageChange={(newPage) => setPage(newPage)}
+          onPageChange={setPage}
           onRefresh={fetchLeaveRequest}
           columns={leaveColumns}
+          onPerPageChange={handlePerPageChange}
+          perPage={perPage}
         />
       )}
     </>

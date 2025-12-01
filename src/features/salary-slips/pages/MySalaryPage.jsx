@@ -6,6 +6,7 @@ import PageHeader from "../../../components/PageHeader";
 import Loading from "../../../components/Loading";
 import { useDebounce } from "../../../hooks/DebounceSearch";
 import CustomPagination from "../../../components/PaginationCustom";
+import PerPageSelect from "../../../components/PerPageSelect";
 
 export default function MySalaryPage() {
   const [salaryList, setSalaryList] = useState([]);
@@ -24,6 +25,7 @@ export default function MySalaryPage() {
     lastPage: 1,
     onPageChange: () => {},
   });
+  const [perPage, setPerPage] = useState(10);
 
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
@@ -33,6 +35,8 @@ export default function MySalaryPage() {
       setLoading(true);
       const res = await getMySalarySlip({
         page,
+        per_page: perPage,
+
         period: debouncedPeriod,
       });
 
@@ -52,18 +56,17 @@ export default function MySalaryPage() {
 
   useEffect(() => {
     fetchSalary(1);
-  }, []);
+  }, [perPage]);
 
   useEffect(() => {
     fetchSalary(1);
-  }, [debouncedPeriod]);  
+  }, [debouncedPeriod]);
 
   const resetAll = () => {
     setFilterMonth("");
     setFilterYear("");
     fetchSalary(1);
   };
-  console.log(salaryList);
 
   return (
     <>
@@ -100,12 +103,18 @@ export default function MySalaryPage() {
           <p className="text-muted-foreground">No salary slip found.</p>
         </div>
       )}
-      {/* PAGINATION */}
-      <CustomPagination
-        currentPage={pagination.currentPage}
-        lastPage={pagination.lastPage}
-        onPageChange={pagination.onPageChange}
-      />
+      <div className="flex justify-end mt-4">
+        <div className="flex flex-nowrap gap-4">
+          <PerPageSelect perPage={perPage} onChange={setPerPage} />
+
+          {/* PAGINATION */}
+          <CustomPagination
+            currentPage={pagination.currentPage}
+            lastPage={pagination.lastPage}
+            onPageChange={pagination.onPageChange}
+          />
+        </div>
+      </div>
     </>
   );
 }

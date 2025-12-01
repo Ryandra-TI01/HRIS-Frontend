@@ -31,6 +31,7 @@ export default function MyPerformanceReviewPage() {
     review_description: true,
   });
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   const fetchPerformanceReview = async () => {
     setLoading(true);
@@ -38,6 +39,7 @@ export default function MyPerformanceReviewPage() {
       const data = await getMyPerformanceReviews({
         ...debouncedFilters,
         page: page,
+        per_page: perPage,
       });
       setPerformanceReview(data.data);
     } catch (error) {
@@ -50,7 +52,13 @@ export default function MyPerformanceReviewPage() {
 
   useEffect(() => {
     fetchPerformanceReview();
-  }, [debouncedFilters, page]);
+  }, [debouncedFilters, page, perPage]);
+
+  // trigger fetch when filters or page change
+  const handlePerPageChange = (value) => {
+    setPerPage(value);
+    setPage(1); // reset page ke 1 untuk UX yang benar
+  };
 
   return (
     <>
@@ -83,9 +91,11 @@ export default function MyPerformanceReviewPage() {
         <CustomTable
           data={performanceReview}
           visibleColumns={visibleColumns}
-          onPageChange={(newPage) => setPage(newPage)}
+          onPageChange={setPage}
           onRefresh={fetchPerformanceReview}
           columns={PerformanceReviewColumns}
+          onPerPageChange={handlePerPageChange}
+          perPage={perPage}
         />
       )}
     </>

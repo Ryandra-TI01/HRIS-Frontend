@@ -10,6 +10,7 @@ import { useState } from "react";
 import MainLayoutWrapper from "./MainLayoutWrapper";
 import Pagination from "./PaginationCustom";
 import TableSummary from "./filters/TableSummary";
+import PerPageSelect from "./PerPageSelect";
 
 export default function CustomTable({
   data,
@@ -19,6 +20,8 @@ export default function CustomTable({
   onDelete,
   columns,
   userRole,
+  onPerPageChange,
+  perPage = 10,
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -73,12 +76,17 @@ export default function CustomTable({
           </TableBody>
         </Table>
 
-        {/* PAGINATION */}
-        <Pagination
-          currentPage={currentPage}
-          lastPage={lastPage}
-          onPageChange={onPageChange}
-        />
+        <div className="flex justify-end mt-4">
+          <div className="flex flex-nowrap gap-4">
+            <PerPageSelect perPage={perPage} onChange={onPerPageChange} />
+
+            <Pagination
+              currentPage={currentPage}
+              lastPage={lastPage}
+              onPageChange={onPageChange}
+            />
+          </div>
+        </div>
       </MainLayoutWrapper>
     </>
   );

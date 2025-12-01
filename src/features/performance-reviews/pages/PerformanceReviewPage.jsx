@@ -49,6 +49,7 @@ export default function PerformanceReviewPage() {
   });
   const [openFilters, setOpenFilters] = useState(false);
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   // fetch performance reviews with filters and pagination
   const fetchPerformanceReview = async () => {
@@ -57,6 +58,7 @@ export default function PerformanceReviewPage() {
       const data = await getPerformancesRequest({
         ...debouncedFilters,
         page: page,
+        per_page: perPage,
       });
       setPerformanceReview(data.data);
     } catch (err) {
@@ -69,7 +71,13 @@ export default function PerformanceReviewPage() {
   // trigger fetch when filters or page change
   useEffect(() => {
     fetchPerformanceReview();
-  }, [debouncedFilters, page]);
+  }, [debouncedFilters, page, perPage]);
+
+  // trigger fetch when filters or page change
+  const handlePerPageChange = (value) => {
+    setPerPage(value);
+    setPage(1); // reset page ke 1 untuk UX yang benar
+  };
 
   // handle delete
   const handleDelete = async (id) => {
@@ -200,11 +208,13 @@ export default function PerformanceReviewPage() {
         <CustomTable
           data={performanceReview}
           visibleColumns={visibleColumns}
-          onPageChange={(newPage) => setPage(newPage)}
+          onPageChange={setPage}
           onRefresh={fetchPerformanceReview}
           columns={PerformanceReviewColumns}
           onDelete={handleDelete}
           userRole={user.role}
+          onPerPageChange={handlePerPageChange}
+          perPage={perPage}
         />
       )}
     </>

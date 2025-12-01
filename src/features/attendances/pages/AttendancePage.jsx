@@ -42,12 +42,17 @@ export default function AttadancePage() {
     work_hour: true,
   });
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   // fetch attadances with filters and pagination
   const fetchAttadances = async () => {
     try {
       setLoading(true);
-      const data = await getAttendancesRequest({ ...debouncedFilters, page });
+      const data = await getAttendancesRequest({
+        ...debouncedFilters,
+        page,
+        per_page: perPage,
+      });
       setAttadances(data.data);
     } catch (err) {
       console.error("Failed to fetch attadances:", err);
@@ -59,8 +64,13 @@ export default function AttadancePage() {
   // trigger fetch when filters or page change
   useEffect(() => {
     fetchAttadances();
-  }, [debouncedFilters, page]);
-
+  }, [debouncedFilters, page, perPage]);
+  
+  // trigger fetch when filters or page change
+  const handlePerPageChange = (value) => {
+    setPerPage(value);
+    setPage(1); // reset page ke 1 untuk UX yang benar
+  };
   return (
     <>
       {/* Breadcrumb */}
@@ -165,6 +175,8 @@ export default function AttadancePage() {
           onPageChange={setPage}
           onRefresh={fetchAttadances}
           columns={AttendanceColumns}
+          onPerPageChange={handlePerPageChange}
+          perPage={perPage}
         />
       )}
     </>

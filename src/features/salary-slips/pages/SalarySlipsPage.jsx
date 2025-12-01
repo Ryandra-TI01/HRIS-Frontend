@@ -47,6 +47,7 @@ export default function SalarySlipsPage() {
   });
   const [openFilters, setOpenFilters] = useState(false);
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   // fetch performance reviews with filters and pagination
   const fetchSalaryRequest = async () => {
@@ -55,6 +56,7 @@ export default function SalarySlipsPage() {
       const data = await getSalarySlipsRequest({
         ...debouncedFilters,
         page: page,
+        per_page: perPage,
       });
       setSalary(data.data);
       console.log(salary);
@@ -68,7 +70,13 @@ export default function SalarySlipsPage() {
   // trigger fetch when filters or page change
   useEffect(() => {
     fetchSalaryRequest();
-  }, [debouncedFilters, page]);
+  }, [debouncedFilters, page, perPage]);
+
+  // trigger fetch when filters or page change
+  const handlePerPageChange = (value) => {
+    setPerPage(value);
+    setPage(1); // reset page ke 1 untuk UX yang benar
+  };
 
   // handle delete salary slip
   const handleDelete = async (id) => {
@@ -136,7 +144,7 @@ export default function SalarySlipsPage() {
                     salary_from: localFilters.salary_from,
                     salary_to: localFilters.salary_to,
                     total_from: localFilters.total_from,
-                    total_to: localFilters.total_to
+                    total_to: localFilters.total_to,
                   }}
                   onChange={(updated) =>
                     setLocalFilters((prev) => ({ ...prev, ...updated }))
@@ -170,10 +178,12 @@ export default function SalarySlipsPage() {
         <CustomTable
           data={salary}
           visibleColumns={visibleColumns}
-          onPageChange={(newPage) => setPage(newPage)}
+          onPageChange={setPage}
           onRefresh={fetchSalaryRequest}
           onDelete={handleDelete}
           columns={SalaryColumns}
+          onPerPageChange={handlePerPageChange}
+          perPage={perPage}
         />
       )}
     </>

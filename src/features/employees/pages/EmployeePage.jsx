@@ -47,6 +47,7 @@ export default function EmployeePage() {
     ...(user.role === "admin_hr" && { actions: true }),
   });
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   // fetch employees with filters and pagination
   const fetchEmployees = async () => {
@@ -55,6 +56,7 @@ export default function EmployeePage() {
       const data = await getEmployeesRequest({
         ...debouncedFilters,
         page: page,
+        per_page: perPage,
       });
       setEmployees(data.data);
     } catch (err) {
@@ -67,7 +69,13 @@ export default function EmployeePage() {
   // trigger fetch when filters or page change
   useEffect(() => {
     fetchEmployees();
-  }, [debouncedFilters, page]);
+  }, [debouncedFilters, page, perPage]);
+  
+  // trigger fetch when filters or page change
+  const handlePerPageChange = (value) => {
+    setPerPage(value);
+    setPage(1); // reset page ke 1 untuk UX yang benar
+  };
 
   return (
     <>
@@ -165,10 +173,12 @@ export default function EmployeePage() {
         <CustomTable
           data={employees}
           visibleColumns={visibleColumns}
-          onPageChange={(newPage) => setPage(newPage)}
+          onPageChange={setPage}
           onRefresh={fetchEmployees}
           columns={EmployeeColumns}
           userRole={user.role}
+          onPerPageChange={handlePerPageChange}
+          perPage={perPage}
         />
       )}
     </>

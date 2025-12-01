@@ -33,8 +33,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <Link to="/">
-                <div className="w-full flex flex-col items-center justify-center pt-10 pb-6">
-                  <Logo size={300} />
+                <div className="w-full flex items-center justify-center">
+                  <Logo size={140} />
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -47,8 +47,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             user?.role === "admin_hr"
               ? sidebarMenu.navMain.admin_hr
               : user?.role === "manager"
-              ? sidebarMenu.navMain.manager
-              : []
+                ? sidebarMenu.navMain.manager
+                : []
           }
         />
         <NavPersonal

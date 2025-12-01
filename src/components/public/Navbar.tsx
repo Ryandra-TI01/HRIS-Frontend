@@ -32,9 +32,9 @@ export default function Navbar() {
         {/* === LOGO === */}
         <Link
           to="/"
-          className="flex items-center mt-4 hover:opacity-80 transition select-none"
+          className="flex items-center hover:opacity-80 transition select-none"
         >
-          <Logo size={200} />
+          <Logo size={180} />
         </Link>
 
         {/* === NAVIGATION MENU === */}

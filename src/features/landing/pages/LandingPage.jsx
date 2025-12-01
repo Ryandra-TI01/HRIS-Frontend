@@ -2,21 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-
-import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
-
 import {
   Users,
   UserPlus,
@@ -26,10 +17,9 @@ import {
   Star,
   ShieldCheck,
   Sparkles,
-  TrendingUp,
-  ChevronRight,
+  TrendingUp
 } from "lucide-react";
-
+import  FeatureCard  from "../components/FeatureCard";
 export default function LandingPage() {
   const images = [
     "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=60",
@@ -167,17 +157,17 @@ export default function LandingPage() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <WhyCard
+          <FeatureCard
             icon={<ShieldCheck className="w-8 h-8 text-primary" />}
             title="Secure & Reliable"
             desc="Your HR data is protected with enterprise-grade encryption and secure authentication standards."
           />
-          <WhyCard
+          <FeatureCard
             icon={<Sparkles className="w-8 h-8 text-primary" />}
             title="Modern & Intuitive UI"
             desc="Our clean interface ensures fast learning curves for HR staff, employees, and managers."
           />
-          <WhyCard
+          <FeatureCard
             icon={<TrendingUp className="w-8 h-8 text-primary" />}
             title="Scalable Architecture"
             desc="Built to grow with your organization — suitable for small teams up to enterprise-level deployment."
@@ -196,36 +186,4 @@ export default function LandingPage() {
   );
 }
 
-function FeatureCard({ icon, title, desc }) {
-  return (
-    <Card className="shadow-sm hover:shadow-xl transition hover:-translate-y-1">
-      <CardHeader className="flex flex-row items-center gap-3">
-        {icon}
-        <CardTitle className="text-lg">{title}</CardTitle>
-      </CardHeader>
 
-      <CardContent>
-        <CardDescription className="text-gray-600 dark:text-gray-300 leading-relaxed">
-          {desc}
-        </CardDescription>
-      </CardContent>
-    </Card>
-  );
-}
-
-function WhyCard({ icon, title, desc }) {
-  return (
-    <Card className="shadow-md border dark:border-gray-700 hover:shadow-xl transition">
-      <CardHeader>
-        <div className="mb-2">{icon}</div>
-        <CardTitle className="text-xl">{title}</CardTitle>
-      </CardHeader>
-
-      <CardContent>
-        <CardDescription className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-          {desc}
-        </CardDescription>
-      </CardContent>
-    </Card>
-  );
-}

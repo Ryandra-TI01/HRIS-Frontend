@@ -5,8 +5,8 @@ export default function Logo({ size = 300 }) {
 
   const logoSrc =
     theme === "dark"
-      ? "/LogoHris-dark.png"
-      : "/LogoHris.png";
+      ? "/logo-hris-dark.png"
+      : "/logo-hris.png";
 
   return (
     <img

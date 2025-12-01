@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, PenLine, Trash } from "lucide-react";
-import { formatDate } from "../../../components/FormatDateTime";
+import { formatDate } from "../../../hooks/FormatDateTime";
 import { Spinner } from "../../../components/ui/spinner";
 import { Link } from "react-router";
 

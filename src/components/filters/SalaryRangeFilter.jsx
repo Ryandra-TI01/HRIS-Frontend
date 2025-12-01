@@ -1,24 +1,6 @@
-// SalaryRangeFilter.jsx
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
-
-/**
- * Format number to thousands format (e.g. 1000000 -> "1.000.000")
- */
-function formatNumber(value) {
-  if (!value) return "";
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-/**
- * Convert formatted text back to raw number
- * e.g. "1.000.000" -> 1000000
- */
-function unformatNumber(value) {
-  if (!value) return "";
-  return value.replace(/\./g, "");
-}
-
+import { formatNumber, unformatNumber } from "../../hooks/NumberFormatter";
 export default function SalaryRangeFilter({ value, onChange }) {
   const {
     salary_from,

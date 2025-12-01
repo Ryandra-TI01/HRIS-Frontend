@@ -1,4 +1,4 @@
-import { formatDate, formatTime } from "../../../components/FormatDateTime";
+import { formatDate } from "../../../hooks/FormatDateTime";
 
 export const AttendanceColumns = [
   {

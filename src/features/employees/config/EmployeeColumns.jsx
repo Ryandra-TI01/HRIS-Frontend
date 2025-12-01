@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, PenLine } from "lucide-react";
 import { Link } from "react-router";
-import { formatDate } from "@/components/FormatDateTime";
+import { formatDate } from "@/hooks/FormatDateTime";
 
 export const EmployeeColumns = [
   {

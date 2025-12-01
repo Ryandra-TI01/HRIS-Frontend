@@ -46,6 +46,7 @@ import { Check, ChevronsUpDown, AlertCircleIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Loading from "../../../components/Loading";
 import PageHeader from "../../../components/PageHeader";
+import { formatNumber, unformatNumber } from "../../../hooks/NumberFormatter";
 
 export default function SalarySlipEditPage() {
   const navigate = useNavigate();
@@ -189,9 +190,7 @@ export default function SalarySlipEditPage() {
       ) : (
         <>
           {/* page header */}
-          <PageHeader>
-            Edit Salary Slip for {form.employee_name}
-          </PageHeader>
+          <PageHeader>Edit Salary Slip for {form.employee_name}</PageHeader>
 
           {errors && (
             <Alert variant="destructive" className="mb-4">
@@ -293,33 +292,42 @@ export default function SalarySlipEditPage() {
                   <Field>
                     <FieldLabel>Basic Salary</FieldLabel>
                     <Input
-                      type="number"
-                      value={form.basic_salary}
-                      onChange={(e) =>
-                        handleChange("basic_salary", Number(e.target.value))
-                      }
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="e.g. 1000.000"
+                      value={formatNumber(form.basic_salary)}
+                      onChange={(e) => {
+                        const raw = unformatNumber(e.target.value);
+                        handleChange("basic_salary", raw);
+                      }}
                     />
                   </Field>
 
                   <Field>
                     <FieldLabel>Allowance</FieldLabel>
                     <Input
-                      type="number"
-                      value={form.allowance}
-                      onChange={(e) =>
-                        handleChange("allowance", Number(e.target.value))
-                      }
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="e.g. 1000.000"
+                      value={formatNumber(form.allowance)}
+                      onChange={(e) => {
+                        const raw = unformatNumber(e.target.value);
+                        handleChange("allowance", raw);
+                      }}
                     />
                   </Field>
 
                   <Field>
                     <FieldLabel>Deduction</FieldLabel>
                     <Input
-                      type="number"
-                      value={form.deduction}
-                      onChange={(e) =>
-                        handleChange("deduction", Number(e.target.value))
-                      }
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="e.g. 200.000"
+                      value={formatNumber(form.deduction)}
+                      onChange={(e) => {
+                        const raw = unformatNumber(e.target.value);
+                        handleChange("deduction", raw);
+                      }}
                     />
                   </Field>
                 </section>

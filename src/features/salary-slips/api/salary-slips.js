@@ -26,6 +26,6 @@ export const deleteSalarySlipRequest = async (salaryId) => {
 };
 
 export const getMySalarySlip = async (params = {}) => {
-  const res = await API.get("/salary-slips/me");
+  const res = await API.get("/salary-slips/me", { params });
   return res.data.data;
 };

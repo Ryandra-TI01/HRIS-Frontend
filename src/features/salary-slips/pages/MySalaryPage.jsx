@@ -9,44 +9,40 @@ import CustomPagination from "../../../components/PaginationCustom";
 
 export default function MySalaryPage() {
   const [salaryList, setSalaryList] = useState([]);
+
+  // FILTER STATES
+  const [filterMonth, setFilterMonth] = useState("");
+  const [filterYear, setFilterYear] = useState("");
+
+  // AUTO BUILD PERIOD sesuai backend
+  const period = filterMonth || filterYear || "";
+
+  const debouncedPeriod = useDebounce(period, 500);
+
   const [pagination, setPagination] = useState({
     currentPage: 1,
     lastPage: 1,
     onPageChange: () => {},
   });
 
-  const [filters, setFilters] = useState({
-    month: "",
-    year: "",
-  });
-
-  const debouncedFilters = useDebounce(filters, 500);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
 
   const fetchSalary = async (page = 1) => {
     try {
       setLoading(true);
-
-      const params = {
+      const res = await getMySalarySlip({
         page,
-        month: debouncedFilters.month,
-        year: debouncedFilters.year,
-      };
-
-      const res = await getMySalarySlip(params);
+        period: debouncedPeriod,
+      });
 
       setSalaryList(res.data);
 
-      // Bind pagination agar cocok ke CustomPagination
       setPagination({
         currentPage: res.current_page,
         lastPage: res.last_page,
-        onPageChange: (newPage) => {
-          fetchSalary(newPage);
-        },
+        onPageChange: (newPage) => fetchSalary(newPage),
       });
-
     } catch (error) {
       console.log("Fetch Salary Error:", error);
     } finally {
@@ -60,17 +56,25 @@ export default function MySalaryPage() {
 
   useEffect(() => {
     fetchSalary(1);
-  }, [debouncedFilters]);
+  }, [debouncedPeriod]);  
+
+  const resetAll = () => {
+    setFilterMonth("");
+    setFilterYear("");
+    fetchSalary(1);
+  };
+  console.log(salaryList);
 
   return (
     <>
       <PageHeader>My Salary</PageHeader>
 
       <MySalaryFilter
-        selectedMonth={filters.month}
-        selectedYear={filters.year}
-        onFilterChange={(m, y) => setFilters({ month: m, year: y })}
-        onRefresh={() => fetchSalary(1)}
+        month={filterMonth}
+        year={filterYear}
+        onMonthChange={setFilterMonth}
+        onYearChange={setFilterYear}
+        onRefresh={resetAll}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
       />
@@ -79,7 +83,6 @@ export default function MySalaryPage() {
         <Loading />
       ) : salaryList.length > 0 ? (
         <>
-          {/* LISTING */}
           <div
             className={
               viewMode === "grid"
@@ -91,21 +94,18 @@ export default function MySalaryPage() {
               <MySalaryCard key={slip.id} slip={slip} viewMode={viewMode} />
             ))}
           </div>
-
-          {/* PAGINATION */}
-          <div className="mt-8 flex justify-center">
-            <CustomPagination
-              currentPage={pagination.currentPage}
-              lastPage={pagination.lastPage}
-              onPageChange={pagination.onPageChange}
-            />
-          </div>
         </>
       ) : (
-        <p className="text-gray-500 flex justify-center items-center h-64">
-          No salary slip found.
-        </p>
+        <div className="mt-4 flex items-center justify-center">
+          <p className="text-muted-foreground">No salary slip found.</p>
+        </div>
       )}
+      {/* PAGINATION */}
+      <CustomPagination
+        currentPage={pagination.currentPage}
+        lastPage={pagination.lastPage}
+        onPageChange={pagination.onPageChange}
+      />
     </>
   );
 }

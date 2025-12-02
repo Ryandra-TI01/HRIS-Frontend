@@ -8,16 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Spinner } from "@/components/ui/spinner"
+import { Spinner } from "@/components/ui/spinner";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
 
 import { useAuth } from "../../../context/AuthContext";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import handleApiError from "../../../utils/handleApiError";
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon, Eye, EyeOff } from "lucide-react";
 
 export function LoginForm({ className, ...props }) {
   // context for login
@@ -28,6 +28,7 @@ export function LoginForm({ className, ...props }) {
 
   // form data state
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   // handle input change
   const handleChange = (e) => {
@@ -102,13 +103,28 @@ export function LoginForm({ className, ...props }) {
                   </Link>
                 </div>
 
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="pr-10"
+                  />
+
+                  {/* Toggle Button */}
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="
+                        absolute right-2 top-1/2 -translate-y-1/2 
+                        text-muted-foreground hover:text-foreground transition
+                      "
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </Field>
 
               {/* SUBMIT BUTTON */}

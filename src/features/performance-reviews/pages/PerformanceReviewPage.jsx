@@ -84,7 +84,7 @@ export default function PerformanceReviewPage() {
     setLoading(true);
     try {
       await deletePerformanceRequest(id);
-      onRefresh(); // refresh data setelah delete
+      fetchPerformanceReview(); // refresh data setelah delete
       toast.success("Perfomance Review deleted successfully.");
     } catch (error) {
       setError("Failed to delete performance review.");

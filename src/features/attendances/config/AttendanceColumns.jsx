@@ -39,6 +39,6 @@ export const AttendanceColumns = [
   {
     key: "work_hour",
     label: "Work Hour",
-    render: (row) => `${row.work_hour || 0} Hour`,
+    render: (row) => `${row.work_hour || "00:00"} Hour`,
   },
 ];

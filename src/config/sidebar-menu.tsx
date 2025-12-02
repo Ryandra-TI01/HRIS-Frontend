@@ -14,7 +14,7 @@ export const sidebarMenu = {
         icon: Users,
       },
       {
-        title: "Team Attadance",
+        title: "Team Attendance",
         url: "/admin/attendances",
         icon: Calendar,
       },
@@ -47,7 +47,7 @@ export const sidebarMenu = {
         icon: Users,
       },
       {
-        title: "Team Attadance",
+        title: "Team Attendance",
         url: "/manager/attendances",
         icon: Calendar,
       },

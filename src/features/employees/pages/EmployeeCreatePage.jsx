@@ -28,7 +28,9 @@ import { toast } from "sonner";
 import {
     Field, FieldLabel
 } from "../../../components/ui/field";
+import { useNavigate } from "react-router";
 export default function EmployeeCreatePage() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [managers, setManagers] = useState([]);
   const [errors, setErrors] = useState(null);
@@ -90,6 +92,7 @@ export default function EmployeeCreatePage() {
         contact: "",
         manager_id: "",
       });
+      navigate("/admin/employees");
     } catch (err) {
       setErrors(handleApiError(err));
     } finally {

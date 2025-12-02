@@ -84,7 +84,7 @@ export default function SalarySlipsPage() {
     try {
       await deleteSalarySlipRequest(id);
       toast.success("Salary slip deleted successfully.");
-      onRefresh(); // refresh data after delete
+      fetchSalaryRequest();
     } catch (error) {
       setError("Failed to delete salary slip.");
     } finally {

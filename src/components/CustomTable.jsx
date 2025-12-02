@@ -78,7 +78,10 @@ export default function CustomTable({
 
         <div className="flex justify-end mt-4">
           <div className="flex flex-nowrap gap-4">
-            <PerPageSelect perPage={perPage} onChange={onPerPageChange} />
+            {/* HIDE PER PAGE ON MOBILE */}
+            <div className="hidden md:flex">
+              <PerPageSelect perPage={perPage} onChange={onPerPageChange} />
+            </div>
 
             <Pagination
               currentPage={currentPage}

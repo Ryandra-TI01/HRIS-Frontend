@@ -157,12 +157,10 @@ export default function LeavesPage() {
         </FilterModal>
 
         {/* Button filter */}
-        <div className="flex gap-2">
-          <ColumnVisibilityMenu
-            visibleColumns={visibleColumns}
-            setVisibleColumns={setVisibleColumns}
-          />
-        </div>
+        <ColumnVisibilityMenu
+          visibleColumns={visibleColumns}
+          setVisibleColumns={setVisibleColumns}
+        />
       </FilterWrapper>
 
       {/* Table Leaves */}

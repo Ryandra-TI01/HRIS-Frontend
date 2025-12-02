@@ -16,7 +16,7 @@ export default function YearSelect({ value, onChange, startYear = 2010 }) {
 
   return (
     <Select value={value || null} onValueChange={onChange}>
-      <SelectTrigger className="w-32">
+      <SelectTrigger className="w-full sm:w-40">
         <SelectValue placeholder="Select Year" />
       </SelectTrigger>
       <SelectContent>

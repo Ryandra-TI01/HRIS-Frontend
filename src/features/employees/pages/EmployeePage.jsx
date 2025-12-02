@@ -70,7 +70,7 @@ export default function EmployeePage() {
   useEffect(() => {
     fetchEmployees();
   }, [debouncedFilters, page, perPage]);
-  
+
   // trigger fetch when filters or page change
   const handlePerPageChange = (value) => {
     setPerPage(value);
@@ -134,6 +134,8 @@ export default function EmployeePage() {
                   }
                 />
               </Field>
+
+              {/* Button create */}
               {user.role === "admin_hr" && (
                 <Field>
                   <FieldLabel>Manager</FieldLabel>
@@ -148,17 +150,15 @@ export default function EmployeePage() {
             </>
           )}
         </FilterModal>
-
-        <div className="flex gap-2">
+        <div className="flex md:flex-row gap-2 sm:justify-end">
           <ColumnVisibilityMenu
             visibleColumns={visibleColumns}
             setVisibleColumns={setVisibleColumns}
           />
-          {/* Button create */}
+
           {user.role === "admin_hr" && (
             <Link to="/admin/employees/create">
               <Button>
-                {" "}
                 <Plus /> Create Employee
               </Button>
             </Link>

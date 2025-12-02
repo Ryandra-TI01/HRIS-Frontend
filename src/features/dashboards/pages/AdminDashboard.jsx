@@ -60,7 +60,8 @@ export default function AdminDashboard() {
           <section>
             <PageHeader>Employee Overview</PageHeader>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
+
               <DashboardStatCard
                 title="Total Employees"
                 value={employeeOverview?.cards?.total_employees}
@@ -92,7 +93,8 @@ export default function AdminDashboard() {
           <section>
             <PageHeader>Attendance Overview</PageHeader>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
+
               <DashboardStatCard
                 title="Attendance Records Today"
                 value={attendanceOverview?.cards?.attendance_records_today}

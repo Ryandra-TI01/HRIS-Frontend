@@ -13,28 +13,33 @@ export default function MySalaryFilter({
   onViewModeChange,
 }) {
   return (
-    <div className="flex items-center gap-3 mb-6">
-      
-      {/* MONTH SELECT */}
-      <MonthSelect
-        value={month}
-        onChange={(val) => onMonthChange(val)}
-      />
+    <div
+      className="
+        flex flex-col gap-3 mb-6 
+        sm:flex-row sm:items-center sm:justify-between
+      "
+    >
+      {/* LEFT SIDE: Filters */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <MonthSelect value={month} onChange={(val) => onMonthChange(val)} />
 
-      {/* YEAR SELECT */}
-      <YearSelect
-        value={year}
-        onChange={(val) => onYearChange(val)}
-        startYear={2010}
-      />
+        <YearSelect
+          value={year}
+          onChange={(val) => onYearChange(val)}
+          startYear={2010}
+        />
 
-      {/* RESET */}
-      <Button variant="outline" className="h-8" onClick={onRefresh}>
-        Reset
-      </Button>
+        <Button
+          variant="outline"
+          className="h-8 sm:w-auto w-full"
+          onClick={onRefresh}
+        >
+          Reset
+        </Button>
+      </div>
 
-      {/* MODE + REFRESH */}
-      <div className="flex items-center gap-2 ml-auto">
+      {/* RIGHT SIDE: Buttons */}
+      <div className="flex items-center gap-2 sm:ml-0 ml-auto">
         <Button
           size="icon"
           variant={viewMode === "list" ? "default" : "outline"}
@@ -53,7 +58,12 @@ export default function MySalaryFilter({
           <LayoutGrid className="h-4 w-4" />
         </Button>
 
-        <Button size="icon" variant="outline" className="h-8 w-8" onClick={onRefresh}>
+        <Button
+          size="icon"
+          variant="outline"
+          className="h-8 w-8"
+          onClick={onRefresh}
+        >
           <RotateCcw className="h-4 w-4" />
         </Button>
       </div>

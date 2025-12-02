@@ -32,30 +32,32 @@ import ActiveFilterCount from "./ActiveFilterCount";
  * - Clicking the filter button calls openFilters.
  * - Clicking Reset (shown only when activeFilterCount > 0) calls setFilters({}) to clear all filters.
  */
-export default function FilterBar({
-  filters,
-  setFilters,
-  openFilters,
-}) {
+export default function FilterBar({ filters, setFilters, openFilters }) {
   const activeFilterCount = Object.values(filters).filter(Boolean).length;
 
   return (
-    <div className="flex flex-wrap gap-3 items-center">
+    <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 items-start sm:items-center w-full">
       <SearchInput
         value={filters.search || ""}
         onChange={(val) => setFilters((prev) => ({ ...prev, search: val }))}
+        className="w-full sm:w-auto"
       />
 
-      <Button variant="outline" onClick={openFilters}>
-        {/* filter icon */}
+      <Button
+        variant="outline"
+        onClick={openFilters}
+        className="w-full sm:w-auto flex items-center gap-2"
+      >
         <Filter />
-
-        {/* Badge */}
         <ActiveFilterCount activeFilterCount={activeFilterCount} />
-
       </Button>
+
       {activeFilterCount > 0 && (
-        <Button variant="outline" onClick={() => setFilters({})}>
+        <Button
+          variant="outline"
+          onClick={() => setFilters({})}
+          className="w-full sm:w-auto"
+        >
           Reset
         </Button>
       )}

@@ -70,7 +70,7 @@ export default function EmployeeDashboard() {
           <section>
             <PageHeader>Personal Info</PageHeader>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <DashboardStatCard
                 title="My Department"
                 value={personalInfo?.my_department}
@@ -91,7 +91,7 @@ export default function EmployeeDashboard() {
           <section>
             <PageHeader>Attendance Summary</PageHeader>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <DashboardStatCard
                 title="Total Work Hours (This Month)"
                 value={attendanceSummary?.cards?.total_work_hours_this_month}

@@ -182,7 +182,7 @@ export default function PerformanceReviewPage() {
         </FilterModal>
 
         {/* Button filter */}
-        <div className="flex gap-2">
+        <div className="flex md:flex-row gap-2 sm:justify-end">
           <ColumnVisibilityMenu
             visibleColumns={visibleColumns}
             setVisibleColumns={setVisibleColumns}

@@ -6,7 +6,7 @@ import {
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, Columns } from "lucide-react";
+import { ChevronDown, Columns } from "lucide-react";
 
 export default function ColumnVisibilityMenu({
   visibleColumns,
@@ -22,7 +22,7 @@ export default function ColumnVisibilityMenu({
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="flex items-center gap-2">
           <Columns className="w-4 h-4" />
-          Customize Columns
+          <span className="sm:hidden lg:block">Customize Columns</span>
           <ChevronDown
             className={`w-4 h-4 transition-transform duration-300 ease-in-out ${
               open ? "rotate-180" : ""

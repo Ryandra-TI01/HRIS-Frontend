@@ -105,7 +105,9 @@ export default function MySalaryPage() {
       )}
       <div className="flex justify-end mt-4">
         <div className="flex flex-nowrap gap-4">
-          <PerPageSelect perPage={perPage} onChange={setPerPage} />
+          <div className="hidden md:flex">
+            <PerPageSelect perPage={perPage} onChange={setPerPage} />
+          </div>
 
           {/* PAGINATION */}
           <CustomPagination

@@ -57,7 +57,7 @@ export default function ManagerDashboard() {
           <section>
             <PageHeader>Attendance Overview</PageHeader>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <DashboardStatCard
                 title="Total Attendance Records"
                 value={attendanceData?.cards?.total_attendance_records_team}
@@ -89,7 +89,7 @@ export default function ManagerDashboard() {
           <section>
             <PageHeader>Performance Overview</PageHeader>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <DashboardStatCard
                 title="Average Team Rating"
                 value={performanceData?.cards?.average_team_rating}

@@ -1,4 +1,3 @@
-// FilterModal.jsx
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -8,7 +7,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-
 
 /**
  * FilterModal component that displays a dialog with a local copy of filters and children.
@@ -31,7 +29,13 @@ import { Button } from "@/components/ui/button";
  *   )}
  * </FilterModal>
  */
-export default function FilterModal({ open, onOpenChange, filters, setFilters, children }) {
+export default function FilterModal({
+  open,
+  onOpenChange,
+  filters,
+  setFilters,
+  children,
+}) {
   // local copy of filters — changes here won't affect parent until Apply
   const [localFilters, setLocalFilters] = useState(filters || {});
 
@@ -45,13 +49,16 @@ export default function FilterModal({ open, onOpenChange, filters, setFilters, c
     onOpenChange(false);
   };
 
-  const handleReset = () => {
-    setLocalFilters({});
-  };
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent
+          className="
+            w-[90%]            /* mobile almost full width */
+            max-w-md           /* default desktop width */
+            sm:max-w-lg        /* bigger on larger screens */
+            p-4 sm:p-6         /* responsive padding */
+          "
+        >
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">Filters</DialogTitle>
         </DialogHeader>

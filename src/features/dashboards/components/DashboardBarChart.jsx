@@ -18,12 +18,12 @@ export function DashboardBarChart({
   color = "#A3A3A3",
 }) {
   return (
-    <Card className="rounded-xl border border-white/10 bg-white/5 dark:bg-neutral-900/30 p-6 shadow">
-
+    <Card className="rounded-xl border border-white/10 bg-white/5 dark:bg-neutral-900/30 p-4 md:p-6 shadow">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-semibold text-neutral-800 dark:text-neutral-200">
+        <CardTitle className="text-base md:text-lg font-semibold text-neutral-800 dark:text-neutral-200">
           {title}
         </CardTitle>
+
         {description && (
           <p className="text-sm text-neutral-500 dark:text-neutral-400">
             {description}
@@ -31,13 +31,26 @@ export function DashboardBarChart({
         )}
       </CardHeader>
 
-      <CardContent className="h-[300px] flex items-center">
+      <CardContent className="h-[220px] md:h-[280px] lg:h-[320px] p-0">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data}>
+          <BarChart
+            data={data}
+            margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+          >
             <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
 
-            <XAxis dataKey={xKey} stroke="#9CA3AF" />
-            <YAxis stroke="#9CA3AF" />
+            <XAxis
+              dataKey={xKey}
+              stroke="#9CA3AF"
+              tick={{ fontSize: 10 }}
+              interval="preserveStartEnd"
+            />
+
+            <YAxis
+              stroke="#9CA3AF"
+              width={28}
+              tick={{ fontSize: 10 }}
+            />
 
             <Tooltip
               contentStyle={{
